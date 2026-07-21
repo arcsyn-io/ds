@@ -1,0 +1,23 @@
+{
+  "color": {
+    "background": { "$type": "color", "$value": "{color.arcsyn.neutral.950}" },
+    "foreground": { "$type": "color", "$value": "{color.arcsyn.neutral.50}" },
+    "surface": { "$type": "color", "$value": "{color.arcsyn.neutral.900}" },
+    "surfaceRaised": { "$type": "color", "$value": "{color.arcsyn.neutral.800}" },
+    "surfaceSunken": { "$type": "color", "$value": "#111219" },
+    "muted": { "$type": "color", "$value": "{color.arcsyn.neutral.800}" },
+    "mutedForeground": { "$type": "color", "$value": "{color.arcsyn.neutral.400}" },
+    "primary": { "$type": "color", "$value": "{color.arcsyn.blue.500}" },
+    "primaryForeground": { "$type": "color", "$value": "{color.arcsyn.neutral.950}" },
+    "primaryHover": { "$type": "color", "$value": "{color.arcsyn.blue.400}" },
+    "accent": { "$type": "color", "$value": "{color.arcsyn.cyan.500}" },
+    "accentForeground": { "$type": "color", "$value": "{color.arcsyn.neutral.950}" },
+    "border": { "$type": "color", "$value": "{color.arcsyn.neutral.800}" },
+    "borderStrong": { "$type": "color", "$value": "{color.arcsyn.neutral.700}" },
+    "focusRing": { "$type": "color", "$value": "{color.arcsyn.cyan.400}" },
+    "success": { "$type": "color", "$value": "{color.arcsyn.green.500}" },
+    "warning": { "$type": "color", "$value": "{color.arcsyn.yellow.500}" },
+    "danger": { "$type": "color", "$value": "{color.arcsyn.red.500}" }
+  }
+}
+

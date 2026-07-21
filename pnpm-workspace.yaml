@@ -1,0 +1,6 @@
+packages:
+  - apps/*
+  - packages/*
+minimumReleaseAgeExclude:
+  - '@fontsource/ibm-plex-mono@5.3.0'
+  - '@fontsource/ibm-plex-sans@5.3.0'

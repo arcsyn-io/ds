@@ -1,0 +1,7 @@
+@layer base {
+  :root {
+    --arcsyn-control-height-sm: 1.75rem;
+    --arcsyn-control-height-md: 2rem;
+    --arcsyn-control-height-lg: 2.25rem;
+  }
+}

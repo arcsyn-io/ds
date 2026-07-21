@@ -1,0 +1,26 @@
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: var(--arcsyn-font-sans);
+    background: var(--arcsyn-color-background);
+    color: var(--arcsyn-color-foreground);
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
+

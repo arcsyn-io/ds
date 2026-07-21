@@ -1,0 +1,27 @@
+{
+  "name": "@arcsyn/react-native",
+  "version": "0.1.0",
+  "description": "React Native adapter for the ArcSyn Design System.",
+  "type": "module",
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "peerDependencies": {
+    "react": "^19.2.3",
+    "react-native": "^0.86.0"
+  },
+  "dependencies": {
+    "@arcsyn/tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "react-native": "0.86.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "check": "tsc -p tsconfig.build.json --noEmit"
+  }
+}

@@ -1,0 +1,10 @@
+@layer components {
+  .arcsyn-card {
+    background: var(--arcsyn-color-surface-raised);
+    border: 1px solid var(--arcsyn-color-border);
+    border-radius: var(--arcsyn-radius-lg);
+    box-shadow: var(--arcsyn-shadow-sm);
+    color: var(--arcsyn-color-foreground);
+    padding: var(--arcsyn-spacing-4);
+  }
+}

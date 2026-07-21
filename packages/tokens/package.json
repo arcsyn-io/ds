@@ -1,0 +1,25 @@
+{
+  "name": "@arcsyn/tokens",
+  "version": "0.1.0",
+  "description": "Platform-agnostic design tokens for ArcSyn.",
+  "type": "module",
+  "files": ["dist", "src"],
+  "exports": {
+    ".": {
+      "types": "./dist/js/index.d.ts",
+      "import": "./dist/js/index.js"
+    },
+    "./css": "./dist/css/tokens.css",
+    "./themes/light.css": "./dist/css/theme-light.css",
+    "./themes/dark.css": "./dist/css/theme-dark.css",
+    "./tailwind.css": "./dist/css/tailwind.css",
+    "./react-native": {
+      "types": "./dist/react-native/index.d.ts",
+      "import": "./dist/react-native/index.js"
+    },
+    "./json": "./dist/json/tokens.json"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  }
+}

@@ -1,0 +1,6 @@
+@layer components {
+  .arcsyn-field { display: grid; gap: var(--arcsyn-spacing-1); }
+  .arcsyn-field__label { color: var(--arcsyn-color-foreground); font-size: var(--arcsyn-font-size-sm); font-weight: 600; line-height: 1.35; }
+  .arcsyn-field__description { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-xs); line-height: 1.45; }
+  .arcsyn-field__error { color: var(--arcsyn-color-danger); font-size: var(--arcsyn-font-size-xs); font-weight: 500; line-height: 1.45; }
+}

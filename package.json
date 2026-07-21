@@ -1,0 +1,22 @@
+{
+  "name": "arcsyn-design-system",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.13.0",
+  "scripts": {
+    "build": "pnpm --filter @arcsyn/tokens build && pnpm --filter @arcsyn/react build && pnpm --filter @arcsyn/react-native build && pnpm --filter @arcsyn/docs build",
+    "check": "pnpm --filter @arcsyn/tokens build && pnpm --filter @arcsyn/react check && pnpm --filter @arcsyn/react-native check && pnpm --filter @arcsyn/docs build",
+    "dev:docs": "pnpm --filter @arcsyn/tokens build && pnpm --filter @arcsyn/docs dev"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.3",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2",
+    "vite": "8.1.5"
+  }
+}

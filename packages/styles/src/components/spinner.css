@@ -1,0 +1,23 @@
+@layer components {
+  .arcsyn-spinner {
+    animation: arcsyn-spin 700ms linear infinite;
+    border: 2px solid color-mix(in srgb, currentColor, transparent 72%);
+    border-radius: var(--arcsyn-radius-full);
+    border-top-color: currentColor;
+    display: inline-block;
+    flex: 0 0 auto;
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .arcsyn-spinner[data-size="sm"] { border-width: 1.5px; height: 0.75rem; width: 0.75rem; }
+  .arcsyn-spinner[data-size="lg"] { height: 1.25rem; width: 1.25rem; }
+
+  @keyframes arcsyn-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arcsyn-spinner { animation-duration: 1.5s; }
+  }
+}

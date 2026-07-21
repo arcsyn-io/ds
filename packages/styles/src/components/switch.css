@@ -1,0 +1,19 @@
+@layer components {
+  .arcsyn-switch {
+    appearance: none;
+    background: var(--arcsyn-color-surface-sunken);
+    border: 1px solid var(--arcsyn-color-border-strong);
+    border-radius: var(--arcsyn-radius-full);
+    cursor: pointer;
+    height: 1.25rem;
+    margin: 0;
+    padding: 2px;
+    transition: background var(--arcsyn-duration-fast), border-color var(--arcsyn-duration-fast), box-shadow var(--arcsyn-duration-fast);
+    width: 2.25rem;
+  }
+  .arcsyn-switch::after { background: var(--arcsyn-color-muted-foreground); border-radius: var(--arcsyn-radius-full); content: ""; display: block; height: 0.875rem; transform: translateX(0); transition: transform var(--arcsyn-duration-fast), background var(--arcsyn-duration-fast); width: 0.875rem; }
+  .arcsyn-switch:checked { background: var(--arcsyn-color-primary); border-color: var(--arcsyn-color-primary); }
+  .arcsyn-switch:checked::after { background: var(--arcsyn-color-primary-foreground); transform: translateX(1rem); }
+  .arcsyn-switch:focus-visible { box-shadow: 0 0 0 3px color-mix(in srgb, var(--arcsyn-color-focus-ring), transparent 78%); outline: none; }
+  .arcsyn-switch:disabled { cursor: not-allowed; opacity: 0.5; }
+}

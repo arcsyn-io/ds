@@ -1,0 +1,20 @@
+@layer components {
+  .arcsyn-badge {
+    align-items: center;
+    background: var(--arcsyn-color-muted);
+    border-radius: var(--arcsyn-radius-full);
+    color: var(--arcsyn-color-foreground);
+    display: inline-flex;
+    font-size: var(--arcsyn-font-size-xs);
+    font-weight: 600;
+    justify-self: start;
+    min-height: 1.25rem;
+    padding-inline: var(--arcsyn-spacing-2);
+    width: fit-content;
+  }
+
+  .arcsyn-badge[data-variant="accent"] { background: var(--arcsyn-color-accent); color: var(--arcsyn-color-accent-foreground); }
+  .arcsyn-badge[data-variant="success"] { background: var(--arcsyn-color-success); color: var(--arcsyn-color-accent-foreground); }
+  .arcsyn-badge[data-variant="warning"] { background: var(--arcsyn-color-warning); color: var(--arcsyn-color-accent-foreground); }
+  .arcsyn-badge[data-variant="danger"] { background: var(--arcsyn-color-danger); color: #fff; }
+}

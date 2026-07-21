@@ -1,0 +1,14 @@
+@layer components {
+  .arcsyn-select__trigger { align-items: center; background: var(--arcsyn-color-surface); border: 1px solid var(--arcsyn-color-border); border-radius: var(--arcsyn-radius-md); color: var(--arcsyn-color-foreground); cursor: pointer; display: flex; font: inherit; gap: var(--arcsyn-spacing-2); justify-content: space-between; min-height: var(--arcsyn-control-height-md); padding-inline: var(--arcsyn-spacing-3); text-align: start; transition: border-color var(--arcsyn-duration-fast), box-shadow var(--arcsyn-duration-fast); width: 100%; }
+  .arcsyn-select__trigger:focus-visible { border-color: var(--arcsyn-color-focus-ring); box-shadow: 0 0 0 3px color-mix(in srgb, var(--arcsyn-color-focus-ring), transparent 78%); outline: none; }
+  .arcsyn-select__trigger:disabled { cursor: not-allowed; opacity: 0.5; }
+  .arcsyn-select__value[data-placeholder] { color: var(--arcsyn-color-muted-foreground); }
+  .arcsyn-select__icon { color: var(--arcsyn-color-muted-foreground); font-size: 0.75rem; }
+  .arcsyn-select__backdrop { background: transparent; inset: 0; position: fixed; }
+  .arcsyn-select__positioner { outline: none; z-index: 50; }
+  .arcsyn-select__popup { background: var(--arcsyn-color-surface-raised); border: 1px solid var(--arcsyn-color-border); border-radius: var(--arcsyn-radius-md); box-shadow: 0 12px 28px rgb(0 0 0 / 24%); margin-top: var(--arcsyn-spacing-1); max-block-size: 18rem; min-inline-size: var(--anchor-width); overflow: auto; padding: var(--arcsyn-spacing-1); }
+  .arcsyn-select__item { border-radius: var(--arcsyn-radius-sm); color: var(--arcsyn-color-foreground); cursor: pointer; display: flex; font-size: var(--arcsyn-font-size-sm); justify-content: space-between; padding: 0.5rem var(--arcsyn-spacing-2); }
+  .arcsyn-select__item[data-highlighted], .arcsyn-select__item:hover { background: var(--arcsyn-color-surface-sunken); outline: none; }
+  .arcsyn-select__item[data-disabled] { cursor: not-allowed; opacity: 0.45; }
+  .arcsyn-select__group-label { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-xs); font-weight: 600; padding: var(--arcsyn-spacing-2); text-transform: uppercase; }
+}
