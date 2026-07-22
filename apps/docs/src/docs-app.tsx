@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { Alert, Badge, Button, Card, Checkbox, Dialog, Field, Input, InputGroup, Select, Spinner, Switch, Textarea } from "@arcsyn/react";
+import { Alert, Badge, Button, Card, Checkbox, Dialog, Field, Input, InputGroup, Select, SelectSearch, Spinner, Switch, Textarea } from "@arcsyn/react";
 
 type Property = {
   name: string;
@@ -128,7 +128,24 @@ const componentPages: ComponentPage[] = [
       { name: "Select.Root.disabled", type: "boolean", defaultValue: "false", description: "Bloqueia a interação com o seletor." },
       { name: "Select.Item.disabled", type: "boolean", defaultValue: "false", description: "Exibe uma opção indisponível sem permitir seleção." },
     ],
-    examples: [{ title: "Opções agrupadas", description: "Agrupe alternativas relacionadas; busca e múltipla seleção ficam para uma evolução posterior.", preview: <Field.Root><Field.Label htmlFor="environment">Ambiente</Field.Label><Select.Root id="environment" defaultValue="production"><Select.Trigger><Select.Value placeholder="Selecione um ambiente" /></Select.Trigger><Select.Content><Select.Group><Select.GroupLabel>Ambientes ativos</Select.GroupLabel><Select.Item value="production">Produção</Select.Item><Select.Item value="staging">Homologação</Select.Item></Select.Group><Select.Group><Select.GroupLabel>Indisponível</Select.GroupLabel><Select.Item value="legacy" disabled>Legado</Select.Item></Select.Group></Select.Content></Select.Root></Field.Root>, code: '<Select.Root defaultValue="production">\n  <Select.Trigger><Select.Value placeholder="Selecione" /></Select.Trigger>\n  <Select.Content>\n    <Select.Group>\n      <Select.GroupLabel>Ambientes ativos</Select.GroupLabel>\n      <Select.Item value="production">Produção</Select.Item>\n    </Select.Group>\n  </Select.Content>\n</Select.Root>' }],
+    examples: [{ title: "Opções agrupadas", description: "Agrupe alternativas relacionadas. Para listas extensas, use SelectSearch.", preview: <Field.Root><Field.Label htmlFor="environment">Ambiente</Field.Label><Select.Root id="environment" defaultValue="production"><Select.Trigger><Select.Value placeholder="Selecione um ambiente" /></Select.Trigger><Select.Content><Select.Group><Select.GroupLabel>Ambientes ativos</Select.GroupLabel><Select.Item value="production">Produção</Select.Item><Select.Item value="staging">Homologação</Select.Item></Select.Group><Select.Group><Select.GroupLabel>Indisponível</Select.GroupLabel><Select.Item value="legacy" disabled>Legado</Select.Item></Select.Group></Select.Content></Select.Root></Field.Root>, code: '<Select.Root defaultValue="production">\n  <Select.Trigger><Select.Value placeholder="Selecionar" /></Select.Trigger>\n  <Select.Content>\n    <Select.Group>\n      <Select.GroupLabel>Ambientes ativos</Select.GroupLabel>\n      <Select.Item value="production">Produção</Select.Item>\n    </Select.Group>\n  </Select.Content>\n</Select.Root>' }],
+  },
+  {
+    id: "select-search",
+    title: "Select Search",
+    summary: "Seleciona uma opção em listas extensas usando busca local, teclado e feedback de lista vazia.",
+    importCode: 'import { Field, SelectSearch } from "@arcsyn/react";',
+    status: "React estável · Base UI",
+    anatomy: ["Campo de busca", "Botão para abrir a lista", "Lista filtrada", "Opção selecionável", "Mensagem de lista vazia"],
+    accessibility: "O campo usa a semântica de combobox da Base UI e permite navegar pelas opções com teclado. Associe um Field.Label usando htmlFor e não use o placeholder como único rótulo.",
+    properties: [
+      { name: "options", type: "SelectSearchOption[]", defaultValue: "—", description: "Lista de opções com label, value e disabled opcional." },
+      { name: "value / defaultValue", type: "string | null", defaultValue: "—", description: "Controla ou define a opção inicialmente selecionada." },
+      { name: "onValueChange", type: "(value: string | null) => void", defaultValue: "—", description: "Recebe a opção selecionada." },
+      { name: "searchPlaceholder", type: "string", defaultValue: '"Buscar opção"', description: "Texto de apoio exibido quando não há busca ou seleção." },
+      { name: "emptyMessage", type: "string", defaultValue: '"Nenhuma opção encontrada."', description: "Mensagem exibida quando a busca não retorna opções." },
+    ],
+    examples: [{ title: "Busca de responsável", description: "Use em catálogos extensos quando a pessoa já conhece parte do nome que procura.", preview: <Field.Root><Field.Label htmlFor="owner">Responsável</Field.Label><SelectSearch id="owner" options={[{ label: "Ana Beatriz", value: "ana" }, { label: "Bruno Costa", value: "bruno" }, { label: "Camila Nunes", value: "camila" }, { label: "Diego Martins", value: "diego", disabled: true }]} /></Field.Root>, code: 'const owners = [\n  { label: "Ana Beatriz", value: "ana" },\n  { label: "Bruno Costa", value: "bruno" },\n];\n\n<Field.Root>\n  <Field.Label htmlFor="owner">Responsável</Field.Label>\n  <SelectSearch id="owner" options={owners} />\n</Field.Root>' }],
   },
   {
     id: "textarea",
