@@ -1,0 +1,4 @@
+@layer components {
+  .arcsyn-aspect-ratio { aspect-ratio: var(--arcsyn-aspect-ratio); overflow: hidden; width: 100%; }
+  .arcsyn-aspect-ratio > * { height: 100%; width: 100%; }
+}

@@ -1,0 +1,7 @@
+@layer components {
+  .arcsyn-avatar { align-items: center; border-radius: var(--arcsyn-radius-full); color: #fff; display: inline-flex; flex: 0 0 auto; font-family: var(--arcsyn-font-sans); font-size: var(--arcsyn-font-size-xs); font-weight: 600; justify-content: center; line-height: 1; overflow: hidden; text-transform: uppercase; }
+  .arcsyn-avatar[data-size="sm"] { height: 1.5rem; width: 1.5rem; }
+  .arcsyn-avatar[data-size="md"] { height: 2rem; width: 2rem; }
+  .arcsyn-avatar[data-size="lg"] { font-size: var(--arcsyn-font-size-sm); height: 2.5rem; width: 2.5rem; }
+  .arcsyn-avatar__image { height: 100%; object-fit: cover; width: 100%; }
+}

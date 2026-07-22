@@ -51,6 +51,7 @@ export function SelectSearch({
           placeholder={searchPlaceholder}
           {...inputProps}
         />
+        <Combobox.Clear className="arcsyn-select-search__clear" aria-label="Limpar seleção">×</Combobox.Clear>
         <Combobox.Trigger className="arcsyn-select-search__trigger" aria-label="Mostrar opções">
           <Combobox.Icon className="arcsyn-select-search__icon">⌄</Combobox.Icon>
         </Combobox.Trigger>

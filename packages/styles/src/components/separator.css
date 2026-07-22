@@ -1,0 +1,1 @@
+@layer components { .arcsyn-separator { background: var(--arcsyn-color-border); flex: 0 0 auto; } .arcsyn-separator[data-orientation="horizontal"] { height: 1px; width: 100%; } .arcsyn-separator[data-orientation="vertical"] { height: 100%; width: 1px; } }

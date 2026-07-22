@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { Alert, Badge, Button, Card, Checkbox, Dialog, Field, Input, InputGroup, Select, SelectSearch, Spinner, Switch, Textarea } from "@arcsyn/react";
+import { Alert, AspectRatio, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Checkbox, Dialog, Field, Input, InputGroup, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Spinner, Switch, Textarea } from "@arcsyn/react";
 
 type Property = {
   name: string;
@@ -28,6 +28,43 @@ type ComponentPage = {
 };
 
 const componentPages: ComponentPage[] = [
+  {
+    id: "breadcrumb", title: "Breadcrumb", summary: "Expõe a hierarquia de navegação até a página atual.", importCode: 'import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@arcsyn/react";', status: "React estável", anatomy: ["Nav", "Lista ordenada", "Links ancestrais", "Página atual"], accessibility: "Usa nav, lista ordenada e aria-current=page. No React Native não há equivalente: prefira um botão de voltar ou navegação de pilha.", properties: [{ name: "BreadcrumbLink", type: "AnchorHTMLAttributes<HTMLAnchorElement>", defaultValue: "—", description: "Link de uma página ancestral." }, { name: "BreadcrumbPage", type: "HTMLAttributes<HTMLSpanElement>", defaultValue: "—", description: "Página atual, marcada com aria-current=page." }], examples: [{ title: "Hierarquia de projeto", description: "Mostre o caminho apenas quando ele realmente ajudar a voltar a um nível conhecido.", preview: <Breadcrumb><BreadcrumbList><BreadcrumbItem><BreadcrumbLink href="#/">Início</BreadcrumbLink><BreadcrumbSeparator /></BreadcrumbItem><BreadcrumbItem><BreadcrumbLink href="#/components">Componentes</BreadcrumbLink><BreadcrumbSeparator /></BreadcrumbItem><BreadcrumbItem><BreadcrumbPage>Breadcrumb</BreadcrumbPage></BreadcrumbItem></BreadcrumbList></Breadcrumb>, code: '<Breadcrumb>\n  <BreadcrumbList>\n    <BreadcrumbItem><BreadcrumbLink href="/">Início</BreadcrumbLink><BreadcrumbSeparator /></BreadcrumbItem>\n    <BreadcrumbItem><BreadcrumbPage>Projetos</BreadcrumbPage></BreadcrumbItem>\n  </BreadcrumbList>\n</Breadcrumb>' }] },
+  {
+    id: "scroll-area", title: "Scroll Area", summary: "Exibe conteúdo rolável com barras discretas e preserva o espaço disponível do layout.", importCode: 'import { ScrollArea } from "@arcsyn/react";', status: "React estável · Base UI", anatomy: ["Root", "Viewport rolável", "Content", "Scrollbar opcional"], accessibility: "Mantenha conteúdo rolável acessível por teclado e não esconda informação essencial apenas na rolagem. No React Native, ScrollArea usa ScrollView nativo.", properties: [{ name: "ScrollArea.Scrollbar.orientation", type: '"vertical" | "horizontal"', defaultValue: '"vertical"', description: "Define o eixo controlado pela barra." }, { name: "ScrollArea.Root.style", type: "CSSProperties", defaultValue: "—", description: "Defina uma altura ou largura para criar uma região rolável." }], examples: [{ title: "Histórico de eventos", description: "Defina a altura do Root; o Viewport ocupa o espaço e permite a rolagem.", preview: <ScrollArea.Root className="docs-scroll-area"><ScrollArea.Viewport><ScrollArea.Content>{Array.from({ length: 9 }, (_, index) => <p className="docs-scroll-area-item" key={index}>Evento operacional #{String(index + 1).padStart(2, "0")}</p>)}</ScrollArea.Content></ScrollArea.Viewport><ScrollArea.Scrollbar /></ScrollArea.Root>, code: '<ScrollArea.Root style={{ height: "12rem" }}>\n  <ScrollArea.Viewport>\n    <ScrollArea.Content>…</ScrollArea.Content>\n  </ScrollArea.Viewport>\n  <ScrollArea.Scrollbar />\n</ScrollArea.Root>' }] },
+  {
+    id: "separator", title: "Separator", summary: "Separa visualmente grupos relacionados sem criar uma superfície adicional.", importCode: 'import { Separator } from "@arcsyn/react";', status: "React estável · Base UI", anatomy: ["Linha horizontal ou vertical", "Semântica de separador"], accessibility: "O componente expõe role=separator. Use para agrupamentos visuais; não o use como substituto de títulos ou estrutura semântica.", properties: [{ name: "orientation", type: '"horizontal" | "vertical"', defaultValue: '"horizontal"', description: "Define a direção da linha." }], examples: [{ title: "Divisão de metadados", description: "Use uma linha sutil para separar blocos de informação próximos.", preview: <div className="docs-separator-example"><strong>Detalhes da integração</strong><Separator /><span>Última sincronização: há 4 minutos</span></div>, code: '<strong>Detalhes da integração</strong>\n<Separator />\n<span>Última sincronização: há 4 minutos</span>' }, { title: "Separador vertical", description: "Em linhas compactas, a orientação vertical divide ações ou metadados adjacentes.", preview: <div className="docs-separator-row"><span>Produção</span><Separator orientation="vertical" /><span>Operacional</span></div>, code: '<div style={{ display: "flex", height: "1rem" }}>\n  <span>Produção</span>\n  <Separator orientation="vertical" />\n  <span>Operacional</span>\n</div>' }] },
+  {
+    id: "aspect-ratio",
+    title: "Aspect Ratio",
+    summary: "Exibe conteúdo dentro de uma proporção desejada sem depender de uma altura fixa.",
+    importCode: 'import { AspectRatio } from "@arcsyn/react";',
+    status: "React estável",
+    anatomy: ["Container com largura fluida", "Proporção configurável", "Conteúdo interno preenchendo a área"],
+    accessibility: "AspectRatio é apenas um container visual. Forneça texto alternativo para imagens e semântica apropriada para o conteúdo interno.",
+    properties: [
+      { name: "ratio", type: "number", defaultValue: "16 / 9", description: "Relação entre largura e altura. Use 1 para quadrado, 4 / 3 para mídia clássica ou 16 / 9 para vídeo." },
+      { name: "children", type: "ReactNode", defaultValue: "—", description: "Conteúdo mantido dentro da proporção definida." },
+      { name: "...divProps", type: "HTMLAttributes<HTMLDivElement>", defaultValue: "—", description: "Inclui className, aria-* e demais atributos do container." },
+    ],
+    examples: [{ title: "Prévia de mídia", description: "O container cresce com a largura disponível e preserva 16:9 para imagens, vídeos e prévias.", preview: <AspectRatio className="docs-aspect-ratio-example"><div>16:9</div></AspectRatio>, code: '<AspectRatio ratio={16 / 9}>\n  <img src="/preview.png" alt="Prévia da integração" />\n</AspectRatio>' }, { title: "Área quadrada", description: "Use ratio={1} para miniaturas, avatares compostos ou espaços de prévia quadrados.", preview: <AspectRatio ratio={1} className="docs-aspect-ratio-example docs-aspect-ratio-example--square"><div>1:1</div></AspectRatio>, code: '<AspectRatio ratio={1}>\n  <img src="/thumbnail.png" alt="Miniatura do projeto" />\n</AspectRatio>' }],
+  },
+  {
+    id: "avatar",
+    title: "Avatar",
+    summary: "Representa uma pessoa ou entidade com imagem opcional e fallback determinístico de cor e iniciais.",
+    importCode: 'import { Avatar } from "@arcsyn/react";',
+    status: "React estável",
+    anatomy: ["Imagem opcional", "Fallback de cor derivado do id", "Iniciais derivadas do nome"],
+    accessibility: "Quando não há imagem, o fallback recebe role=img e um nome acessível. Quando houver imagem, informe name para produzir um texto alternativo útil.",
+    properties: [
+      { name: "id", type: "string", defaultValue: "—", description: "Identificador usado para gerar uma cor estável para o fallback." },
+      { name: "name", type: "string", defaultValue: "—", description: "Nome usado nas iniciais e no texto alternativo da imagem." },
+      { name: "image", type: "string", defaultValue: "—", description: "URL da imagem. Em caso de erro de carregamento, exibe o fallback automaticamente." },
+      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Define o diâmetro: 1.5rem, 2rem ou 2.5rem." },
+    ],
+    examples: [{ title: "Imagem e fallback", description: "A mesma pessoa recebe sempre a mesma cor quando a imagem não está disponível.", preview: <div className="docs-demo-row"><Avatar id="usr_ana_32" name="Ana Beatriz" /><Avatar id="usr_bruno_18" name="Bruno Costa" size="lg" /><Avatar id="usr_camila_09" name="Camila Nunes" image="https://i.pravatar.cc/80?img=47" size="lg" /><Avatar id="usr_unknown" /></div>, code: '<Avatar id="usr_ana_32" name="Ana Beatriz" />\n<Avatar id="usr_camila_09" name="Camila Nunes" image="https://exemplo.com/camila.jpg" size="lg" />' }],
+  },
   {
     id: "button",
     title: "Button",
@@ -114,6 +151,30 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
+    id: "radio-group",
+    title: "Radio Group",
+    summary: "Permite escolher uma única opção de um conjunto pequeno e mutuamente exclusivo.",
+    importCode: 'import { Field, RadioGroup } from "@arcsyn/react";',
+    status: "React estável · Base UI",
+    anatomy: ["Root com role radiogroup", "Item selecionável", "Indicador de seleção", "Rótulo clicável"],
+    accessibility: "Base UI implementa a semântica de radio group e a navegação por setas. Use Field.Label para nomear o grupo e mantenha os rótulos das opções claros.",
+    properties: [
+      { name: "RadioGroup.Root.value", type: "string", defaultValue: "—", description: "Valor controlado da opção selecionada." },
+      { name: "RadioGroup.Root.defaultValue", type: "string", defaultValue: "—", description: "Opção selecionada inicialmente no modo não controlado." },
+      { name: "RadioGroup.Root.onValueChange", type: "(value) => void", defaultValue: "—", description: "Recebe o valor quando a opção muda." },
+      { name: "RadioGroup.Root.orientation", type: '"vertical" | "horizontal"', defaultValue: '"vertical"', description: "Organiza as opções na vertical ou horizontal." },
+      { name: "RadioGroup.Root.invalid", type: "boolean", defaultValue: "false", description: "Aplica aria-invalid e o tratamento visual de erro a todas as opções." },
+      { name: "RadioGroup.Root.disabled", type: "boolean", defaultValue: "false", description: "Desabilita todas as opções do grupo." },
+      { name: "RadioGroup.Item.variant", type: '"default" | "card"', defaultValue: '"default"', description: "Apresenta a opção como controle simples ou como choice card." },
+      { name: "RadioGroup.Item.disabled", type: "boolean", defaultValue: "false", description: "Torna uma opção indisponível para seleção." },
+    ],
+    examples: [
+      { title: "Campo com opção indisponível", description: "Use Field.Label para nomear o conjunto. Uma opção disabled continua legível, mas não pode receber seleção.", preview: <Field.Root><Field.Label id="priority-label">Prioridade</Field.Label><RadioGroup.Root aria-labelledby="priority-label" defaultValue="normal"><RadioGroup.Item value="low">Baixa</RadioGroup.Item><RadioGroup.Item value="normal">Normal</RadioGroup.Item><RadioGroup.Item value="high">Alta</RadioGroup.Item><RadioGroup.Item value="urgent" disabled>Urgente — requer aprovação</RadioGroup.Item></RadioGroup.Root><Field.Description>O SLA será calculado a partir desta escolha.</Field.Description></Field.Root>, code: '<Field.Root>\n  <Field.Label id="priority-label">Prioridade</Field.Label>\n  <RadioGroup.Root aria-labelledby="priority-label" defaultValue="normal">\n    <RadioGroup.Item value="low">Baixa</RadioGroup.Item>\n    <RadioGroup.Item value="normal">Normal</RadioGroup.Item>\n    <RadioGroup.Item value="urgent" disabled>Urgente — requer aprovação</RadioGroup.Item>\n  </RadioGroup.Root>\n</Field.Root>' },
+      { title: "Choice cards", description: "Use cards quando cada escolha precisa de contexto adicional, mantendo uma única decisão possível.", preview: <Field.Root><Field.Label id="plan-label">Plano de implantação</Field.Label><RadioGroup.Root aria-labelledby="plan-label" defaultValue="managed"><RadioGroup.Item value="managed" variant="card"><strong>Gerenciado</strong><span className="docs-muted-copy">Atualizações automáticas e suporte prioritário.</span></RadioGroup.Item><RadioGroup.Item value="self-hosted" variant="card"><strong>Autogerenciado</strong><span className="docs-muted-copy">Sua equipe controla a infraestrutura.</span></RadioGroup.Item></RadioGroup.Root></Field.Root>, code: '<Field.Root>\n  <Field.Label id="plan-label">Plano de implantação</Field.Label>\n  <RadioGroup.Root aria-labelledby="plan-label" defaultValue="managed">\n    <RadioGroup.Item value="managed" variant="card">\n      <strong>Gerenciado</strong>\n      <span>Atualizações automáticas e suporte prioritário.</span>\n    </RadioGroup.Item>\n  </RadioGroup.Root>\n</Field.Root>' },
+      { title: "Inválido e grupo desabilitado", description: "Use invalid junto de uma mensagem de erro. disabled no Root bloqueia o conjunto inteiro quando a escolha não está disponível.", preview: <div className="docs-demo-stack"><Field.Root><Field.Label id="region-label">Região de processamento</Field.Label><RadioGroup.Root aria-labelledby="region-label" invalid><RadioGroup.Item value="br">Brasil</RadioGroup.Item><RadioGroup.Item value="us">Estados Unidos</RadioGroup.Item></RadioGroup.Root><Field.Error>Selecione uma região para continuar.</Field.Error></Field.Root><Field.Root><Field.Label id="locked-priority-label">Prioridade bloqueada</Field.Label><RadioGroup.Root aria-labelledby="locked-priority-label" defaultValue="normal" disabled><RadioGroup.Item value="low">Baixa</RadioGroup.Item><RadioGroup.Item value="normal">Normal</RadioGroup.Item></RadioGroup.Root></Field.Root></div>, code: '<RadioGroup.Root invalid aria-labelledby="region-label">\n  <RadioGroup.Item value="br">Brasil</RadioGroup.Item>\n</RadioGroup.Root>\n<Field.Error>Selecione uma região para continuar.</Field.Error>\n\n<RadioGroup.Root defaultValue="normal" disabled>\n  <RadioGroup.Item value="normal">Normal</RadioGroup.Item>\n</RadioGroup.Root>' },
+    ],
+  },
+  {
     id: "select",
     title: "Select",
     summary: "Escolha uma opção em uma lista compacta, acessível por teclado e adequada para valores enumerados.",
@@ -141,7 +202,7 @@ const componentPages: ComponentPage[] = [
     properties: [
       { name: "options", type: "SelectSearchOption[]", defaultValue: "—", description: "Lista de opções com label, value e disabled opcional." },
       { name: "value / defaultValue", type: "string | null", defaultValue: "—", description: "Controla ou define a opção inicialmente selecionada." },
-      { name: "onValueChange", type: "(value: string | null) => void", defaultValue: "—", description: "Recebe a opção selecionada." },
+      { name: "onValueChange", type: "(value: string | null) => void", defaultValue: "—", description: "Recebe a opção selecionada ou null ao limpar o campo." },
       { name: "searchPlaceholder", type: "string", defaultValue: '"Buscar opção"', description: "Texto de apoio exibido quando não há busca ou seleção." },
       { name: "emptyMessage", type: "string", defaultValue: '"Nenhuma opção encontrada."', description: "Mensagem exibida quando a busca não retorna opções." },
     ],

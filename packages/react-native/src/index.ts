@@ -1,5 +1,7 @@
 export * from "./theme.js";
 export * from "./components/alert.js";
+export * from "./components/aspect-ratio.js";
+export * from "./components/avatar.js";
 export * from "./components/badge.js";
 export * from "./components/button.js";
 export * from "./components/card.js";
@@ -7,6 +9,9 @@ export * from "./components/dialog.js";
 export * from "./components/field.js";
 export * from "./components/input.js";
 export * from "./components/input-group.js";
+export * from "./components/radio-group.js";
+export * from "./components/scroll-area.js";
+export * from "./components/separator.js";
 export * from "./components/textarea.js";
 export * from "./components/checkbox.js";
 export * from "./components/switch.js";

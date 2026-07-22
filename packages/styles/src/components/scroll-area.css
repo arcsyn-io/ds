@@ -1,0 +1,11 @@
+@layer components {
+  .arcsyn-scroll-area { overflow: hidden; position: relative; }
+  .arcsyn-scroll-area__viewport { block-size: 100%; inline-size: 100%; overflow: auto; scrollbar-width: none; }
+  .arcsyn-scroll-area__viewport::-webkit-scrollbar { display: none; }
+  .arcsyn-scroll-area__content { min-block-size: 100%; }
+  .arcsyn-scroll-area__scrollbar { background: var(--arcsyn-color-surface-sunken); border-radius: var(--arcsyn-radius-full); display: flex; opacity: 0; padding: 0.125rem; position: absolute; transition: opacity var(--arcsyn-duration-fast); }
+  .arcsyn-scroll-area:hover .arcsyn-scroll-area__scrollbar, .arcsyn-scroll-area__scrollbar[data-scrolling] { opacity: 1; }
+  .arcsyn-scroll-area__scrollbar[data-orientation="vertical"] { bottom: var(--arcsyn-spacing-1); right: var(--arcsyn-spacing-1); top: var(--arcsyn-spacing-1); width: 0.5rem; }
+  .arcsyn-scroll-area__scrollbar[data-orientation="horizontal"] { bottom: var(--arcsyn-spacing-1); height: 0.5rem; left: var(--arcsyn-spacing-1); right: var(--arcsyn-spacing-1); }
+  .arcsyn-scroll-area__thumb { background: var(--arcsyn-color-muted-foreground); border-radius: inherit; flex: 1; }
+}

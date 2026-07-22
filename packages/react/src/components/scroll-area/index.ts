@@ -1,0 +1,1 @@
+export { ScrollArea, ScrollAreaContent, ScrollAreaRoot, ScrollAreaScrollbar, ScrollAreaViewport, type ScrollAreaContentProps, type ScrollAreaRootProps, type ScrollAreaScrollbarProps, type ScrollAreaViewportProps } from "./scroll-area.js";

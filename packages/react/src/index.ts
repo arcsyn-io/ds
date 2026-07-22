@@ -1,4 +1,7 @@
 export * from "./components/alert/index.js";
+export * from "./components/aspect-ratio/index.js";
+export * from "./components/breadcrumb/index.js";
+export * from "./components/avatar/index.js";
 export * from "./components/badge/index.js";
 export * from "./components/button/index.js";
 export * from "./components/card/index.js";
@@ -6,6 +9,9 @@ export * from "./components/dialog/index.js";
 export * from "./components/field/index.js";
 export * from "./components/input/index.js";
 export * from "./components/input-group/index.js";
+export * from "./components/radio-group/index.js";
+export * from "./components/scroll-area/index.js";
+export * from "./components/separator/index.js";
 export * from "./components/textarea/index.js";
 export * from "./components/checkbox/index.js";
 export * from "./components/switch/index.js";

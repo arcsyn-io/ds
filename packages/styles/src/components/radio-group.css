@@ -1,0 +1,17 @@
+@layer components {
+  .arcsyn-radio-group { display: flex; gap: var(--arcsyn-spacing-3); }
+  .arcsyn-radio-group[data-orientation="vertical"] { flex-direction: column; }
+  .arcsyn-radio-group[data-orientation="horizontal"] { flex-direction: row; flex-wrap: wrap; }
+  .arcsyn-radio-group__item { align-items: center; color: var(--arcsyn-color-foreground); cursor: pointer; display: inline-flex; font-size: var(--arcsyn-font-size-sm); gap: var(--arcsyn-spacing-2); min-height: 1.75rem; }
+  .arcsyn-radio-group__item[data-disabled] { cursor: not-allowed; opacity: 0.5; }
+  .arcsyn-radio-group__item:has(.arcsyn-radio-group__control[data-disabled]) { cursor: not-allowed; opacity: 0.5; }
+  .arcsyn-radio-group__item[data-variant="card"] { align-items: flex-start; background: var(--arcsyn-color-surface); border: 1px solid var(--arcsyn-color-border); border-radius: var(--arcsyn-radius-md); min-height: 4rem; padding: var(--arcsyn-spacing-3); transition: border-color var(--arcsyn-duration-fast), background var(--arcsyn-duration-fast); width: 100%; }
+  .arcsyn-radio-group__item[data-variant="card"]:has(.arcsyn-radio-group__control[data-checked]) { background: color-mix(in srgb, var(--arcsyn-color-primary), var(--arcsyn-color-surface) 90%); border-color: var(--arcsyn-color-primary); }
+  .arcsyn-radio-group__item[data-variant="card"] .arcsyn-radio-group__label { display: grid; gap: var(--arcsyn-spacing-1); }
+  .arcsyn-radio-group__control { align-items: center; background: var(--arcsyn-color-surface); border: 1px solid var(--arcsyn-color-border-strong); border-radius: var(--arcsyn-radius-full); cursor: inherit; display: inline-flex; flex: 0 0 auto; height: 1rem; justify-content: center; width: 1rem; }
+  .arcsyn-radio-group__control[data-checked] { border-color: var(--arcsyn-color-primary); }
+  .arcsyn-radio-group[data-invalid] .arcsyn-radio-group__control { border-color: var(--arcsyn-color-danger); }
+  .arcsyn-radio-group[data-invalid] .arcsyn-radio-group__indicator { background: var(--arcsyn-color-danger); }
+  .arcsyn-radio-group__control:focus-visible { box-shadow: 0 0 0 3px color-mix(in srgb, var(--arcsyn-color-focus-ring), transparent 78%); outline: none; }
+  .arcsyn-radio-group__indicator { background: var(--arcsyn-color-primary); border-radius: var(--arcsyn-radius-full); height: 0.5rem; width: 0.5rem; }
+}

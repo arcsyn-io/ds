@@ -1,0 +1,12 @@
+import { ScrollArea as BaseScrollArea } from "@base-ui/react/scroll-area";
+import { forwardRef, type ComponentPropsWithoutRef } from "react";
+import { cx } from "../../utilities/cx.js";
+export type ScrollAreaRootProps = ComponentPropsWithoutRef<typeof BaseScrollArea.Root>;
+export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaRootProps>(function ScrollAreaRoot({ className, ...props }, ref) { return <BaseScrollArea.Root ref={ref} className={(state) => cx("arcsyn-scroll-area", typeof className === "function" ? className(state) : className)} {...props} />; });
+export type ScrollAreaViewportProps = ComponentPropsWithoutRef<typeof BaseScrollArea.Viewport>;
+export const ScrollAreaViewport = forwardRef<HTMLDivElement, ScrollAreaViewportProps>(function ScrollAreaViewport({ className, ...props }, ref) { return <BaseScrollArea.Viewport ref={ref} className={(state) => cx("arcsyn-scroll-area__viewport", typeof className === "function" ? className(state) : className)} {...props} />; });
+export type ScrollAreaContentProps = ComponentPropsWithoutRef<typeof BaseScrollArea.Content>;
+export const ScrollAreaContent = forwardRef<HTMLDivElement, ScrollAreaContentProps>(function ScrollAreaContent({ className, ...props }, ref) { return <BaseScrollArea.Content ref={ref} className={(state) => cx("arcsyn-scroll-area__content", typeof className === "function" ? className(state) : className)} {...props} />; });
+export type ScrollAreaScrollbarProps = ComponentPropsWithoutRef<typeof BaseScrollArea.Scrollbar>;
+export const ScrollAreaScrollbar = forwardRef<HTMLDivElement, ScrollAreaScrollbarProps>(function ScrollAreaScrollbar({ className, children, ...props }, ref) { return <BaseScrollArea.Scrollbar ref={ref} className={(state) => cx("arcsyn-scroll-area__scrollbar", typeof className === "function" ? className(state) : className)} {...props}>{children ?? <BaseScrollArea.Thumb className="arcsyn-scroll-area__thumb" />}</BaseScrollArea.Scrollbar>; });
+export const ScrollArea = { Root: ScrollAreaRoot, Viewport: ScrollAreaViewport, Content: ScrollAreaContent, Scrollbar: ScrollAreaScrollbar };

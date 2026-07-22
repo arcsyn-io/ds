@@ -5,6 +5,9 @@
   .arcsyn-select-search__input { background: transparent; border: 0; color: var(--arcsyn-color-foreground); flex: 1; font: inherit; min-inline-size: 0; outline: none; padding: 0 var(--arcsyn-spacing-3); }
   .arcsyn-select-search__input::placeholder { color: var(--arcsyn-color-muted-foreground); }
   .arcsyn-select-search__input:disabled { cursor: not-allowed; }
+  .arcsyn-select-search__clear { background: transparent; border: 0; border-radius: var(--arcsyn-radius-sm); color: var(--arcsyn-color-muted-foreground); cursor: pointer; font: inherit; font-size: 1.125rem; line-height: 1; margin-block: var(--arcsyn-spacing-1); padding-inline: var(--arcsyn-spacing-2); }
+  .arcsyn-select-search__clear:hover { background: var(--arcsyn-color-surface-sunken); color: var(--arcsyn-color-foreground); }
+  .arcsyn-select-search__clear:focus-visible { outline: 2px solid var(--arcsyn-color-focus-ring); outline-offset: -2px; }
   .arcsyn-select-search__trigger { background: transparent; border: 0; color: var(--arcsyn-color-muted-foreground); cursor: pointer; display: grid; padding-inline: var(--arcsyn-spacing-3); place-items: center; }
   .arcsyn-select-search__trigger:focus-visible { outline: 2px solid var(--arcsyn-color-focus-ring); outline-offset: -2px; }
   .arcsyn-select-search__icon { font-size: 0.75rem; }

@@ -74,6 +74,15 @@
 .docs-card-example > div:first-child { align-items: center; display: flex; justify-content: space-between; }
 .docs-card-eyebrow { color: var(--arcsyn-color-muted-foreground); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.1em; margin: 0 0 0.25rem; text-transform: uppercase; }
 .docs-card-copy { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-sm); line-height: 1.5; margin: 0; }
+.docs-muted-copy { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-xs); line-height: 1.45; }
+.docs-aspect-ratio-example { background: var(--arcsyn-color-surface-sunken); border: 1px solid var(--arcsyn-color-border); border-radius: var(--arcsyn-radius-md); max-width: 32rem; }
+.docs-aspect-ratio-example > div { align-items: center; color: var(--arcsyn-color-muted-foreground); display: flex; font-family: var(--arcsyn-font-mono); font-size: var(--arcsyn-font-size-sm); justify-content: center; }
+.docs-aspect-ratio-example--square { max-width: 12rem; }
+.docs-scroll-area { border: 1px solid var(--arcsyn-color-border); border-radius: var(--arcsyn-radius-md); height: 12rem; max-width: 32rem; }
+.docs-scroll-area-item { border-bottom: 1px solid var(--arcsyn-color-border); color: var(--arcsyn-color-muted-foreground); font-family: var(--arcsyn-font-mono); font-size: var(--arcsyn-font-size-xs); margin: 0; padding: var(--arcsyn-spacing-3); }
+.docs-separator-example { display: grid; gap: var(--arcsyn-spacing-3); max-width: 32rem; }
+.docs-separator-example span { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-sm); }
+.docs-separator-row { align-items: center; display: flex; gap: var(--arcsyn-spacing-3); height: 1rem; }
 .docs-accessibility { background: color-mix(in srgb, var(--arcsyn-color-primary), transparent 92%); border-left: 3px solid var(--arcsyn-color-primary); padding: var(--arcsyn-spacing-4); }
 .docs-accessibility p:last-child { color: var(--arcsyn-color-muted-foreground); line-height: 1.6; margin: 0; }
 .docs-principles, .docs-catalog { display: grid; gap: var(--arcsyn-spacing-3); grid-template-columns: repeat(3, minmax(0, 1fr)); }
