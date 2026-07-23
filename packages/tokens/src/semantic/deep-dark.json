@@ -1,0 +1,33 @@
+{
+  "color": {
+    "background": { "$type": "color", "$value": "{color.arcsyn.deepDark.950}" },
+    "foreground": { "$type": "color", "$value": "{color.arcsyn.brand.50}" },
+    "surface": { "$type": "color", "$value": "{color.arcsyn.deepDark.900}" },
+    "surfaceRaised": { "$type": "color", "$value": "{color.arcsyn.deepDark.800}" },
+    "surfaceSunken": { "$type": "color", "$value": "{color.arcsyn.deepDark.950}" },
+    "muted": { "$type": "color", "$value": "{color.arcsyn.deepDark.800}" },
+    "mutedForeground": { "$type": "color", "$value": "{color.arcsyn.brand.300}" },
+    "primary": { "$type": "color", "$value": "{color.arcsyn.brandAccent.500}" },
+    "primaryForeground": { "$type": "color", "$value": "{color.arcsyn.deepDark.950}" },
+    "primaryHover": { "$type": "color", "$value": "{color.arcsyn.brandAccent.400}" },
+    "accent": { "$type": "color", "$value": "#101820" },
+    "accentForeground": { "$type": "color", "$value": "#d8e2e7" },
+    "accentBorder": { "$type": "color", "$value": "#30465a" },
+    "accentSolid": { "$type": "color", "$value": "#6f879b" },
+    "border": { "$type": "color", "$value": "{color.arcsyn.deepDark.700}" },
+    "borderStrong": { "$type": "color", "$value": "{color.arcsyn.deepDark.600}" },
+    "focusRing": { "$type": "color", "$value": "{color.arcsyn.brandAccent.500}" },
+    "success": { "$type": "color", "$value": "#7e9e68" },
+    "successBackground": { "$type": "color", "$value": "#101b14" },
+    "successForeground": { "$type": "color", "$value": "#d5e3ca" },
+    "successBorder": { "$type": "color", "$value": "#3e5a45" },
+    "warning": { "$type": "color", "$value": "#c99a3d" },
+    "warningBackground": { "$type": "color", "$value": "#211b0d" },
+    "warningForeground": { "$type": "color", "$value": "#f3d89f" },
+    "warningBorder": { "$type": "color", "$value": "#6b5424" },
+    "danger": { "$type": "color", "$value": "#b95b65" },
+    "dangerBackground": { "$type": "color", "$value": "#211114" },
+    "dangerForeground": { "$type": "color", "$value": "#edc3c7" },
+    "dangerBorder": { "$type": "color", "$value": "#70353c" }
+  }
+}

@@ -26,7 +26,8 @@
   .arcsyn-button[data-variant="outline"]:hover:not(:disabled) { background: color-mix(in srgb, var(--arcsyn-color-primary), transparent 90%); }
   .arcsyn-button[data-variant="ghost"] { color: var(--arcsyn-color-foreground); }
   .arcsyn-button[data-variant="ghost"]:hover:not(:disabled) { background: var(--arcsyn-color-muted); }
-  .arcsyn-button[data-variant="danger"] { background: var(--arcsyn-color-danger); color: #fff; }
+  .arcsyn-button[data-variant="danger"] { background: var(--arcsyn-color-danger-background); border-color: var(--arcsyn-color-danger-border); color: var(--arcsyn-color-danger-foreground); }
+  .arcsyn-button[data-variant="danger"]:hover:not(:disabled) { opacity: 0.88; }
   .arcsyn-button[data-size="sm"] { min-height: var(--arcsyn-control-height-sm); min-inline-size: 4.5rem; padding-inline: var(--arcsyn-spacing-2); }
   .arcsyn-button[data-size="lg"] { min-height: var(--arcsyn-control-height-lg); min-inline-size: 6.5rem; padding-inline: var(--arcsyn-spacing-3); }
   .arcsyn-button:focus-visible { outline: 2px solid var(--arcsyn-color-focus-ring); outline-offset: 2px; }

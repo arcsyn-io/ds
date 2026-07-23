@@ -1,5 +1,6 @@
-import { useEffect, useState, type ReactNode } from "react";
-import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, Dialog, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Skeleton, Spinner, Switch, Textarea, Toaster, toast, type ToasterEffect } from "@arcsyn/react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, Dialog, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Skeleton, Spinner, Switch, Textarea, ThemeSwitcher, Toaster, toast, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
+import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleIcon, EllipsisIcon, MinusIcon, PlusIcon, XIcon } from "@arcsyn/react/icons";
 
 type Property = {
   name: string;
@@ -55,7 +56,107 @@ function ToasterEffectsDemo() {
   return <><div className="docs-demo-row">{toasterEffects.map(({ label, value }) => <Button key={value} variant="secondary" onClick={() => toast.success(`Efeito: ${label}`, { description: "A mesma notificação com outra transição.", duration: 2400, toasterId: `docs-effect-${value}` })}>{label}</Button>)}</div>{toasterEffects.map(({ label, value }) => <Toaster key={value} id={`docs-effect-${value}`} effect={value} position="bottom-right" containerAriaLabel={`Demonstração do efeito ${label}`} />)}</>;
 }
 
+const docsThemeStorageKey = "arcsyn-docs-theme";
+const docsThemes: readonly ThemeSwitcherTheme[] = ["light", "dark", "deep-dark"];
+
+function isDocsTheme(value: string | null): value is ThemeSwitcherTheme {
+  return docsThemes.some((theme) => theme === value);
+}
+
+function currentDocsTheme(): ThemeSwitcherTheme {
+  try {
+    const storedTheme = window.localStorage.getItem(docsThemeStorageKey);
+    if (isDocsTheme(storedTheme)) return storedTheme;
+  } catch {
+    // Storage may be unavailable in privacy-restricted browser contexts.
+  }
+
+  const documentTheme = document.documentElement.dataset.arcsynTheme ?? null;
+  return isDocsTheme(documentTheme) ? documentTheme : "dark";
+}
+
+type DocsThemeContextValue = {
+  theme: ThemeSwitcherTheme;
+  setTheme: (theme: ThemeSwitcherTheme) => void;
+};
+
+const DocsThemeContext = createContext<DocsThemeContextValue>({
+  theme: "dark",
+  setTheme: () => undefined,
+});
+
+const compactThemeOptions = [
+  { value: "light", label: "Light" },
+  { value: "dark", label: "Dark" },
+  { value: "deep-dark", label: "Deep" },
+] as const;
+
+function DocsThemeSwitcher({ compact = false }: { compact?: boolean }) {
+  const { theme, setTheme } = useContext(DocsThemeContext);
+  return <ThemeSwitcher value={theme} onValueChange={setTheme} options={compact ? compactThemeOptions : undefined} label="Tema da documentação" />;
+}
+
 const componentPages: ComponentPage[] = [
+  {
+    id: "theme-switcher",
+    title: "Theme Switcher",
+    summary: "Alterna entre temas disponíveis com uma seleção compacta e acessível.",
+    importCode: 'import { ThemeSwitcher } from "@arcsyn/react";',
+    status: "React estável · Web",
+    anatomy: ["Wrapper", "Select nativo", "Opções de tema", "Callback de mudança"],
+    accessibility: "O componente usa um select nativo nomeado pelo label, preservando teclado, foco e anúncio da opção selecionada pelo navegador. Forneça um label que descreva o escopo afetado. Não há equivalente React Native: no mobile, controle a prop theme de ArcSynProvider com componentes nativos da aplicação.",
+    properties: [
+      { name: "value", type: '"light" | "dark" | "deep-dark"', defaultValue: "—", description: "Tema selecionado no modo controlado." },
+      { name: "defaultValue", type: '"light" | "dark" | "deep-dark"', defaultValue: '"dark"', description: "Tema inicial no modo não controlado." },
+      { name: "onValueChange", type: "(theme) => void", defaultValue: "—", description: "Recebe o tema escolhido pelo usuário." },
+      { name: "options", type: "readonly ThemeSwitcherOption[]", defaultValue: "3 temas ArcSyn", description: "Personaliza temas disponíveis e seus rótulos." },
+      { name: "label", type: "string", defaultValue: '"Tema"', description: "Nome acessível do grupo." },
+      { name: "disabled", type: "boolean", defaultValue: "false", description: "Desabilita todas as opções." },
+    ],
+    examples: [
+      {
+        title: "Temas da documentação",
+        description: "O select abre as opções nativas; a aplicação controla o valor, atualiza data-arcsyn-theme e decide como persistir a escolha.",
+        preview: <DocsThemeSwitcher />,
+        code: 'const [theme, setTheme] = useState("dark");\n\n<ThemeSwitcher\n  value={theme}\n  onValueChange={(nextTheme) => {\n    document.documentElement.dataset.arcsynTheme = nextTheme;\n    setTheme(nextTheme);\n  }}\n/>',
+      },
+      {
+        title: "Seleção não controlada",
+        description: "Use defaultValue quando a aplicação só precisar reagir à escolha.",
+        preview: <ThemeSwitcher defaultValue="deep-dark" onValueChange={() => undefined} label="Tema da prévia" />,
+        code: '<ThemeSwitcher\n  defaultValue="deep-dark"\n  onValueChange={savePreference}\n  label="Tema da aplicação"\n/>',
+      },
+    ],
+  },
+  {
+    id: "icons",
+    title: "Icons",
+    summary: "Catálogo curado de ícones Lucide com os mesmos nomes nos adaptadores React e React Native.",
+    importCode: 'import { CheckIcon, PlusIcon } from "@arcsyn/react/icons";\nimport { CheckIcon, PlusIcon } from "@arcsyn/react-native/icons";',
+    status: "React estável · React Native",
+    anatomy: ["SVG vetorial", "ViewBox 24 × 24", "Traço herdado da cor do contexto", "Tamanho explícito"],
+    accessibility: "Ícones decorativos devem usar aria-hidden no web e accessible={false} no React Native. Quando um ícone for o único conteúdo interativo, forneça aria-label ou accessibilityLabel no controle; o desenho não substitui um nome acessível.",
+    properties: [
+      { name: "size", type: "number | string", defaultValue: "24", description: "Define largura e altura. Componentes ArcSyn usam normalmente 16px." },
+      { name: "color", type: "string", defaultValue: '"currentColor"', description: "Herda a cor no web; no React Native, informe a cor do tema." },
+      { name: "strokeWidth", type: "number", defaultValue: "2", description: "Espessura padrão da família Lucide." },
+      { name: "...svgProps", type: "SVGProps | SvgProps", defaultValue: "—", description: "Aceita as propriedades da plataforma correspondente." },
+    ],
+    examples: [
+      {
+        title: "Catálogo curado",
+        description: "Use os exports ArcSyn para manter os mesmos nomes nas duas plataformas.",
+        preview: <div className="docs-icon-grid"><span><ArrowLeftIcon aria-hidden size={20} />ArrowLeftIcon</span><span><ArrowRightIcon aria-hidden size={20} />ArrowRightIcon</span><span><CheckIcon aria-hidden size={20} />CheckIcon</span><span><ChevronDownIcon aria-hidden size={20} />ChevronDownIcon</span><span><ChevronLeftIcon aria-hidden size={20} />ChevronLeftIcon</span><span><ChevronRightIcon aria-hidden size={20} />ChevronRightIcon</span><span><CircleIcon aria-hidden size={20} />CircleIcon</span><span><EllipsisIcon aria-hidden size={20} />EllipsisIcon</span><span><MinusIcon aria-hidden size={20} />MinusIcon</span><span><PlusIcon aria-hidden size={20} />PlusIcon</span><span><XIcon aria-hidden size={20} />XIcon</span></div>,
+        code: 'import { CheckIcon, PlusIcon } from "@arcsyn/react/icons";\n\n<CheckIcon aria-hidden size={16} />\n<PlusIcon aria-hidden size={16} />',
+      },
+      {
+        title: "Com Button",
+        description: "As props de Button continuam aceitando ReactNode, permitindo ícones ArcSyn ou conteúdo customizado.",
+        preview: <div className="docs-demo-row"><Button leadingIcon={<PlusIcon aria-hidden size={16} />}>Adicionar</Button><Button variant="secondary" trailingIcon={<ArrowRightIcon aria-hidden size={16} />}>Continuar</Button><Button variant="ghost" aria-label="Fechar"><XIcon aria-hidden size={16} /></Button></div>,
+        code: '<Button leadingIcon={<PlusIcon aria-hidden size={16} />}>Adicionar</Button>\n<Button aria-label="Fechar" variant="ghost"><XIcon aria-hidden size={16} /></Button>',
+      },
+    ],
+  },
   {
     id: "menubar", title: "Menu Bar", summary: "Organiza comandos persistentes de aplicações desktop em menus coordenados.", importCode: 'import { Menubar } from "@arcsyn/react";', status: "React estável · Base UI · Web",
     anatomy: ["Root com role=menubar", "Menu lógico", "Trigger", "Content em portal", "Group e Label", "Item, CheckboxItem ou RadioItem"],
@@ -722,6 +823,321 @@ function useRoute() {
   return route;
 }
 
+const semanticColorUsage = [
+  { key: "background", label: "Background", usage: "Plano de fundo principal da aplicação." },
+  { key: "foreground", label: "Foreground", usage: "Texto e ícones de maior ênfase." },
+  { key: "surface", label: "Surface", usage: "Cards, painéis e regiões agrupadas." },
+  { key: "surfaceRaised", label: "Surface raised", usage: "Menus, popovers e superfícies elevadas." },
+  { key: "surfaceSunken", label: "Surface sunken", usage: "Áreas rebaixadas, trilhas e poços de conteúdo." },
+  { key: "muted", label: "Muted", usage: "Fundos discretos, estados inativos e preenchimentos secundários." },
+  { key: "mutedForeground", label: "Muted foreground", usage: "Descrições, metadados e texto de menor ênfase." },
+  { key: "primary", label: "Primary", usage: "Ações principais, seleção e destaque da marca." },
+  { key: "primaryForeground", label: "Primary foreground", usage: "Conteúdo aplicado sobre o fundo primary." },
+  { key: "primaryHover", label: "Primary hover", usage: "Estado hover de ações primary." },
+  { key: "accent", label: "Accent", usage: "Destaques secundários, badges e seleção suave." },
+  { key: "accentForeground", label: "Accent foreground", usage: "Conteúdo aplicado sobre o fundo accent." },
+  { key: "accentBorder", label: "Accent border", usage: "Contorno de destaques e superfícies accent." },
+  { key: "accentSolid", label: "Accent solid", usage: "Indicadores compactos e ênfase sólida do accent." },
+  { key: "border", label: "Border", usage: "Divisórias e contornos sutis padrão." },
+  { key: "borderStrong", label: "Border strong", usage: "Contornos que precisam de maior definição." },
+  { key: "focusRing", label: "Focus ring", usage: "Indicador de foco visível para navegação por teclado." },
+  { key: "success", label: "Success", usage: "Confirmações e estados concluídos com sucesso." },
+  { key: "successBackground", label: "Success background", usage: "Fundo suave para alertas e badges de sucesso." },
+  { key: "successForeground", label: "Success foreground", usage: "Texto e ícones sobre fundos de sucesso." },
+  { key: "successBorder", label: "Success border", usage: "Contorno para superfícies de sucesso." },
+  { key: "warning", label: "Warning", usage: "Avisos, atenção e estados que exigem cautela." },
+  { key: "warningBackground", label: "Warning background", usage: "Fundo suave para alertas e badges de atenção." },
+  { key: "warningForeground", label: "Warning foreground", usage: "Texto e ícones sobre fundos de atenção." },
+  { key: "warningBorder", label: "Warning border", usage: "Contorno para superfícies de atenção." },
+  { key: "danger", label: "Danger", usage: "Erros, falhas e ações destrutivas." },
+  { key: "dangerBackground", label: "Danger background", usage: "Fundo suave para alertas e badges de erro." },
+  { key: "dangerForeground", label: "Danger foreground", usage: "Texto e ícones sobre fundos de erro." },
+  { key: "dangerBorder", label: "Danger border", usage: "Contorno para superfícies de erro." },
+] as const;
+
+type SemanticColorKey = (typeof semanticColorUsage)[number]["key"];
+
+type ThemeComparison = {
+  id: string;
+  name: string;
+  description: string;
+  theme: ThemeSwitcherTheme;
+  colors: Record<SemanticColorKey, string>;
+};
+
+const themeComparisons: readonly ThemeComparison[] = [
+  {
+    id: "dark",
+    name: "Dark atual",
+    description: "Azul acinzentado com ciano pastel.",
+    theme: "dark",
+    colors: {
+      background: "#161e28", foreground: "#eff4f5", surface: "#1d2936",
+      surfaceRaised: "#263545", surfaceSunken: "#161e28", muted: "#263545",
+      mutedForeground: "#91a7b8", primary: "#90dddf", primaryForeground: "#161e28",
+      primaryHover: "#a8e7e9", accent: "#263545", accentForeground: "#d8e2e7",
+      accentBorder: "#4e6d87", accentSolid: "#6f879b",
+      border: "#2c3d4f", borderStrong: "#34495e", focusRing: "#90dddf",
+      success: "#8eaa76", successBackground: "#223128", successForeground: "#d5e3ca", successBorder: "#58704b",
+      warning: "#d5aa52", warningBackground: "#3a301d", warningForeground: "#f3d89f", warningBorder: "#806632",
+      danger: "#c56f78", dangerBackground: "#3a2428", dangerForeground: "#edc3c7", dangerBorder: "#81444b",
+    },
+  },
+  {
+    id: "light",
+    name: "Light atual",
+    description: "Tema claro de contraste corporativo.",
+    theme: "light",
+    colors: {
+      background: "#ffffff", foreground: "#161e28", surface: "#f5f6f7",
+      surfaceRaised: "#ffffff", surfaceSunken: "#e7e8eb", muted: "#e7e8eb",
+      mutedForeground: "#4d5562", primary: "#161e28", primaryForeground: "#ffffff",
+      primaryHover: "#263545", accent: "#e8eef3", accentForeground: "#263545",
+      accentBorder: "#b9c8d2", accentSolid: "#4e6d87",
+      border: "#d0d3d8", borderStrong: "#abb0b9", focusRing: "#34495e",
+      success: "#6f8d59", successBackground: "#edf3e8", successForeground: "#405234", successBorder: "#b8c9a8",
+      warning: "#a87414", warningBackground: "#fff4dc", warningForeground: "#6b4c13", warningBorder: "#e5c778",
+      danger: "#a9434d", dangerBackground: "#f9e9eb", dangerForeground: "#742f36", dangerBorder: "#dba5ab",
+    },
+  },
+  {
+    id: "deep-dark",
+    name: "Deep Dark",
+    description: "Preto absoluto com profundidade azul discreta.",
+    theme: "deep-dark",
+    colors: {
+      background: "#000000", foreground: "#eff4f5", surface: "#080d12",
+      surfaceRaised: "#101820", surfaceSunken: "#000000", muted: "#101820",
+      mutedForeground: "#91a7b8", primary: "#90dddf", primaryForeground: "#000000",
+      primaryHover: "#a8e7e9", accent: "#101820", accentForeground: "#d8e2e7",
+      accentBorder: "#30465a", accentSolid: "#6f879b",
+      border: "#182532", borderStrong: "#223344", focusRing: "#90dddf",
+      success: "#7e9e68", successBackground: "#101b14", successForeground: "#d5e3ca", successBorder: "#3e5a45",
+      warning: "#c99a3d", warningBackground: "#211b0d", warningForeground: "#f3d89f", warningBorder: "#6b5424",
+      danger: "#b95b65", dangerBackground: "#211114", dangerForeground: "#edc3c7", dangerBorder: "#70353c",
+    },
+  },
+];
+
+const previewColorKeys = ["background", "surface", "border", "primary", "foreground"] as const;
+
+function semanticColorCssName(key: SemanticColorKey) {
+  return `--arcsyn-color-${key.replace(/[A-Z]/g, (character) => `-${character.toLowerCase()}`)}`;
+}
+
+function ThemePreview({ theme, onSelect }: { theme: ThemeComparison; onSelect: () => void }) {
+  return (
+    <section className="docs-theme-preview" data-arcsyn-theme={theme.theme} aria-labelledby={`theme-${theme.id}`}>
+      <header className="docs-theme-preview-header">
+        <button className="docs-theme-choice" type="button" onClick={onSelect}>
+          <span><strong id={`theme-${theme.id}`}>{theme.name}</strong><small>{theme.description}</small></span>
+          <span className="docs-theme-choice-action">Abrir tema →</span>
+        </button>
+        {theme.id === "dark" ? <Badge variant="accent">Padrão</Badge> : theme.id === "deep-dark" ? <Badge variant="accent">Novo</Badge> : null}
+      </header>
+
+      <div className="docs-theme-swatches" aria-label={`Tokens principais do tema ${theme.name}`}>
+        {previewColorKeys.map((key) => (
+          <div className="docs-theme-swatch" key={key}>
+            <span style={{ backgroundColor: theme.colors[key] }} aria-hidden="true" />
+            <strong>{semanticColorUsage.find((color) => color.key === key)?.label}</strong>
+            <code>{theme.colors[key]}</code>
+          </div>
+        ))}
+      </div>
+
+      <Card className="docs-theme-sample">
+        <div className="docs-theme-sample-heading">
+          <div><span className="docs-card-eyebrow">Workspace</span><strong>Operações ArcSyn</strong></div>
+          <Badge variant="success">Ativo</Badge>
+        </div>
+        <p className="docs-card-copy">Configure o ambiente e as notificações antes de publicar.</p>
+        <label className="docs-theme-field" htmlFor={`theme-environment-${theme.id}`}>
+          Ambiente
+          <Input id={`theme-environment-${theme.id}`} defaultValue="Produção" />
+        </label>
+        <div className="docs-theme-options">
+          <label><Checkbox defaultChecked />Alertas críticos</label>
+          <label><Switch defaultChecked />Sincronização</label>
+        </div>
+        <div className="docs-demo-row">
+          <Button size="sm">Publicar</Button>
+          <Button size="sm" variant="outline">Revisar</Button>
+        </div>
+      </Card>
+    </section>
+  );
+}
+
+function ThemeColorDetails({ theme }: { theme: ThemeComparison }) {
+  return (
+    <section className="docs-theme-details" data-arcsyn-theme={theme.theme} aria-labelledby="theme-color-details-title">
+      <header className="docs-theme-details-header">
+        <div>
+          <p className="docs-eyebrow">Inventário semântico</p>
+          <h2 id="theme-color-details-title">Cores e usos · {theme.name}</h2>
+          <p>Use os tokens semânticos em vez dos valores hexadecimais para preservar a troca de tema.</p>
+        </div>
+        <Badge variant="accent">{semanticColorUsage.length} cores</Badge>
+      </header>
+      <div className="docs-theme-token-list">
+        {semanticColorUsage.map(({ key, label, usage }) => (
+          <article className="docs-theme-token" key={key}>
+            <span className="docs-theme-token-swatch" style={{ backgroundColor: theme.colors[key] }} aria-hidden="true" />
+            <div className="docs-theme-token-content">
+              <strong>{label}</strong>
+              <code>{semanticColorCssName(key)}</code>
+              <p>{usage}</p>
+            </div>
+            <code className="docs-theme-token-value">{theme.colors[key]}</code>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ThemingPage() {
+  return (
+    <article className="docs-page docs-theming-page">
+      <header className="docs-page-header">
+        <p className="docs-eyebrow">Fundação</p>
+        <h1>Theming</h1>
+        <p>Compare os temas e selecione um deles para explorar a paleta completa, tipografia e componentes em contexto.</p>
+      </header>
+
+      <div className="docs-theme-comparison">
+        {themeComparisons.map((theme) => <ThemePreview key={theme.id} theme={theme} onSelect={() => { window.location.hash = `/theming/${theme.id}`; }} />)}
+      </div>
+    </article>
+  );
+}
+
+function ThemeComponentShowcase({ theme }: { theme: ThemeComparison }) {
+  const fieldId = `theme-showcase-${theme.id}`;
+
+  return (
+    <section className="docs-theme-showcase" data-arcsyn-theme={theme.theme} aria-labelledby="theme-components-title">
+      <div className="docs-section-heading">
+        <p className="docs-eyebrow">Design system em contexto</p>
+        <h2 id="theme-components-title">Componentes e estados</h2>
+        <p>Exemplos funcionais renderizados com os tokens de {theme.name}.</p>
+      </div>
+
+      <div className="docs-theme-showcase-grid">
+        <Card className="docs-theme-showcase-card">
+          <span className="docs-card-eyebrow">Tipografia</span>
+          <div className="docs-theme-type-scale">
+            <h1>Título principal</h1>
+            <h2>Seção de conteúdo</h2>
+            <h3>Subseção operacional</h3>
+            <p>Texto padrão para instruções, descrições e conteúdo contínuo da interface.</p>
+            <p className="docs-muted-copy">Texto secundário para contexto, ajuda e metadados.</p>
+            <code>workspace_arc_0192</code>
+            <a href="#/theming">Link de navegação</a>
+          </div>
+        </Card>
+
+        <Card className="docs-theme-showcase-card">
+          <span className="docs-card-eyebrow">Ações e status</span>
+          <div className="docs-demo-row">
+            <Button>Primary</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="outline">Outline</Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button variant="danger">Danger</Button>
+          </div>
+          <div className="docs-demo-row">
+            <Badge>Default</Badge>
+            <Badge variant="accent">Accent</Badge>
+            <Badge variant="success">Success</Badge>
+            <Badge variant="warning">Warning</Badge>
+            <Badge variant="danger">Danger</Badge>
+          </div>
+          <Alert variant="success" title="Ambiente publicado" description="A configuração está disponível para toda a organização." />
+          <Alert variant="warning" title="Revisão necessária" description="Há permissões que expiram nos próximos sete dias." />
+        </Card>
+
+        <Card className="docs-theme-showcase-card docs-theme-form-card">
+          <div>
+            <span className="docs-card-eyebrow">Formulário</span>
+            <h3>Criar ambiente</h3>
+            <p className="docs-muted-copy">Configure a identificação e o comportamento inicial.</p>
+          </div>
+          <Field.Root>
+            <Field.Label htmlFor={`${fieldId}-name`}>Nome do ambiente</Field.Label>
+            <Input id={`${fieldId}-name`} defaultValue="Produção Brasil" />
+            <Field.Description>Visível para todos os integrantes do workspace.</Field.Description>
+          </Field.Root>
+          <Field.Root>
+            <Field.Label htmlFor={`${fieldId}-owner`}>Responsável</Field.Label>
+            <Input id={`${fieldId}-owner`} type="email" placeholder="nome@empresa.com" />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label htmlFor={`${fieldId}-notes`}>Observações</Field.Label>
+            <Textarea id={`${fieldId}-notes`} rows={3} placeholder="Contexto adicional para a equipe" />
+          </Field.Root>
+          <div className="docs-theme-options">
+            <label><Checkbox defaultChecked />Habilitar alertas críticos</label>
+            <label><Switch defaultChecked />Sincronização automática</label>
+          </div>
+          <div className="docs-demo-row">
+            <Button>Criar ambiente</Button>
+            <Button variant="ghost">Cancelar</Button>
+          </div>
+        </Card>
+
+        <Card className="docs-theme-showcase-card">
+          <span className="docs-card-eyebrow">Superfície elevada</span>
+          <h3>Confirmação em modal</h3>
+          <p className="docs-muted-copy">Abra o diálogo para avaliar backdrop, superfície, hierarquia de texto, foco e ações.</p>
+          <Dialog.Root>
+            <Dialog.Trigger>Revisar publicação</Dialog.Trigger>
+            <Dialog.Content>
+              <Dialog.Header>
+                <Dialog.Title>Publicar ambiente?</Dialog.Title>
+                <Dialog.Description>As novas configurações serão aplicadas imediatamente para 24 integrantes.</Dialog.Description>
+              </Dialog.Header>
+              <Alert variant="warning" title="Alteração imediata" description="As sessões ativas podem precisar ser atualizadas." />
+              <Dialog.Footer>
+                <Dialog.Close>Cancelar</Dialog.Close>
+                <Dialog.Close variant="primary">Publicar agora</Dialog.Close>
+              </Dialog.Footer>
+            </Dialog.Content>
+          </Dialog.Root>
+        </Card>
+      </div>
+    </section>
+  );
+}
+
+function ThemeDetailPage({ theme }: { theme: ThemeComparison }) {
+  const { setTheme } = useContext(DocsThemeContext);
+
+  useEffect(() => {
+    setTheme(theme.theme);
+  }, [setTheme, theme.theme]);
+
+  return (
+    <article className="docs-page docs-theming-page">
+      <header className="docs-page-header docs-theme-detail-hero" data-arcsyn-theme={theme.theme}>
+        <a className="docs-theme-back-link" href="#/theming">← Todos os temas</a>
+        <p className="docs-eyebrow">Tema ArcSyn</p>
+        <div className="docs-page-title-row">
+          <div><h1>{theme.name}</h1><p>{theme.description}</p></div>
+          {theme.id === "dark" ? <Badge variant="accent">Padrão</Badge> : null}
+        </div>
+        <div className="docs-theme-hero-swatches" aria-label={`Resumo da paleta ${theme.name}`}>
+          {previewColorKeys.map((key) => <span key={key} style={{ backgroundColor: theme.colors[key] }} title={`${key}: ${theme.colors[key]}`} />)}
+        </div>
+      </header>
+
+      <ThemeColorDetails theme={theme} />
+      <ThemeComponentShowcase theme={theme} />
+    </article>
+  );
+}
+
 function ComponentDocumentation({ page }: { page: ComponentPage }) {
   return (
     <article className="docs-page">
@@ -764,7 +1180,8 @@ function HomePage() {
       <header className="docs-page-header">
         <p className="docs-eyebrow">ArcSyn Design System</p>
         <h1>Documentação de componentes</h1>
-        <p>Uma base compacta e corporativa, construída sobre tokens agnósticos, CSS compartilhado e adaptadores de framework.</p>
+        <p className="docs-home-summary">Uma base compacta e corporativa, construída sobre tokens agnósticos, CSS compartilhado e adaptadores de framework.</p>
+        <div className="docs-home-theme-control"><span>Tema da documentação</span><DocsThemeSwitcher /></div>
       </header>
       <section className="docs-section" aria-labelledby="foundations-title">
         <div className="docs-section-heading"><p className="docs-eyebrow">Fundação</p><h2 id="foundations-title">Princípios de implementação</h2></div>
@@ -779,24 +1196,39 @@ function HomePage() {
 }
 
 export function DocsApp() {
+  const [theme, setTheme] = useState<ThemeSwitcherTheme>(currentDocsTheme);
   const route = useRoute();
   const page = componentPages.find((item) => route === `/components/${item.id}`);
+  const isTheming = route === "/theming" || route.startsWith("/theming/");
+  const themePage = themeComparisons.find((item) => route === `/theming/${item.id}`);
 
   useEffect(() => {
-    document.title = page ? `${page.title} · ArcSyn DS` : "ArcSyn Design System";
-  }, [page]);
+    document.documentElement.dataset.arcsynTheme = theme;
+    try {
+      window.localStorage.setItem(docsThemeStorageKey, theme);
+    } catch {
+      // The selected theme still applies for the current session.
+    }
+  }, [theme]);
+
+  useEffect(() => {
+    document.title = themePage ? `${themePage.name} · ArcSyn DS` : isTheming ? "Theming · ArcSyn DS" : page ? `${page.title} · ArcSyn DS` : "ArcSyn Design System";
+  }, [isTheming, page, themePage]);
 
   return (
-    <div className="docs-shell">
-      <div className="docs-layout">
-        <aside className="docs-sidebar">
-          <a className="docs-brand" href="#/">Arc<span>Syn</span><small>Design System</small></a>
-          <nav className="docs-nav" aria-label="Documentação"><a className={route === "/" ? "is-active" : ""} href="#/">Visão geral</a><p>Componentes</p>{componentPages.map((item) => <a className={page?.id === item.id ? "is-active" : ""} href={`#/components/${item.id}`} key={item.id}>{item.title}</a>)}</nav>
-          <div className="docs-sidebar-footer"><span>v0.1.0</span><span>React</span></div>
-        </aside>
-        <main className="docs-main">{page ? <ComponentDocumentation page={page} /> : <HomePage />}</main>
+    <DocsThemeContext.Provider value={{ theme, setTheme }}>
+      <div className="docs-shell">
+        <div className="docs-layout">
+          <aside className="docs-sidebar">
+            <a className="docs-brand" href="#/">Arc<span>Syn</span><small>Design System</small></a>
+            <nav className="docs-nav" aria-label="Documentação"><p>Fundação</p><a className={route === "/" ? "is-active" : ""} href="#/">Visão geral</a><a className={isTheming ? "is-active" : ""} href="#/theming">Theming</a><p>Componentes</p>{componentPages.map((item) => <a className={page?.id === item.id ? "is-active" : ""} href={`#/components/${item.id}`} key={item.id}>{item.title}</a>)}</nav>
+            <div className="docs-sidebar-theme"><span>Tema</span><DocsThemeSwitcher compact /></div>
+            <div className="docs-sidebar-footer"><span>v0.1.0</span><span>React</span></div>
+          </aside>
+          <main className="docs-main">{themePage ? <ThemeDetailPage theme={themePage} /> : isTheming ? <ThemingPage /> : page ? <ComponentDocumentation page={page} /> : <HomePage />}</main>
+        </div>
+        <Toaster />
       </div>
-      <Toaster />
-    </div>
+    </DocsThemeContext.Provider>
   );
 }

@@ -2,30 +2,30 @@
     --normal-bg: var(--arcsyn-color-surface-raised);
     --normal-border: var(--arcsyn-color-border-strong);
     --normal-text: var(--arcsyn-color-foreground);
-    --success-bg: color-mix(in srgb, var(--arcsyn-color-success), var(--arcsyn-color-surface-raised) 88%);
-    --success-border: color-mix(in srgb, var(--arcsyn-color-success), var(--arcsyn-color-border) 65%);
-    --success-text: var(--arcsyn-color-foreground);
-    --info-bg: color-mix(in srgb, var(--arcsyn-color-primary), var(--arcsyn-color-surface-raised) 88%);
-    --info-border: color-mix(in srgb, var(--arcsyn-color-primary), var(--arcsyn-color-border) 65%);
-    --info-text: var(--arcsyn-color-foreground);
-    --warning-bg: color-mix(in srgb, var(--arcsyn-color-warning), var(--arcsyn-color-surface-raised) 88%);
-    --warning-border: color-mix(in srgb, var(--arcsyn-color-warning), var(--arcsyn-color-border) 65%);
-    --warning-text: var(--arcsyn-color-foreground);
-    --error-bg: color-mix(in srgb, var(--arcsyn-color-danger), var(--arcsyn-color-surface-raised) 88%);
-    --error-border: color-mix(in srgb, var(--arcsyn-color-danger), var(--arcsyn-color-border) 65%);
-    --error-text: var(--arcsyn-color-foreground);
+    --success-bg: var(--arcsyn-color-success-background);
+    --success-border: var(--arcsyn-color-success-border);
+    --success-text: var(--arcsyn-color-success-foreground);
+    --info-bg: var(--arcsyn-color-accent);
+    --info-border: var(--arcsyn-color-accent-border);
+    --info-text: var(--arcsyn-color-accent-foreground);
+    --warning-bg: var(--arcsyn-color-warning-background);
+    --warning-border: var(--arcsyn-color-warning-border);
+    --warning-text: var(--arcsyn-color-warning-foreground);
+    --error-bg: var(--arcsyn-color-danger-background);
+    --error-border: var(--arcsyn-color-danger-border);
+    --error-text: var(--arcsyn-color-danger-foreground);
     font-family: var(--arcsyn-font-sans);
 }
 .arcsyn-toaster [data-sonner-toast].arcsyn-toast { border-inline-start-width: 3px; border-radius: var(--arcsyn-radius-md); box-shadow: var(--arcsyn-shadow-md); gap: var(--arcsyn-spacing-3); padding: var(--arcsyn-spacing-3); }
 .arcsyn-toaster [data-sonner-toast][data-type="default"], .arcsyn-toaster [data-sonner-toast][data-type="normal"] { border-inline-start-color: var(--arcsyn-color-primary); }
 .arcsyn-toaster [data-sonner-toast][data-type="success"] { border-inline-start-color: var(--arcsyn-color-success); }
-.arcsyn-toaster [data-sonner-toast][data-type="info"] { border-inline-start-color: var(--arcsyn-color-primary); }
+.arcsyn-toaster [data-sonner-toast][data-type="info"] { border-inline-start-color: var(--arcsyn-color-accent-solid); }
 .arcsyn-toaster [data-sonner-toast][data-type="warning"] { border-inline-start-color: var(--arcsyn-color-warning); }
 .arcsyn-toaster [data-sonner-toast][data-type="error"] { border-inline-start-color: var(--arcsyn-color-danger); }
 .arcsyn-toaster [data-sonner-toast] [data-icon] { align-items: center; background: color-mix(in srgb, currentColor, transparent 90%); border-radius: var(--arcsyn-radius-sm); block-size: 1.5rem; inline-size: 1.5rem; justify-content: center; margin: 0; }
 .arcsyn-toaster [data-sonner-toast] [data-content] { gap: var(--arcsyn-spacing-1); }
 .arcsyn-toast__title { font-size: var(--arcsyn-font-size-sm); font-weight: 600; }
-.arcsyn-toast__description { color: var(--arcsyn-color-muted-foreground) !important; font-size: var(--arcsyn-font-size-xs); }
+.arcsyn-toast__description { color: inherit !important; font-size: var(--arcsyn-font-size-xs); opacity: 0.8; }
 .arcsyn-toast__action, .arcsyn-toast__cancel { border-radius: var(--arcsyn-radius-sm) !important; font-family: var(--arcsyn-font-sans) !important; font-size: var(--arcsyn-font-size-xs) !important; font-weight: 600 !important; min-block-size: 1.75rem !important; padding-inline: var(--arcsyn-spacing-2) !important; }
 .arcsyn-toast__action { background: var(--arcsyn-color-primary) !important; color: var(--arcsyn-color-primary-foreground) !important; }
 .arcsyn-toast__cancel { background: transparent !important; border: 1px solid var(--arcsyn-color-border) !important; color: var(--arcsyn-color-foreground) !important; }

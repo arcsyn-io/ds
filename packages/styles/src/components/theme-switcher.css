@@ -1,0 +1,38 @@
+@layer components {
+  .arcsyn-theme-switcher {
+    display: inline-flex;
+  }
+
+  .arcsyn-theme-switcher__select {
+    background: var(--arcsyn-color-surface-sunken);
+    border: 1px solid var(--arcsyn-color-border-strong);
+    border-radius: var(--arcsyn-radius-md);
+    color: var(--arcsyn-color-foreground);
+    cursor: pointer;
+    font: inherit;
+    font-size: var(--arcsyn-font-size-xs);
+    font-weight: 500;
+    min-block-size: 2rem;
+    padding: 0 var(--arcsyn-spacing-3);
+    transition: background var(--arcsyn-duration-fast), border-color var(--arcsyn-duration-fast), color var(--arcsyn-duration-fast), box-shadow var(--arcsyn-duration-fast);
+  }
+
+  .arcsyn-theme-switcher__select:hover:not(:disabled) {
+    background: var(--arcsyn-color-muted);
+    border-color: var(--arcsyn-color-border-strong);
+  }
+
+  .arcsyn-theme-switcher__select:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--arcsyn-color-focus-ring), transparent 78%);
+    outline: none;
+  }
+
+  .arcsyn-theme-switcher__select:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  @media (pointer: coarse) {
+    .arcsyn-theme-switcher__select { min-block-size: 2.75rem; }
+  }
+}

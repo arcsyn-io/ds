@@ -1,6 +1,31 @@
 {
   "color": {
     "arcsyn": {
+      "brand": {
+        "50": { "$type": "color", "$value": "#eff4f5" },
+        "100": { "$type": "color", "$value": "#d8e2e7" },
+        "200": { "$type": "color", "$value": "#b9c8d2" },
+        "300": { "$type": "color", "$value": "#91a7b8" },
+        "400": { "$type": "color", "$value": "#6f879b" },
+        "500": { "$type": "color", "$value": "#4e6d87" },
+        "600": { "$type": "color", "$value": "#34495e" },
+        "700": { "$type": "color", "$value": "#2c3d4f" },
+        "800": { "$type": "color", "$value": "#263545" },
+        "900": { "$type": "color", "$value": "#1d2936" },
+        "950": { "$type": "color", "$value": "#161e28" }
+      },
+      "brandAccent": {
+        "400": { "$type": "color", "$value": "#a8e7e9" },
+        "500": { "$type": "color", "$value": "#90dddf" }
+      },
+      "deepDark": {
+        "500": { "$type": "color", "$value": "#30465a" },
+        "600": { "$type": "color", "$value": "#223344" },
+        "700": { "$type": "color", "$value": "#182532" },
+        "800": { "$type": "color", "$value": "#101820" },
+        "900": { "$type": "color", "$value": "#080d12" },
+        "950": { "$type": "color", "$value": "#000000" }
+      },
       "blue": {
         "50": { "$type": "color", "$value": "#f4f7fa" },
         "100": { "$type": "color", "$value": "#e6edf3" },
@@ -48,4 +73,3 @@
     }
   }
 }
-

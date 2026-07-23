@@ -12,6 +12,7 @@
     "./css": "./dist/css/tokens.css",
     "./themes/light.css": "./dist/css/theme-light.css",
     "./themes/dark.css": "./dist/css/theme-dark.css",
+    "./themes/deep-dark.css": "./dist/css/theme-deep-dark.css",
     "./tailwind.css": "./dist/css/tailwind.css",
     "./react-native": {
       "types": "./dist/react-native/index.d.ts",

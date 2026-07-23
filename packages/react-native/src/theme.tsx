@@ -1,7 +1,7 @@
 import { tokens as generatedTokens } from "@arcsyn/tokens/react-native";
 import { createContext, useContext, type ReactNode } from "react";
 
-export type ArcSynThemeName = "light" | "dark";
+export type ArcSynThemeName = "light" | "dark" | "deep-dark";
 
 export interface ArcSynColors {
   background: string;
@@ -16,12 +16,23 @@ export interface ArcSynColors {
   primaryHover: string;
   accent: string;
   accentForeground: string;
+  accentBorder: string;
+  accentSolid: string;
   border: string;
   borderStrong: string;
   focusRing: string;
   success: string;
+  successBackground: string;
+  successForeground: string;
+  successBorder: string;
   warning: string;
+  warningBackground: string;
+  warningForeground: string;
+  warningBorder: string;
   danger: string;
+  dangerBackground: string;
+  dangerForeground: string;
+  dangerBorder: string;
 }
 
 export interface ArcSynNativeTokens {

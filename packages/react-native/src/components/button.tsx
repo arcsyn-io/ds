@@ -38,7 +38,7 @@ export const Button = forwardRef<View, ButtonProps>(function Button(
     secondary: { backgroundColor: "transparent", borderColor: colors.border, color: colors.foreground },
     outline: { backgroundColor: "transparent", borderColor: colors.primary, color: colors.primary },
     ghost: { backgroundColor: "transparent", borderColor: "transparent", color: colors.foreground },
-    danger: { backgroundColor: colors.danger, borderColor: colors.danger, color: "#ffffff" },
+    danger: { backgroundColor: colors.dangerBackground, borderColor: colors.dangerBorder, color: colors.dangerForeground },
   }[variant];
 
   return (

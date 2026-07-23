@@ -16,12 +16,17 @@ export interface AlertProps {
 
 export function Alert({ title, description, children, variant = "info", style, titleStyle, descriptionStyle }: AlertProps) {
   const { colors } = useArcSynTheme();
-  const accentColor = { info: colors.accent, success: colors.success, warning: colors.warning, danger: colors.danger }[variant];
-  return <View accessibilityLiveRegion="polite" style={[styles.root, { backgroundColor: colors.surfaceSunken, borderColor: colors.border, borderLeftColor: accentColor }, style]}><Text style={[styles.title, { color: colors.foreground, fontFamily: tokens.fontFamily.sansSemibold }, titleStyle]}>{title}</Text>{description ? <Text style={[styles.description, { color: colors.mutedForeground, fontFamily: tokens.fontFamily.sans }, descriptionStyle]}>{description}</Text> : null}{children}</View>;
+  const palette = {
+    info: { background: colors.accent, foreground: colors.accentForeground, border: colors.accentBorder, solid: colors.accentSolid },
+    success: { background: colors.successBackground, foreground: colors.successForeground, border: colors.successBorder, solid: colors.success },
+    warning: { background: colors.warningBackground, foreground: colors.warningForeground, border: colors.warningBorder, solid: colors.warning },
+    danger: { background: colors.dangerBackground, foreground: colors.dangerForeground, border: colors.dangerBorder, solid: colors.danger },
+  }[variant];
+  return <View accessibilityLiveRegion="polite" style={[styles.root, { backgroundColor: palette.background, borderColor: palette.border, borderLeftColor: palette.solid }, style]}><Text style={[styles.title, { color: palette.foreground, fontFamily: tokens.fontFamily.sansSemibold }, titleStyle]}>{title}</Text>{description ? <Text style={[styles.description, { color: palette.foreground, fontFamily: tokens.fontFamily.sans }, descriptionStyle]}>{description}</Text> : null}{children}</View>;
 }
 
 const styles = StyleSheet.create({
   root: { borderLeftWidth: 3, borderRadius: tokens.radius.md, borderWidth: 1, gap: tokens.spacing[1], padding: tokens.spacing[3] },
   title: { fontSize: tokens.fontSize.sm, lineHeight: 19 },
-  description: { fontSize: tokens.fontSize.sm, lineHeight: 20 },
+  description: { fontSize: tokens.fontSize.sm, lineHeight: 20, opacity: 0.8 },
 });

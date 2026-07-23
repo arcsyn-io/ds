@@ -29,6 +29,7 @@ export * from "./components/separator/index.js";
 export * from "./components/textarea/index.js";
 export * from "./components/checkbox/index.js";
 export * from "./components/switch/index.js";
+export * from "./components/theme-switcher/index.js";
 export * from "./components/select/index.js";
 export * from "./components/select-search/index.js";
 export * from "./components/spinner/index.js";
