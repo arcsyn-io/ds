@@ -1,0 +1,11 @@
+@layer components {
+  .arcsyn-native-select { display: inline-grid; min-inline-size: 12rem; position: relative; }
+  .arcsyn-native-select__control { appearance: none; background: var(--arcsyn-color-surface); border: 1px solid var(--arcsyn-color-border); border-radius: var(--arcsyn-radius-md); color: var(--arcsyn-color-foreground); cursor: pointer; font: inherit; font-size: var(--arcsyn-font-size-sm); inline-size: 100%; min-block-size: var(--arcsyn-control-height-md); outline: none; padding: 0 calc(var(--arcsyn-spacing-3) + 1rem) 0 var(--arcsyn-spacing-3); }
+  .arcsyn-native-select__icon { align-self: center; color: var(--arcsyn-color-muted-foreground); font-size: 0.75rem; pointer-events: none; position: absolute; inset-inline-end: var(--arcsyn-spacing-3); }
+  .arcsyn-native-select[data-size="sm"] .arcsyn-native-select__control { min-block-size: var(--arcsyn-control-height-sm); }
+  .arcsyn-native-select[data-size="lg"] .arcsyn-native-select__control { min-block-size: var(--arcsyn-control-height-lg); }
+  .arcsyn-native-select__control:focus-visible { border-color: var(--arcsyn-color-focus-ring); box-shadow: 0 0 0 3px color-mix(in srgb, var(--arcsyn-color-focus-ring), transparent 78%); }
+  .arcsyn-native-select[data-invalid] .arcsyn-native-select__control { border-color: var(--arcsyn-color-danger); }
+  .arcsyn-native-select[data-disabled] { opacity: 0.5; }
+  .arcsyn-native-select[data-disabled] .arcsyn-native-select__control { cursor: not-allowed; }
+}

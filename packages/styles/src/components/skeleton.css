@@ -1,0 +1,10 @@
+@layer components {
+  .arcsyn-skeleton { background: var(--arcsyn-color-muted); border-radius: var(--arcsyn-radius-sm); display: block; min-block-size: 1rem; overflow: hidden; position: relative; }
+  .arcsyn-skeleton[data-variant="text"] { block-size: 0.875rem; border-radius: 2px; }
+  .arcsyn-skeleton[data-variant="circular"] { aspect-ratio: 1; border-radius: 50%; }
+  .arcsyn-skeleton[data-animation="pulse"] { animation: arcsyn-skeleton-pulse 1.6s ease-in-out infinite; }
+  .arcsyn-skeleton[data-animation="wave"]::after { animation: arcsyn-skeleton-wave 1.6s linear infinite; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--arcsyn-color-foreground), transparent 92%), transparent); content: ""; inset: 0; position: absolute; transform: translateX(-100%); }
+  @keyframes arcsyn-skeleton-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+  @keyframes arcsyn-skeleton-wave { to { transform: translateX(100%); } }
+  @media (prefers-reduced-motion: reduce) { .arcsyn-skeleton[data-animation="pulse"] { animation: none; } .arcsyn-skeleton[data-animation="wave"]::after { animation: none; display: none; } }
+}

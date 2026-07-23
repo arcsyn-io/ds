@@ -1,0 +1,53 @@
+.arcsyn-toaster {
+    --normal-bg: var(--arcsyn-color-surface-raised);
+    --normal-border: var(--arcsyn-color-border-strong);
+    --normal-text: var(--arcsyn-color-foreground);
+    --success-bg: color-mix(in srgb, var(--arcsyn-color-success), var(--arcsyn-color-surface-raised) 88%);
+    --success-border: color-mix(in srgb, var(--arcsyn-color-success), var(--arcsyn-color-border) 65%);
+    --success-text: var(--arcsyn-color-foreground);
+    --info-bg: color-mix(in srgb, var(--arcsyn-color-primary), var(--arcsyn-color-surface-raised) 88%);
+    --info-border: color-mix(in srgb, var(--arcsyn-color-primary), var(--arcsyn-color-border) 65%);
+    --info-text: var(--arcsyn-color-foreground);
+    --warning-bg: color-mix(in srgb, var(--arcsyn-color-warning), var(--arcsyn-color-surface-raised) 88%);
+    --warning-border: color-mix(in srgb, var(--arcsyn-color-warning), var(--arcsyn-color-border) 65%);
+    --warning-text: var(--arcsyn-color-foreground);
+    --error-bg: color-mix(in srgb, var(--arcsyn-color-danger), var(--arcsyn-color-surface-raised) 88%);
+    --error-border: color-mix(in srgb, var(--arcsyn-color-danger), var(--arcsyn-color-border) 65%);
+    --error-text: var(--arcsyn-color-foreground);
+    font-family: var(--arcsyn-font-sans);
+}
+.arcsyn-toaster [data-sonner-toast].arcsyn-toast { border-inline-start-width: 3px; border-radius: var(--arcsyn-radius-md); box-shadow: var(--arcsyn-shadow-md); gap: var(--arcsyn-spacing-3); padding: var(--arcsyn-spacing-3); }
+.arcsyn-toaster [data-sonner-toast][data-type="default"], .arcsyn-toaster [data-sonner-toast][data-type="normal"] { border-inline-start-color: var(--arcsyn-color-primary); }
+.arcsyn-toaster [data-sonner-toast][data-type="success"] { border-inline-start-color: var(--arcsyn-color-success); }
+.arcsyn-toaster [data-sonner-toast][data-type="info"] { border-inline-start-color: var(--arcsyn-color-primary); }
+.arcsyn-toaster [data-sonner-toast][data-type="warning"] { border-inline-start-color: var(--arcsyn-color-warning); }
+.arcsyn-toaster [data-sonner-toast][data-type="error"] { border-inline-start-color: var(--arcsyn-color-danger); }
+.arcsyn-toaster [data-sonner-toast] [data-icon] { align-items: center; background: color-mix(in srgb, currentColor, transparent 90%); border-radius: var(--arcsyn-radius-sm); block-size: 1.5rem; inline-size: 1.5rem; justify-content: center; margin: 0; }
+.arcsyn-toaster [data-sonner-toast] [data-content] { gap: var(--arcsyn-spacing-1); }
+.arcsyn-toast__title { font-size: var(--arcsyn-font-size-sm); font-weight: 600; }
+.arcsyn-toast__description { color: var(--arcsyn-color-muted-foreground) !important; font-size: var(--arcsyn-font-size-xs); }
+.arcsyn-toast__action, .arcsyn-toast__cancel { border-radius: var(--arcsyn-radius-sm) !important; font-family: var(--arcsyn-font-sans) !important; font-size: var(--arcsyn-font-size-xs) !important; font-weight: 600 !important; min-block-size: 1.75rem !important; padding-inline: var(--arcsyn-spacing-2) !important; }
+.arcsyn-toast__action { background: var(--arcsyn-color-primary) !important; color: var(--arcsyn-color-primary-foreground) !important; }
+.arcsyn-toast__cancel { background: transparent !important; border: 1px solid var(--arcsyn-color-border) !important; color: var(--arcsyn-color-foreground) !important; }
+.arcsyn-toast__close { background: var(--arcsyn-color-surface-raised) !important; border-color: var(--arcsyn-color-border-strong) !important; color: var(--arcsyn-color-foreground) !important; }
+.arcsyn-toast__action:focus-visible, .arcsyn-toast__cancel:focus-visible, .arcsyn-toast__close:focus-visible { outline: 2px solid var(--arcsyn-color-focus-ring) !important; outline-offset: 2px; }
+
+.arcsyn-toaster--slide [data-sonner-toast] { transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1), opacity 280ms ease, height 400ms, box-shadow 200ms; }
+.arcsyn-toaster--fade [data-sonner-toast][data-front="true"]:not([data-mounted="true"]) { --y: translateY(0); opacity: 0; }
+.arcsyn-toaster--fade [data-sonner-toast][data-front="true"][data-mounted="true"] { --y: translateY(0); transition: opacity 260ms ease, height 400ms, box-shadow 200ms; }
+.arcsyn-toaster--fade [data-sonner-toast][data-front="true"][data-removed="true"] { --y: translateY(0); opacity: 0; }
+.arcsyn-toaster--scale [data-sonner-toast][data-front="true"]:not([data-mounted="true"]) { --y: scale(0.92); opacity: 0; }
+.arcsyn-toaster--scale [data-sonner-toast][data-front="true"][data-mounted="true"] { --y: scale(1); transition: transform 260ms ease-out, opacity 220ms ease, height 400ms, box-shadow 200ms; }
+.arcsyn-toaster--scale [data-sonner-toast][data-front="true"][data-removed="true"] { --y: scale(0.92); opacity: 0; }
+.arcsyn-toaster--spring [data-sonner-toast][data-front="true"]:not([data-mounted="true"]) { --y: translateY(1rem) scale(0.86); opacity: 0; }
+.arcsyn-toaster--spring [data-sonner-toast][data-front="true"][data-mounted="true"] { --y: translateY(0) scale(1); transition: transform 520ms cubic-bezier(0.16, 1.35, 0.3, 1), opacity 220ms ease, height 400ms, box-shadow 200ms; }
+.arcsyn-toaster--spring [data-sonner-toast][data-front="true"][data-removed="true"] { --y: translateY(0.5rem) scale(0.92); opacity: 0; transition: transform 180ms ease-in, opacity 160ms ease; }
+.arcsyn-toaster--blur [data-sonner-toast][data-front="true"]:not([data-mounted="true"]) { --y: translateY(0.5rem); filter: blur(8px); opacity: 0; }
+.arcsyn-toaster--blur [data-sonner-toast][data-front="true"][data-mounted="true"] { --y: translateY(0); filter: blur(0); transition: transform 360ms ease, opacity 280ms ease, filter 360ms ease, height 400ms, box-shadow 200ms; }
+.arcsyn-toaster--blur [data-sonner-toast][data-front="true"][data-removed="true"] { --y: translateY(0); filter: blur(8px); opacity: 0; }
+.arcsyn-toaster--none [data-sonner-toast], .arcsyn-toaster--none [data-sonner-toast] > * { transition-duration: 0ms !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .arcsyn-toaster [data-sonner-toast], .arcsyn-toaster [data-sonner-toast] > * { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+  .arcsyn-toaster [data-sonner-toast] { filter: none !important; }
+}

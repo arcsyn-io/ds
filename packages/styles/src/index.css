@@ -28,6 +28,12 @@
 @import "./components/spinner.css";
 @import "./components/popover.css";
 @import "./components/kbd.css";
+@import "./components/menubar.css";
+@import "./components/native-select.css";
+@import "./components/pagination.css";
+@import "./components/empty.css";
+@import "./components/skeleton.css";
+@import "./components/toaster.css";
 @import "./components/dialog.css";
 @import "./components/dropdown-menu.css";
 @import "./components/alert.css";

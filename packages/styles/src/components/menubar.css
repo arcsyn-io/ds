@@ -1,0 +1,16 @@
+@layer components {
+  .arcsyn-menubar { align-items: center; background: var(--arcsyn-color-surface); border: 1px solid var(--arcsyn-color-border); border-radius: var(--arcsyn-radius-md); display: inline-flex; gap: 2px; min-block-size: var(--arcsyn-control-height-md); padding: 2px; }
+  .arcsyn-menubar__trigger { background: transparent; border: 0; border-radius: var(--arcsyn-radius-sm); color: var(--arcsyn-color-foreground); cursor: default; font: inherit; font-size: var(--arcsyn-font-size-sm); min-block-size: calc(var(--arcsyn-control-height-md) - 6px); outline: none; padding-inline: var(--arcsyn-spacing-3); }
+  .arcsyn-menubar__trigger:hover, .arcsyn-menubar__trigger[data-popup-open], .arcsyn-menubar__trigger:focus-visible { background: var(--arcsyn-color-surface-sunken); }
+  .arcsyn-menubar__positioner { isolation: isolate; outline: none; z-index: 100; }
+  .arcsyn-menubar__popup { background: var(--arcsyn-color-surface-raised); border: 1px solid var(--arcsyn-color-border-strong); border-radius: var(--arcsyn-radius-md); box-shadow: var(--arcsyn-shadow-md); color: var(--arcsyn-color-foreground); max-block-size: var(--available-height); min-inline-size: 12rem; outline: none; overflow: auto; padding: var(--arcsyn-spacing-1); }
+  .arcsyn-menubar__label { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-xs); font-weight: 600; padding: var(--arcsyn-spacing-2); }
+  .arcsyn-menubar__item { align-items: center; border-radius: var(--arcsyn-radius-sm); cursor: default; display: flex; font-size: var(--arcsyn-font-size-sm); gap: var(--arcsyn-spacing-2); min-block-size: 2rem; outline: none; padding: var(--arcsyn-spacing-2); user-select: none; }
+  .arcsyn-menubar__item[data-highlighted] { background: var(--arcsyn-color-surface-sunken); }
+  .arcsyn-menubar__item[data-disabled] { opacity: 0.45; pointer-events: none; }
+  .arcsyn-menubar__item[data-variant="danger"], .arcsyn-menubar__item[data-variant="destructive"] { color: var(--arcsyn-color-danger); }
+  .arcsyn-menubar__item[data-inset] { padding-inline-start: calc(var(--arcsyn-spacing-2) + 1.25rem); }
+  .arcsyn-menubar__indicator { align-items: center; color: var(--arcsyn-color-primary); display: inline-flex; inline-size: 1.25rem; justify-content: center; }
+  .arcsyn-menubar__shortcut { color: var(--arcsyn-color-muted-foreground); font-family: var(--arcsyn-font-mono); font-size: var(--arcsyn-font-size-xs); margin-inline-start: auto; }
+  .arcsyn-menubar__separator { background: var(--arcsyn-color-border); block-size: 1px; margin: var(--arcsyn-spacing-1); }
+}

@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, Dialog, DropdownMenu, Field, Input, InputGroup, Kbd, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Spinner, Switch, Textarea } from "@arcsyn/react";
+import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, Dialog, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Skeleton, Spinner, Switch, Textarea, Toaster, toast, type ToasterEffect } from "@arcsyn/react";
 
 type Property = {
   name: string;
@@ -37,7 +37,138 @@ function ControlledCollapsibleDemo() {
   return <div className="docs-demo-stack"><Button variant="ghost" size="sm" onClick={() => setOpen((current) => !current)}>{open ? "Fechar externamente" : "Abrir externamente"}</Button><Collapsible.Root open={open} onOpenChange={setOpen}><Collapsible.Trigger>Detalhes controlados</Collapsible.Trigger><Collapsible.Panel>O estado também pode ser alterado pelo botão externo.</Collapsible.Panel></Collapsible.Root></div>;
 }
 
+function ControlledPaginationDemo() {
+  const [page, setPage] = useState(3);
+  return <div className="docs-demo-stack"><Pagination><PaginationContent><PaginationItem><PaginationPrevious href="#pagination-demo" aria-disabled={page === 1} onClick={(event) => { event.preventDefault(); setPage((current) => Math.max(1, current - 1)); }} /></PaginationItem>{[1, 2, 3, 4, 5].map((item) => <PaginationItem key={item}><PaginationLink href="#pagination-demo" active={page === item} onClick={(event) => { event.preventDefault(); setPage(item); }}>{item}</PaginationLink></PaginationItem>)}<PaginationItem><PaginationNext href="#pagination-demo" aria-disabled={page === 5} onClick={(event) => { event.preventDefault(); setPage((current) => Math.min(5, current + 1)); }} /></PaginationItem></PaginationContent></Pagination><span className="docs-muted-copy">Página selecionada: {page}</span></div>;
+}
+
+const toasterEffects: Array<{ label: string; value: ToasterEffect }> = [
+  { label: "Deslizar", value: "slide" },
+  { label: "Dissolver", value: "fade" },
+  { label: "Escala", value: "scale" },
+  { label: "Mola", value: "spring" },
+  { label: "Desfoque", value: "blur" },
+  { label: "Sem animação", value: "none" },
+];
+
+function ToasterEffectsDemo() {
+  return <><div className="docs-demo-row">{toasterEffects.map(({ label, value }) => <Button key={value} variant="secondary" onClick={() => toast.success(`Efeito: ${label}`, { description: "A mesma notificação com outra transição.", duration: 2400, toasterId: `docs-effect-${value}` })}>{label}</Button>)}</div>{toasterEffects.map(({ label, value }) => <Toaster key={value} id={`docs-effect-${value}`} effect={value} position="bottom-right" containerAriaLabel={`Demonstração do efeito ${label}`} />)}</>;
+}
+
 const componentPages: ComponentPage[] = [
+  {
+    id: "menubar", title: "Menu Bar", summary: "Organiza comandos persistentes de aplicações desktop em menus coordenados.", importCode: 'import { Menubar } from "@arcsyn/react";', status: "React estável · Base UI · Web",
+    anatomy: ["Root com role=menubar", "Menu lógico", "Trigger", "Content em portal", "Group e Label", "Item, CheckboxItem ou RadioItem"],
+    accessibility: "Base UI fornece roving focus, Home, End, setas e Escape. Use Menu Bar para comandos de aplicação, não para navegação primária de sites. Label precisa estar dentro de Group ou RadioGroup. Não há equivalente React Native: em telas móveis, prefira ações visíveis, Dropdown Menu ou navegação nativa.",
+    properties: [
+      { name: "Menubar.Root.orientation", type: '"horizontal" | "vertical"', defaultValue: '"horizontal"', description: "Define o eixo de navegação por setas." },
+      { name: "Menubar.Root.loopFocus", type: "boolean", defaultValue: "true", description: "Retorna ao primeiro trigger ao passar do último." },
+      { name: "Menubar.Root.modal", type: "boolean", defaultValue: "true", description: "Limita interação ao menu enquanto algum Content estiver aberto." },
+      { name: "Menubar.Root.disabled", type: "boolean", defaultValue: "false", description: "Desabilita toda a barra." },
+      { name: "Menubar.Menu.open", type: "boolean", defaultValue: "—", description: "Controla um menu individual." },
+      { name: "Menubar.Item.variant", type: '"default" | "danger" | "destructive"', defaultValue: '"default"', description: "Destaca comandos destrutivos." },
+      { name: "Menubar.CheckboxItem.checked", type: "boolean", defaultValue: "—", description: "Representa uma configuração independente." },
+    ],
+    examples: [
+      { title: "Comandos de arquivo e edição", description: "Agrupe comandos estáveis e mostre atalhos apenas como apoio visual.", preview: <Menubar.Root><Menubar.Menu><Menubar.Trigger>Arquivo</Menubar.Trigger><Menubar.Content><Menubar.Group><Menubar.Label>Documento</Menubar.Label><Menubar.Item>Novo <Menubar.Shortcut>Ctrl N</Menubar.Shortcut></Menubar.Item><Menubar.Item>Abrir <Menubar.Shortcut>Ctrl O</Menubar.Shortcut></Menubar.Item><Menubar.Item>Salvar <Menubar.Shortcut>Ctrl S</Menubar.Shortcut></Menubar.Item></Menubar.Group><Menubar.Separator /><Menubar.Item variant="danger">Excluir rascunho</Menubar.Item></Menubar.Content></Menubar.Menu><Menubar.Menu><Menubar.Trigger>Editar</Menubar.Trigger><Menubar.Content><Menubar.Item>Desfazer <Menubar.Shortcut>Ctrl Z</Menubar.Shortcut></Menubar.Item><Menubar.Item>Refazer <Menubar.Shortcut>Ctrl Y</Menubar.Shortcut></Menubar.Item></Menubar.Content></Menubar.Menu></Menubar.Root>, code: '<Menubar.Root>\n  <Menubar.Menu>\n    <Menubar.Trigger>Arquivo</Menubar.Trigger>\n    <Menubar.Content>\n      <Menubar.Group>\n        <Menubar.Label>Documento</Menubar.Label>\n        <Menubar.Item>Novo</Menubar.Item>\n      </Menubar.Group>\n    </Menubar.Content>\n  </Menubar.Menu>\n</Menubar.Root>' },
+      { title: "Preferências", description: "CheckboxItem mantém opções independentes; RadioGroup representa uma escolha exclusiva.", preview: <Menubar.Root><Menubar.Menu><Menubar.Trigger>Visualizar</Menubar.Trigger><Menubar.Content><Menubar.Group><Menubar.Label>Painéis</Menubar.Label><Menubar.CheckboxItem defaultChecked>Barra lateral</Menubar.CheckboxItem><Menubar.CheckboxItem>Console</Menubar.CheckboxItem></Menubar.Group><Menubar.Separator /><Menubar.RadioGroup defaultValue="compact"><Menubar.Label>Densidade</Menubar.Label><Menubar.RadioItem value="compact">Compacta</Menubar.RadioItem><Menubar.RadioItem value="comfortable">Confortável</Menubar.RadioItem></Menubar.RadioGroup></Menubar.Content></Menubar.Menu></Menubar.Root>, code: '<Menubar.CheckboxItem defaultChecked>Barra lateral</Menubar.CheckboxItem>\n<Menubar.RadioGroup defaultValue="compact">\n  <Menubar.Label>Densidade</Menubar.Label>\n  <Menubar.RadioItem value="compact">Compacta</Menubar.RadioItem>\n</Menubar.RadioGroup>' },
+      { title: "Barra desabilitada", description: "Use disabled quando todos os comandos dependem de um contexto ainda indisponível.", preview: <Menubar.Root disabled><Menubar.Menu><Menubar.Trigger>Arquivo</Menubar.Trigger><Menubar.Content><Menubar.Item>Salvar</Menubar.Item></Menubar.Content></Menubar.Menu><Menubar.Menu><Menubar.Trigger>Editar</Menubar.Trigger><Menubar.Content><Menubar.Item>Desfazer</Menubar.Item></Menubar.Content></Menubar.Menu></Menubar.Root>, code: '<Menubar.Root disabled>…</Menubar.Root>' },
+    ],
+  },
+  {
+    id: "native-select", title: "Native Select", summary: "Usa o controle select do navegador para escolhas simples e familiares.", importCode: 'import { NativeSelect, NativeSelectOption, NativeSelectOptGroup } from "@arcsyn/react";', status: "React estável · HTML nativo · Web",
+    anatomy: ["Wrapper visual", "Elemento select nativo", "Option ou OptGroup", "Indicador decorativo"],
+    accessibility: "Associe sempre um label ao select e use a primeira option vazia como placeholder quando necessário. O menu de opções, teclado e leitores de tela são administrados pelo navegador. React Native não oferece select em seu núcleo; use Select, que abre uma seleção modal acessível.",
+    properties: [
+      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Define a altura visual do controle." },
+      { name: "invalid", type: "boolean", defaultValue: "false", description: "Aplica estado de erro e aria-invalid." },
+      { name: "disabled", type: "boolean", defaultValue: "false", description: "Desabilita o controle nativo." },
+      { name: "value / defaultValue", type: "string | string[]", defaultValue: "—", description: "Controla ou inicializa a opção selecionada." },
+      { name: "onChange", type: "ChangeEventHandler<HTMLSelectElement>", defaultValue: "—", description: "Recebe a mudança nativa." },
+      { name: "wrapperClassName", type: "string", defaultValue: "—", description: "Complementa o wrapper que posiciona o indicador." },
+    ],
+    examples: [
+      { title: "Seleção simples", description: "O navegador fornece o popup de opções e o comportamento adequado para cada plataforma.", preview: <label className="docs-field" htmlFor="native-environment">Ambiente<NativeSelect id="native-environment" defaultValue=""><NativeSelectOption value="" disabled>Selecione um ambiente</NativeSelectOption><NativeSelectOption value="dev">Desenvolvimento</NativeSelectOption><NativeSelectOption value="stg">Homologação</NativeSelectOption><NativeSelectOption value="prd">Produção</NativeSelectOption></NativeSelect></label>, code: '<label htmlFor="environment">Ambiente</label>\n<NativeSelect id="environment" defaultValue="">\n  <NativeSelectOption value="" disabled>Selecione</NativeSelectOption>\n  <NativeSelectOption value="prd">Produção</NativeSelectOption>\n</NativeSelect>' },
+      { title: "Grupos de opções", description: "OptGroup dá contexto a listas maiores sem substituir um rótulo visível do campo.", preview: <label className="docs-field" htmlFor="native-region">Região<NativeSelect id="native-region" defaultValue="gru"><NativeSelectOptGroup label="América do Sul"><NativeSelectOption value="gru">São Paulo</NativeSelectOption><NativeSelectOption value="scl">Santiago</NativeSelectOption></NativeSelectOptGroup><NativeSelectOptGroup label="América do Norte"><NativeSelectOption value="iad">Virgínia</NativeSelectOption><NativeSelectOption value="pdx">Oregon</NativeSelectOption></NativeSelectOptGroup></NativeSelect></label>, code: '<NativeSelectOptGroup label="América do Sul">\n  <NativeSelectOption value="gru">São Paulo</NativeSelectOption>\n</NativeSelectOptGroup>' },
+      { title: "Tamanhos e estados", description: "Os três tamanhos preservam o comportamento nativo; invalid e disabled comunicam estados funcionais.", preview: <div className="docs-demo-row"><NativeSelect size="sm" aria-label="Tamanho pequeno" defaultValue="one"><NativeSelectOption value="one">Pequeno</NativeSelectOption></NativeSelect><NativeSelect aria-label="Com erro" invalid defaultValue="invalid"><NativeSelectOption value="invalid">Valor inválido</NativeSelectOption></NativeSelect><NativeSelect size="lg" aria-label="Desabilitado" disabled><NativeSelectOption>Desabilitado</NativeSelectOption></NativeSelect></div>, code: '<NativeSelect size="sm">…</NativeSelect>\n<NativeSelect invalid>…</NativeSelect>\n<NativeSelect size="lg" disabled>…</NativeSelect>' },
+    ],
+  },
+  {
+    id: "pagination", title: "Pagination", summary: "Permite navegar entre páginas discretas de uma coleção extensa.", importCode: 'import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@arcsyn/react";', status: "React estável · React Native",
+    anatomy: ["Nav nomeado", "Content em lista", "Item", "Previous e Next", "Link de página", "Ellipsis opcional"],
+    accessibility: "O componente usa nav e lista; marque a página atual com active para gerar aria-current=page. Links indisponíveis precisam de aria-disabled e não devem navegar. No React Native, page é controlado e cada botão recebe nome e estado selecionado.",
+    properties: [
+      { name: "PaginationLink.active", type: "boolean", defaultValue: "false", description: "Marca a página atual visual e semanticamente." },
+      { name: "PaginationLink.href", type: "string", defaultValue: "—", description: "Destino real da página para navegação progressiva." },
+      { name: "PaginationPrevious / Next", type: "AnchorHTMLAttributes", defaultValue: "—", description: "Controles com nomes acessíveis predefinidos." },
+      { name: "PaginationEllipsis", type: "HTMLAttributes<HTMLSpanElement>", defaultValue: "—", description: "Representa páginas omitidas sem entrar na ordem de foco." },
+      { name: "RN page / totalPages", type: "number", defaultValue: "obrigatório", description: "Define a página atual e o total no adaptador nativo." },
+      { name: "RN onPageChange", type: "(page: number) => void", defaultValue: "—", description: "Recebe a página solicitada no mobile." },
+    ],
+    examples: [
+      { title: "Faixa curta", description: "Exiba todas as páginas quando a quantidade permanecer fácil de percorrer.", preview: <Pagination><PaginationContent><PaginationItem><PaginationPrevious href="#/components/pagination" aria-disabled="true" /></PaginationItem>{[1, 2, 3, 4].map((page) => <PaginationItem key={page}><PaginationLink href={`#/components/pagination?page=${page}`} active={page === 1}>{page}</PaginationLink></PaginationItem>)}<PaginationItem><PaginationNext href="#/components/pagination?page=2" /></PaginationItem></PaginationContent></Pagination>, code: '<Pagination>\n  <PaginationContent>\n    <PaginationItem><PaginationPrevious aria-disabled="true" /></PaginationItem>\n    <PaginationItem><PaginationLink active>1</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationLink>2</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationNext /></PaginationItem>\n  </PaginationContent>\n</Pagination>' },
+      { title: "Muitas páginas", description: "Use Ellipsis para omitir intervalos e mantenha sempre visíveis a página atual e os limites relevantes.", preview: <Pagination><PaginationContent><PaginationItem><PaginationPrevious href="#pagination-many" /></PaginationItem><PaginationItem><PaginationLink href="#pagination-many">1</PaginationLink></PaginationItem><PaginationItem><PaginationEllipsis /></PaginationItem><PaginationItem><PaginationLink href="#pagination-many">7</PaginationLink></PaginationItem><PaginationItem><PaginationLink href="#pagination-many" active>8</PaginationLink></PaginationItem><PaginationItem><PaginationLink href="#pagination-many">9</PaginationLink></PaginationItem><PaginationItem><PaginationEllipsis /></PaginationItem><PaginationItem><PaginationLink href="#pagination-many">24</PaginationLink></PaginationItem><PaginationItem><PaginationNext href="#pagination-many" /></PaginationItem></PaginationContent></Pagination>, code: '<PaginationLink>1</PaginationLink>\n<PaginationEllipsis />\n<PaginationLink active>8</PaginationLink>\n<PaginationEllipsis />\n<PaginationLink>24</PaginationLink>' },
+      { title: "Estado controlado", description: "Intercepte a navegação quando a coleção é carregada no cliente e mantenha active sincronizado.", preview: <ControlledPaginationDemo />, code: 'const [page, setPage] = useState(3);\n<PaginationLink active={page === item} onClick={() => setPage(item)}>{item}</PaginationLink>' },
+    ],
+  },
+  {
+    id: "empty", title: "Empty", summary: "Explica a ausência de conteúdo e oferece uma próxima ação relevante.", importCode: 'import { Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle } from "@arcsyn/react";', status: "React estável · React Native",
+    anatomy: ["Container", "Media opcional", "Header", "Title", "Description", "Content ou Footer com ações"],
+    accessibility: "O título deve explicar o estado, e a descrição deve indicar por que ocorreu ou como resolvê-lo. Media é decorativa por padrão. Não use role=alert para estados vazios estáticos; preserve foco e anuncie mudanças dinâmicas na região que controla os resultados.",
+    properties: [
+      { name: "Empty", type: "HTMLAttributes<HTMLDivElement>", defaultValue: "—", description: "Container flexível do estado vazio." },
+      { name: "EmptyMedia", type: "HTMLAttributes<HTMLDivElement>", defaultValue: "—", description: "Área decorativa para ícone ou abreviação." },
+      { name: "EmptyTitle", type: "HTMLAttributes<HTMLHeadingElement>", defaultValue: "—", description: "Resumo objetivo do estado." },
+      { name: "EmptyDescription", type: "HTMLAttributes<HTMLParagraphElement>", defaultValue: "—", description: "Contexto e orientação complementar." },
+      { name: "EmptyContent / Footer", type: "HTMLAttributes<HTMLDivElement>", defaultValue: "—", description: "Agrupa ações ou conteúdo auxiliar." },
+    ],
+    examples: [
+      { title: "Sem registros", description: "Uma ação primária ajuda a iniciar a coleção pela primeira vez.", preview: <Empty><EmptyMedia>DOC</EmptyMedia><EmptyHeader><EmptyTitle>Nenhum documento</EmptyTitle><EmptyDescription>Crie o primeiro documento deste projeto para compartilhar decisões com a equipe.</EmptyDescription></EmptyHeader><EmptyContent><Button>Criar documento</Button><Button variant="ghost">Importar arquivo</Button></EmptyContent></Empty>, code: '<Empty>\n  <EmptyMedia>DOC</EmptyMedia>\n  <EmptyHeader>\n    <EmptyTitle>Nenhum documento</EmptyTitle>\n    <EmptyDescription>Crie o primeiro documento deste projeto.</EmptyDescription>\n  </EmptyHeader>\n  <EmptyContent><Button>Criar documento</Button></EmptyContent>\n</Empty>' },
+      { title: "Nenhum resultado", description: "Quando filtros causam o estado vazio, priorize limpar ou ajustar os critérios.", preview: <Empty><EmptyMedia>0</EmptyMedia><EmptyHeader><EmptyTitle>Nenhum resultado encontrado</EmptyTitle><EmptyDescription>Não encontramos ambientes com status “erro” na região selecionada.</EmptyDescription></EmptyHeader><EmptyFooter><Button variant="secondary">Limpar filtros</Button></EmptyFooter></Empty>, code: '<EmptyTitle>Nenhum resultado encontrado</EmptyTitle>\n<EmptyDescription>Revise ou limpe os filtros aplicados.</EmptyDescription>\n<EmptyFooter><Button variant="secondary">Limpar filtros</Button></EmptyFooter>' },
+      { title: "Somente orientação", description: "Não force uma ação quando o estado é informativo e depende de outro processo.", preview: <Empty><EmptyHeader><EmptyTitle>Aguardando sincronização</EmptyTitle><EmptyDescription>Os dados aparecerão aqui após a primeira execução concluída.</EmptyDescription></EmptyHeader></Empty>, code: '<Empty>\n  <EmptyHeader>\n    <EmptyTitle>Aguardando sincronização</EmptyTitle>\n    <EmptyDescription>Os dados aparecerão após a primeira execução.</EmptyDescription>\n  </EmptyHeader>\n</Empty>' },
+    ],
+  },
+  {
+    id: "skeleton", title: "Skeleton", summary: "Reserva a geometria do conteúdo enquanto os dados estão carregando.", importCode: 'import { Skeleton } from "@arcsyn/react";', status: "React estável · React Native",
+    anatomy: ["Bloco visual", "Forma", "Dimensões", "Animação opcional"],
+    accessibility: "Skeleton é decorativo e fica oculto de tecnologias assistivas. Marque a região real como aria-busy enquanto carrega e forneça um nome de status quando a espera precisar ser anunciada. Animações são removidas com prefers-reduced-motion; no mobile use animated=false quando necessário.",
+    properties: [
+      { name: "variant", type: '"text" | "rectangular" | "circular"', defaultValue: '"rectangular"', description: "Define a geometria base." },
+      { name: "animation", type: '"pulse" | "wave" | "none"', defaultValue: '"pulse"', description: "Escolhe o feedback visual no web." },
+      { name: "width / height", type: "CSSProperties dimension", defaultValue: "—", description: "Reserva as dimensões finais do conteúdo." },
+      { name: "RN animated", type: "boolean", defaultValue: "true", description: "Ativa ou desativa o pulso no React Native." },
+      { name: "className / style", type: "string / CSSProperties", defaultValue: "—", description: "Complementa a composição do placeholder." },
+    ],
+    examples: [
+      { title: "Formas", description: "Escolha uma forma próxima ao conteúdo final para reduzir mudanças de layout.", preview: <div className="docs-demo-row"><Skeleton variant="circular" width={44} height={44} /><Skeleton variant="text" width="12rem" /><Skeleton width="10rem" height="4rem" /></div>, code: '<Skeleton variant="circular" width={44} height={44} />\n<Skeleton variant="text" width="12rem" />\n<Skeleton width="10rem" height="4rem" />' },
+      { title: "Cartão em carregamento", description: "Combine blocos simples seguindo a hierarquia do conteúdo que será renderizado.", preview: <div className="docs-skeleton-card" aria-busy="true" aria-label="Carregando resumo do ambiente"><Skeleton height="7rem" animation="wave" /><Skeleton variant="text" width="45%" /><Skeleton variant="text" /><Skeleton variant="text" width="72%" /></div>, code: '<div aria-busy="true" aria-label="Carregando resumo">\n  <Skeleton height="7rem" animation="wave" />\n  <Skeleton variant="text" width="45%" />\n  <Skeleton variant="text" />\n</div>' },
+      { title: "Animações", description: "Pulse é o padrão; wave reforça movimento em áreas maiores; none oferece uma reserva totalmente estática.", preview: <div className="docs-demo-stack"><Skeleton height="2rem" animation="pulse" /><Skeleton height="2rem" animation="wave" /><Skeleton height="2rem" animation="none" /></div>, code: '<Skeleton animation="pulse" />\n<Skeleton animation="wave" />\n<Skeleton animation="none" />' },
+    ],
+  },
+  {
+    id: "sonner", title: "Toaster / Sonner", summary: "Exibe notificações temporárias globais com estados, ações e feedback assíncrono.", importCode: 'import { Toaster, toast } from "@arcsyn/react";', status: "React estável · Sonner · Web",
+    anatomy: ["Toaster global", "Toast imperativo", "Título e descrição", "Ícone de estado", "Action ou Cancel opcionais", "Close opcional"],
+    accessibility: "Monte um único Toaster próximo à raiz da aplicação. Sonner administra a região de notificações e a ordem dos avisos; mantenha títulos curtos, não coloque informação essencial apenas no toast e ofereça ação persistente para erros que exigem correção. Use success, warning e error pelo significado, não como decoração. React Native não possui paridade nesta implementação.",
+    properties: [
+      { name: "Toaster.position", type: '"top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right"', defaultValue: '"bottom-right"', description: "Define a posição padrão das notificações." },
+      { name: "Toaster.effect", type: '"slide" | "fade" | "scale" | "spring" | "blur" | "none"', defaultValue: '"spring"', description: "Escolhe a transição de entrada e saída. Respeita prefers-reduced-motion." },
+      { name: "Toaster.closeButton", type: "boolean", defaultValue: "true", description: "Mostra fechamento explícito em cada toast." },
+      { name: "Toaster.richColors", type: "boolean", defaultValue: "true", description: "Usa cores semânticas ArcSyn para estados." },
+      { name: "Toaster.duration", type: "number", defaultValue: "4000", description: "Duração padrão em milissegundos." },
+      { name: "Toaster.visibleToasts", type: "number", defaultValue: "3", description: "Limita notificações simultaneamente visíveis." },
+      { name: "toast(message, options)", type: "(ReactNode, ExternalToast?) => string | number", defaultValue: "—", description: "Cria uma notificação e retorna seu ID." },
+      { name: "toast.success / info / warning / error", type: "function", defaultValue: "—", description: "Cria notificações com significado semântico." },
+      { name: "toast.promise", type: "(Promise, PromiseData) => ToastId", defaultValue: "—", description: "Atualiza o mesmo toast durante uma operação assíncrona." },
+      { name: "toast.dismiss", type: "(id?) => void", defaultValue: "—", description: "Fecha um toast específico ou todos." },
+    ],
+    examples: [
+      { title: "Tipos semânticos", description: "Escolha o tipo conforme o resultado comunicado; o estilo não substitui uma mensagem clara.", preview: <div className="docs-demo-row"><Button variant="secondary" onClick={() => toast("Alterações salvas como rascunho.")}>Padrão</Button><Button variant="secondary" onClick={() => toast.success("Publicação concluída.")}>Sucesso</Button><Button variant="secondary" onClick={() => toast.info("Uma nova versão está disponível.")}>Informação</Button><Button variant="secondary" onClick={() => toast.warning("A sessão expira em cinco minutos.")}>Atenção</Button><Button variant="secondary" onClick={() => toast.error("Não foi possível salvar.")}>Erro</Button></div>, code: 'toast("Alterações salvas como rascunho.")\ntoast.success("Publicação concluída.")\ntoast.info("Uma nova versão está disponível.")\ntoast.warning("A sessão expira em cinco minutos.")\ntoast.error("Não foi possível salvar.")' },
+      { title: "Descrição e ação", description: "Use description para contexto curto e action para uma resposta imediata e reversível.", preview: <Button variant="outline" onClick={() => toast("Projeto arquivado", { description: "O projeto saiu da lista de ativos.", action: { label: "Desfazer", onClick: () => toast.success("Projeto restaurado.") } })}>Arquivar projeto</Button>, code: 'toast("Projeto arquivado", {\n  description: "O projeto saiu da lista de ativos.",\n  action: {\n    label: "Desfazer",\n    onClick: () => restoreProject(),\n  },\n})' },
+      { title: "Operação assíncrona", description: "toast.promise mantém uma única notificação e troca loading pelo resultado da Promise.", preview: <Button onClick={() => toast.promise(new Promise<string>((resolve) => window.setTimeout(() => resolve("run_8F2A"), 900)), { loading: "Iniciando execução…", success: (id) => `Execução ${id} iniciada.`, error: "Falha ao iniciar a execução." })}>Executar processo</Button>, code: 'toast.promise(startRun(), {\n  loading: "Iniciando execução…",\n  success: (id) => `Execução ${id} iniciada.`,\n  error: "Falha ao iniciar a execução.",\n})' },
+      { title: "Todos os efeitos", description: "O efeito é configurado no Toaster. Spring é o padrão; none remove a transição e todos respeitam a preferência de movimento reduzido.", preview: <ToasterEffectsDemo />, code: '<Toaster effect="slide" />\n<Toaster effect="fade" />\n<Toaster effect="scale" />\n<Toaster effect="spring" />\n<Toaster effect="blur" />\n<Toaster effect="none" />' },
+      { title: "Todas as posições", description: "Uma chamada pode substituir a posição padrão sem exigir outro Toaster. As seis posições mantêm offsets seguros no desktop e no mobile.", preview: <div className="docs-demo-row"><Button variant="ghost" onClick={() => toast("Topo esquerdo", { position: "top-left" })}>Topo esquerdo</Button><Button variant="ghost" onClick={() => toast("Topo central", { position: "top-center" })}>Topo central</Button><Button variant="ghost" onClick={() => toast("Topo direito", { position: "top-right" })}>Topo direito</Button><Button variant="ghost" onClick={() => toast("Inferior esquerdo", { position: "bottom-left" })}>Inferior esquerdo</Button><Button variant="ghost" onClick={() => toast("Inferior central", { position: "bottom-center" })}>Inferior central</Button><Button variant="ghost" onClick={() => toast("Inferior direito", { position: "bottom-right" })}>Inferior direito</Button><Button variant="ghost" onClick={() => toast.dismiss()}>Fechar todas</Button></div>, code: 'toast("Topo esquerdo", { position: "top-left" })\ntoast("Topo central", { position: "top-center" })\ntoast("Topo direito", { position: "top-right" })\ntoast("Inferior esquerdo", { position: "bottom-left" })\ntoast("Inferior central", { position: "bottom-center" })\ntoast("Inferior direito", { position: "bottom-right" })' },
+    ],
+  },
   {
     id: "accordion", title: "Accordion", summary: "Organiza blocos relacionados de conteúdo em seções expansíveis.", importCode: 'import { Accordion } from "@arcsyn/react";', status: "React estável · Base UI · React Native",
     anatomy: ["Root", "Item identificado por value", "Header e Trigger", "Panel expansível"],
@@ -665,6 +796,7 @@ export function DocsApp() {
         </aside>
         <main className="docs-main">{page ? <ComponentDocumentation page={page} /> : <HomePage />}</main>
       </div>
+      <Toaster />
     </div>
   );
 }
