@@ -7,9 +7,8 @@ React é o primeiro adaptador de componentes.
 
 - `@arcsyn/tokens`: fonte DTCG e artefatos CSS, JavaScript e Tailwind.
 - `@arcsyn/styles`: reset, temas e contratos CSS dos componentes.
-- `@arcsyn/icons`: SVGs sem dependência de framework.
-- `@arcsyn/react`: API React e acessibilidade dos componentes.
-- `@arcsyn/react-native`: adaptador React Native com componentes nativos e temas.
+- `@arcsyn/react`: API React, acessibilidade e catálogo em `@arcsyn/react/icons`.
+- `@arcsyn/react-native`: componentes nativos, temas e catálogo em `@arcsyn/react-native/icons`.
 - `@arcsyn/docs`: catálogo e playground de documentação.
 
 ## Desenvolvimento
@@ -23,13 +22,22 @@ pnpm dev:docs
 ## Direção de dependências
 
 ```text
-tokens → styles / icons → react
-                      └→ docs (consome APIs públicas)
+tokens → styles → react
+       └────────→ react-native
+                  docs (consome APIs públicas)
 ```
+
+## Temas
+
+Web aceita `light`, `dark` e `deep-dark` pelo atributo `data-arcsyn-theme`.
+O tema `deep-dark` parte de `#000000` e preserva o primary ciano e o foreground
+azure claro. No React Native, use os mesmos nomes na propriedade `theme` de
+`ArcSynProvider`.
 
 ## React Native
 
-O pacote `@arcsyn/tokens/react-native` gera cores resolvidas e medidas em pixels,
+O app consumidor deve instalar `react-native-svg`, peer dependency necessária
+para o catálogo de ícones. O pacote `@arcsyn/tokens/react-native` gera cores resolvidas e medidas em pixels,
 sem CSS variables ou `rem`. O adaptador `@arcsyn/react-native` usa esses tokens em
 componentes nativos.
 

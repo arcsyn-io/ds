@@ -1,6 +1,7 @@
 import { Menubar as BaseMenubar } from "@base-ui/react/menubar";
 import { Menu as BaseMenu } from "@base-ui/react/menu";
 import { forwardRef, type ComponentPropsWithoutRef, type HTMLAttributes } from "react";
+import { CheckIcon } from "../../icons/index.js";
 import { cx } from "../../utilities/cx.js";
 
 export type MenubarRootProps = ComponentPropsWithoutRef<typeof BaseMenubar>;
@@ -42,7 +43,7 @@ export const MenubarItem = forwardRef<HTMLElement, MenubarItemProps>(function Me
 
 export type MenubarCheckboxItemProps = ComponentPropsWithoutRef<typeof BaseMenu.CheckboxItem>;
 export const MenubarCheckboxItem = forwardRef<HTMLElement, MenubarCheckboxItemProps>(function MenubarCheckboxItem({ className, children, ...props }, ref) {
-  return <BaseMenu.CheckboxItem ref={ref} className={(state) => cx("arcsyn-menubar__item", typeof className === "function" ? className(state) : className)} {...props}><span className="arcsyn-menubar__indicator"><BaseMenu.CheckboxItemIndicator>&#10003;</BaseMenu.CheckboxItemIndicator></span>{children}</BaseMenu.CheckboxItem>;
+  return <BaseMenu.CheckboxItem ref={ref} className={(state) => cx("arcsyn-menubar__item", typeof className === "function" ? className(state) : className)} {...props}><span className="arcsyn-menubar__indicator"><BaseMenu.CheckboxItemIndicator><CheckIcon aria-hidden size={16} /></BaseMenu.CheckboxItemIndicator></span>{children}</BaseMenu.CheckboxItem>;
 });
 
 export type MenubarRadioGroupProps = ComponentPropsWithoutRef<typeof BaseMenu.RadioGroup>;
@@ -50,7 +51,7 @@ export function MenubarRadioGroup(props: MenubarRadioGroupProps) { return <BaseM
 
 export type MenubarRadioItemProps = ComponentPropsWithoutRef<typeof BaseMenu.RadioItem>;
 export const MenubarRadioItem = forwardRef<HTMLElement, MenubarRadioItemProps>(function MenubarRadioItem({ className, children, ...props }, ref) {
-  return <BaseMenu.RadioItem ref={ref} className={(state) => cx("arcsyn-menubar__item", typeof className === "function" ? className(state) : className)} {...props}><span className="arcsyn-menubar__indicator"><BaseMenu.RadioItemIndicator>&#10003;</BaseMenu.RadioItemIndicator></span>{children}</BaseMenu.RadioItem>;
+  return <BaseMenu.RadioItem ref={ref} className={(state) => cx("arcsyn-menubar__item", typeof className === "function" ? className(state) : className)} {...props}><span className="arcsyn-menubar__indicator"><BaseMenu.RadioItemIndicator><CheckIcon aria-hidden size={16} /></BaseMenu.RadioItemIndicator></span>{children}</BaseMenu.RadioItem>;
 });
 
 export type MenubarSeparatorProps = ComponentPropsWithoutRef<typeof BaseMenu.Separator>;

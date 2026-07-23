@@ -1,4 +1,5 @@
 import { useId, useState, type KeyboardEvent, type ReactNode } from "react";
+import { ArrowLeftIcon, ArrowRightIcon } from "../../icons/index.js";
 import { cx } from "../../utilities/cx.js";
 
 export interface CarouselProps {
@@ -38,9 +39,9 @@ export function Carousel({ items, label, initialIndex = 0, index, onIndexChange,
         {items.map((item, itemIndex) => <div id={`${id}-${itemIndex}`} key={itemIndex} className="arcsyn-carousel__slide" role="group" aria-roledescription="slide" aria-label={`${itemIndex + 1} de ${items.length}`} hidden={itemIndex !== activeIndex}>{item}</div>)}
       </div>
       <div className="arcsyn-carousel__controls">
-        <button className="arcsyn-carousel__button" type="button" onClick={() => move(activeIndex - 1)} disabled={!canGoPrevious} aria-label="Slide anterior">←</button>
+        <button className="arcsyn-carousel__button" type="button" onClick={() => move(activeIndex - 1)} disabled={!canGoPrevious} aria-label="Slide anterior"><ArrowLeftIcon aria-hidden size={16} /></button>
         <span className="arcsyn-carousel__status">{items.length === 0 ? "0 de 0" : `${activeIndex + 1} de ${items.length}`}</span>
-        <button className="arcsyn-carousel__button" type="button" onClick={() => move(activeIndex + 1)} disabled={!canGoNext} aria-label="Próximo slide">→</button>
+        <button className="arcsyn-carousel__button" type="button" onClick={() => move(activeIndex + 1)} disabled={!canGoNext} aria-label="Próximo slide"><ArrowRightIcon aria-hidden size={16} /></button>
       </div>
     </section>
   );

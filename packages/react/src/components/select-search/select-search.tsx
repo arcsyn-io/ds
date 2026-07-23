@@ -1,5 +1,6 @@
 import { Combobox } from "@base-ui/react/combobox";
 import { useState, type ComponentPropsWithoutRef } from "react";
+import { CheckIcon, ChevronDownIcon, XIcon } from "../../icons/index.js";
 import { cx } from "../../utilities/cx.js";
 
 export interface SelectSearchOption {
@@ -51,9 +52,9 @@ export function SelectSearch({
           placeholder={searchPlaceholder}
           {...inputProps}
         />
-        <Combobox.Clear className="arcsyn-select-search__clear" aria-label="Limpar seleção">×</Combobox.Clear>
+        <Combobox.Clear className="arcsyn-select-search__clear" aria-label="Limpar seleção"><XIcon aria-hidden size={16} /></Combobox.Clear>
         <Combobox.Trigger className="arcsyn-select-search__trigger" aria-label="Mostrar opções">
-          <Combobox.Icon className="arcsyn-select-search__icon">⌄</Combobox.Icon>
+          <Combobox.Icon className="arcsyn-select-search__icon"><ChevronDownIcon aria-hidden size={16} /></Combobox.Icon>
         </Combobox.Trigger>
       </div>
       <Combobox.Portal>
@@ -64,7 +65,7 @@ export function SelectSearch({
               {visibleOptions.map((option, index) => (
                 <Combobox.Item key={option.value} value={option.value} disabled={option.disabled} index={index} className="arcsyn-select-search__item">
                   <span>{option.label}</span>
-                  <Combobox.ItemIndicator aria-hidden="true">✓</Combobox.ItemIndicator>
+                  <Combobox.ItemIndicator aria-hidden="true"><CheckIcon size={16} /></Combobox.ItemIndicator>
                 </Combobox.Item>
               ))}
             </Combobox.List>

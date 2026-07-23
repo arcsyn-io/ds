@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View, type StyleProp, type ViewStyle } from "react-native";
+import { CheckIcon, ChevronDownIcon } from "../icons/index.js";
 import { tokens, useArcSynTheme } from "../theme.js";
 
 export type DropdownMenuItemVariant = "default" | "danger";
@@ -71,7 +72,7 @@ export function DropdownMenu({
         ]}
       >
         <Text style={[styles.triggerText, { color: colors.foreground, fontFamily: tokens.fontFamily.sansSemibold }]}>{triggerLabel}</Text>
-        <Text aria-hidden style={[styles.triggerIcon, { color: colors.mutedForeground }]}>⌄</Text>
+        <ChevronDownIcon accessible={false} color={colors.mutedForeground} size={16} />
       </Pressable>
       <Modal visible={isOpen} transparent animationType="fade" onRequestClose={() => setOpen(false)}>
         <Pressable style={styles.backdrop} onPress={() => setOpen(false)}>
@@ -99,7 +100,7 @@ export function DropdownMenu({
                       ]}
                     >
                       <Text style={[styles.itemText, { color: item.variant === "danger" ? colors.danger : colors.foreground, fontFamily: tokens.fontFamily.sans }]}>{item.label}</Text>
-                      {item.selected ? <Text style={[styles.indicator, { color: colors.primary }]}>✓</Text> : null}
+                      {item.selected ? <CheckIcon accessible={false} color={colors.primary} size={16} /> : null}
                     </Pressable>
                   </View>
                 );
@@ -115,7 +116,6 @@ export function DropdownMenu({
 const styles = StyleSheet.create({
   trigger: { alignItems: "center", borderRadius: tokens.radius.md, borderWidth: 1, flexDirection: "row", gap: tokens.spacing[2], justifyContent: "center", minHeight: 44, paddingHorizontal: tokens.spacing[3] },
   triggerText: { fontSize: tokens.fontSize.sm },
-  triggerIcon: { fontSize: tokens.fontSize.sm },
   pressed: { opacity: 0.82 },
   disabled: { opacity: 0.45 },
   backdrop: { backgroundColor: "rgba(8, 9, 16, 0.72)", flex: 1, justifyContent: "flex-end" },
@@ -123,5 +123,4 @@ const styles = StyleSheet.create({
   group: { fontSize: tokens.fontSize.xs, paddingHorizontal: tokens.spacing[2], paddingBottom: tokens.spacing[1], paddingTop: tokens.spacing[3] },
   item: { alignItems: "center", borderRadius: tokens.radius.sm, flexDirection: "row", gap: tokens.spacing[2], justifyContent: "space-between", minHeight: 44, paddingHorizontal: tokens.spacing[2] },
   itemText: { fontSize: tokens.fontSize.sm },
-  indicator: { fontSize: tokens.fontSize.sm },
 });

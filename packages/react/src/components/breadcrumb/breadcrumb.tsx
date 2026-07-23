@@ -1,8 +1,9 @@
 import { forwardRef, type AnchorHTMLAttributes, type HTMLAttributes, type LiHTMLAttributes, type OlHTMLAttributes } from "react";
+import { ChevronRightIcon } from "../../icons/index.js";
 import { cx } from "../../utilities/cx.js";
 export const Breadcrumb = forwardRef<HTMLElement, HTMLAttributes<HTMLElement>>(function Breadcrumb({ className, ...props }, ref) { return <nav ref={ref} aria-label="Navegação estrutural" className={cx("arcsyn-breadcrumb", className)} {...props} />; });
 export const BreadcrumbList = forwardRef<HTMLOListElement, OlHTMLAttributes<HTMLOListElement>>(function BreadcrumbList({ className, ...props }, ref) { return <ol ref={ref} className={cx("arcsyn-breadcrumb__list", className)} {...props} />; });
 export const BreadcrumbItem = forwardRef<HTMLLIElement, LiHTMLAttributes<HTMLLIElement>>(function BreadcrumbItem({ className, ...props }, ref) { return <li ref={ref} className={cx("arcsyn-breadcrumb__item", className)} {...props} />; });
 export const BreadcrumbLink = forwardRef<HTMLAnchorElement, AnchorHTMLAttributes<HTMLAnchorElement>>(function BreadcrumbLink({ className, ...props }, ref) { return <a ref={ref} className={cx("arcsyn-breadcrumb__link", className)} {...props} />; });
 export const BreadcrumbPage = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElement>>(function BreadcrumbPage({ className, ...props }, ref) { return <span ref={ref} aria-current="page" className={cx("arcsyn-breadcrumb__page", className)} {...props} />; });
-export const BreadcrumbSeparator = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElement>>(function BreadcrumbSeparator({ className, children = "/", ...props }, ref) { return <span ref={ref} aria-hidden="true" className={cx("arcsyn-breadcrumb__separator", className)} {...props}>{children}</span>; });
+export const BreadcrumbSeparator = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElement>>(function BreadcrumbSeparator({ className, children = <ChevronRightIcon size={16} />, ...props }, ref) { return <span ref={ref} aria-hidden="true" className={cx("arcsyn-breadcrumb__separator", className)} {...props}>{children}</span>; });

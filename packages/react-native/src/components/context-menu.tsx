@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View, type StyleProp, type ViewStyle } from "react-native";
+import { CheckIcon } from "../icons/index.js";
 import { tokens, useArcSynTheme } from "../theme.js";
 
 export type ContextMenuItemVariant = "default" | "danger";
@@ -93,7 +94,7 @@ export function ContextMenu({ children, items, onItemSelect, disabled = false, a
                       >
                         {item.label}
                       </Text>
-                      {item.selected ? <Text style={{ color: colors.primary }}>✓</Text> : null}
+                      {item.selected ? <CheckIcon accessible={false} color={colors.primary} size={16} /> : null}
                     </Pressable>
                   </View>
                 );

@@ -1,5 +1,6 @@
 import { ContextMenu as BaseContextMenu } from "@base-ui/react/context-menu";
 import { forwardRef, type ComponentPropsWithoutRef, type HTMLAttributes } from "react";
+import { CheckIcon, CircleIcon } from "../../icons/index.js";
 import { cx } from "../../utilities/cx.js";
 
 export type ContextMenuRootProps = ComponentPropsWithoutRef<typeof BaseContextMenu.Root>;
@@ -37,12 +38,12 @@ export interface ContextMenuItemProps extends ItemPrimitiveProps { className?: s
 export const ContextMenuItem = forwardRef<HTMLElement, ContextMenuItemProps>(function ContextMenuItem({ className, variant = "default", ...props }, ref) { return <BaseContextMenu.Item ref={ref} className={cx("arcsyn-context-menu__item", className)} data-variant={variant} {...props} />; });
 type CheckboxPrimitiveProps = Omit<ComponentPropsWithoutRef<typeof BaseContextMenu.CheckboxItem>, "className">;
 export interface ContextMenuCheckboxItemProps extends CheckboxPrimitiveProps { className?: string; }
-export const ContextMenuCheckboxItem = forwardRef<HTMLElement, ContextMenuCheckboxItemProps>(function ContextMenuCheckboxItem({ className, children, ...props }, ref) { return <BaseContextMenu.CheckboxItem ref={ref} className={cx("arcsyn-context-menu__item", className)} {...props}><span className="arcsyn-context-menu__indicator"><BaseContextMenu.CheckboxItemIndicator>✓</BaseContextMenu.CheckboxItemIndicator></span>{children}</BaseContextMenu.CheckboxItem>; });
+export const ContextMenuCheckboxItem = forwardRef<HTMLElement, ContextMenuCheckboxItemProps>(function ContextMenuCheckboxItem({ className, children, ...props }, ref) { return <BaseContextMenu.CheckboxItem ref={ref} className={cx("arcsyn-context-menu__item", className)} {...props}><span className="arcsyn-context-menu__indicator"><BaseContextMenu.CheckboxItemIndicator><CheckIcon aria-hidden size={16} /></BaseContextMenu.CheckboxItemIndicator></span>{children}</BaseContextMenu.CheckboxItem>; });
 export type ContextMenuRadioGroupProps = ComponentPropsWithoutRef<typeof BaseContextMenu.RadioGroup>;
 export const ContextMenuRadioGroup = BaseContextMenu.RadioGroup;
 type RadioPrimitiveProps = Omit<ComponentPropsWithoutRef<typeof BaseContextMenu.RadioItem>, "className">;
 export interface ContextMenuRadioItemProps extends RadioPrimitiveProps { className?: string; }
-export const ContextMenuRadioItem = forwardRef<HTMLElement, ContextMenuRadioItemProps>(function ContextMenuRadioItem({ className, children, ...props }, ref) { return <BaseContextMenu.RadioItem ref={ref} className={cx("arcsyn-context-menu__item", className)} {...props}><span className="arcsyn-context-menu__indicator"><BaseContextMenu.RadioItemIndicator>●</BaseContextMenu.RadioItemIndicator></span>{children}</BaseContextMenu.RadioItem>; });
+export const ContextMenuRadioItem = forwardRef<HTMLElement, ContextMenuRadioItemProps>(function ContextMenuRadioItem({ className, children, ...props }, ref) { return <BaseContextMenu.RadioItem ref={ref} className={cx("arcsyn-context-menu__item", className)} {...props}><span className="arcsyn-context-menu__indicator"><BaseContextMenu.RadioItemIndicator><CircleIcon aria-hidden fill="currentColor" size={8} /></BaseContextMenu.RadioItemIndicator></span>{children}</BaseContextMenu.RadioItem>; });
 export type ContextMenuSeparatorProps = ComponentPropsWithoutRef<typeof BaseContextMenu.Separator>;
 export const ContextMenuSeparator = forwardRef<HTMLDivElement, ContextMenuSeparatorProps>(function ContextMenuSeparator({ className, ...props }, ref) { return <BaseContextMenu.Separator ref={ref} className={(state) => cx("arcsyn-context-menu__separator", typeof className === "function" ? className(state) : className)} {...props} />; });
 export type ContextMenuShortcutProps = HTMLAttributes<HTMLSpanElement>;

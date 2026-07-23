@@ -1,5 +1,6 @@
 import { Menu as MenuPrimitive } from "@base-ui/react/menu";
 import { forwardRef, type ComponentPropsWithoutRef, type HTMLAttributes } from "react";
+import { CheckIcon, ChevronRightIcon } from "../../icons/index.js";
 import { cx } from "../../utilities/cx.js";
 import type { ButtonSize, ButtonVariant } from "../button/button.js";
 
@@ -95,7 +96,7 @@ export const DropdownMenuSubTrigger = forwardRef<HTMLElement, DropdownMenuSubTri
   { className, inset = false, children, ...props },
   ref,
 ) {
-  return <MenuPrimitive.SubmenuTrigger ref={ref} data-slot="dropdown-menu-sub-trigger" data-inset={inset || undefined} className={(state) => cx("arcsyn-dropdown-menu__item", "arcsyn-dropdown-menu__sub-trigger", typeof className === "function" ? className(state) : className)} {...props}>{children}<span aria-hidden className="arcsyn-dropdown-menu__sub-icon">›</span></MenuPrimitive.SubmenuTrigger>;
+  return <MenuPrimitive.SubmenuTrigger ref={ref} data-slot="dropdown-menu-sub-trigger" data-inset={inset || undefined} className={(state) => cx("arcsyn-dropdown-menu__item", "arcsyn-dropdown-menu__sub-trigger", typeof className === "function" ? className(state) : className)} {...props}>{children}<ChevronRightIcon aria-hidden className="arcsyn-dropdown-menu__sub-icon" size={16} /></MenuPrimitive.SubmenuTrigger>;
 });
 
 export type DropdownMenuSubContentProps = DropdownMenuContentProps;
@@ -112,7 +113,7 @@ export const DropdownMenuCheckboxItem = forwardRef<HTMLElement, DropdownMenuChec
   { className, children, inset = false, ...props },
   ref,
 ) {
-  return <MenuPrimitive.CheckboxItem ref={ref} data-slot="dropdown-menu-checkbox-item" data-inset={inset || undefined} className={cx("arcsyn-dropdown-menu__item", className)} {...props}><span className="arcsyn-dropdown-menu__indicator"><MenuPrimitive.CheckboxItemIndicator>✓</MenuPrimitive.CheckboxItemIndicator></span>{children}</MenuPrimitive.CheckboxItem>;
+  return <MenuPrimitive.CheckboxItem ref={ref} data-slot="dropdown-menu-checkbox-item" data-inset={inset || undefined} className={cx("arcsyn-dropdown-menu__item", className)} {...props}><span className="arcsyn-dropdown-menu__indicator"><MenuPrimitive.CheckboxItemIndicator><CheckIcon aria-hidden size={16} /></MenuPrimitive.CheckboxItemIndicator></span>{children}</MenuPrimitive.CheckboxItem>;
 });
 
 export type DropdownMenuRadioGroupProps = ComponentPropsWithoutRef<typeof MenuPrimitive.RadioGroup>;
@@ -126,7 +127,7 @@ export const DropdownMenuRadioItem = forwardRef<HTMLElement, DropdownMenuRadioIt
   { className, children, inset = false, ...props },
   ref,
 ) {
-  return <MenuPrimitive.RadioItem ref={ref} data-slot="dropdown-menu-radio-item" data-inset={inset || undefined} className={cx("arcsyn-dropdown-menu__item", className)} {...props}><span className="arcsyn-dropdown-menu__indicator"><MenuPrimitive.RadioItemIndicator>✓</MenuPrimitive.RadioItemIndicator></span>{children}</MenuPrimitive.RadioItem>;
+  return <MenuPrimitive.RadioItem ref={ref} data-slot="dropdown-menu-radio-item" data-inset={inset || undefined} className={cx("arcsyn-dropdown-menu__item", className)} {...props}><span className="arcsyn-dropdown-menu__indicator"><MenuPrimitive.RadioItemIndicator><CheckIcon aria-hidden size={16} /></MenuPrimitive.RadioItemIndicator></span>{children}</MenuPrimitive.RadioItem>;
 });
 
 export type DropdownMenuSeparatorProps = ComponentPropsWithoutRef<typeof MenuPrimitive.Separator>;

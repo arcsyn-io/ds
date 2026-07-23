@@ -1,4 +1,5 @@
 import { forwardRef, type AnchorHTMLAttributes, type HTMLAttributes, type LiHTMLAttributes } from "react";
+import { ArrowLeftIcon, ArrowRightIcon, EllipsisIcon } from "../../icons/index.js";
 import { cx } from "../../utilities/cx.js";
 
 export type PaginationProps = HTMLAttributes<HTMLElement>;
@@ -19,11 +20,11 @@ export const PaginationLink = forwardRef<HTMLAnchorElement, PaginationLinkProps>
 });
 
 export const PaginationPrevious = forwardRef<HTMLAnchorElement, PaginationLinkProps>(function PaginationPrevious({ children = "Anterior", className, ...props }, ref) {
-  return <PaginationLink ref={ref} className={cx("arcsyn-pagination__link--wide", className)} aria-label="Ir para a página anterior" {...props}><span aria-hidden>←</span>{children}</PaginationLink>;
+  return <PaginationLink ref={ref} className={cx("arcsyn-pagination__link--wide", className)} aria-label="Ir para a página anterior" {...props}><ArrowLeftIcon aria-hidden size={16} />{children}</PaginationLink>;
 });
 export const PaginationNext = forwardRef<HTMLAnchorElement, PaginationLinkProps>(function PaginationNext({ children = "Próxima", className, ...props }, ref) {
-  return <PaginationLink ref={ref} className={cx("arcsyn-pagination__link--wide", className)} aria-label="Ir para a próxima página" {...props}>{children}<span aria-hidden>→</span></PaginationLink>;
+  return <PaginationLink ref={ref} className={cx("arcsyn-pagination__link--wide", className)} aria-label="Ir para a próxima página" {...props}>{children}<ArrowRightIcon aria-hidden size={16} /></PaginationLink>;
 });
 export const PaginationEllipsis = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElement>>(function PaginationEllipsis({ className, ...props }, ref) {
-  return <span ref={ref} className={cx("arcsyn-pagination__ellipsis", className)} aria-hidden="true" {...props}>…</span>;
+  return <span ref={ref} className={cx("arcsyn-pagination__ellipsis", className)} aria-hidden="true" {...props}><EllipsisIcon size={16} /></span>;
 });
