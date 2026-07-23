@@ -1,0 +1,28 @@
+@layer components {
+  .arcsyn-context-menu__trigger { -webkit-touch-callout: none; touch-action: none; user-select: none; }
+  .arcsyn-context-menu__portal > [data-base-ui-inert] { display: none; }
+  .arcsyn-context-menu__positioner { outline: none; z-index: 100; }
+  .arcsyn-context-menu__popup { background: var(--arcsyn-color-surface-raised); border: 1px solid var(--arcsyn-color-border-strong); border-radius: var(--arcsyn-radius-md); box-shadow: var(--arcsyn-shadow-md); color: var(--arcsyn-color-foreground); max-block-size: min(24rem, calc(100dvh - var(--arcsyn-spacing-4))); min-inline-size: 12rem; overflow-y: auto; padding: var(--arcsyn-spacing-1); transform-origin: var(--transform-origin); }
+  .arcsyn-context-menu__popup[data-open] { animation: arcsyn-context-menu-enter var(--arcsyn-duration-fast) ease-out; }
+  .arcsyn-context-menu__label { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-xs); font-weight: 600; padding: var(--arcsyn-spacing-2); }
+  .arcsyn-context-menu__item { align-items: center; border-radius: var(--arcsyn-radius-sm); cursor: pointer; display: flex; font-size: var(--arcsyn-font-size-sm); gap: var(--arcsyn-spacing-2); min-block-size: 2rem; outline: none; padding: var(--arcsyn-spacing-2); user-select: none; }
+  .arcsyn-context-menu__item[data-highlighted] { background: var(--arcsyn-color-surface-sunken); }
+  .arcsyn-context-menu__item[data-disabled] { cursor: not-allowed; opacity: 0.45; }
+  .arcsyn-context-menu__item[data-variant="danger"] { color: var(--arcsyn-color-danger); }
+  .arcsyn-context-menu__indicator { align-items: center; color: var(--arcsyn-color-primary); display: inline-flex; inline-size: 1.25rem; justify-content: center; }
+  .arcsyn-context-menu__shortcut { color: var(--arcsyn-color-muted-foreground); font-family: var(--arcsyn-font-mono); font-size: var(--arcsyn-font-size-xs); margin-inline-start: auto; }
+  .arcsyn-context-menu__separator { background: var(--arcsyn-color-border); block-size: 1px; margin: var(--arcsyn-spacing-1); }
+  @keyframes arcsyn-context-menu-enter { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+  @media (prefers-reduced-motion: reduce) { .arcsyn-context-menu__popup[data-open] { animation-duration: 1ms; } }
+  @media (hover: none) and (pointer: coarse) {
+    .arcsyn-context-menu__popup,
+    .arcsyn-context-menu__popup[data-open],
+    .arcsyn-context-menu__popup[data-ending-style] {
+      animation: none;
+      opacity: 1;
+      transform: none;
+      transform-origin: center;
+      will-change: auto;
+    }
+  }
+}

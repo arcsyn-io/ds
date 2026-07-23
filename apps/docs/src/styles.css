@@ -69,6 +69,11 @@
 .docs-example .docs-code { border: 0; border-radius: 0; border-top: 1px solid var(--arcsyn-color-border); }
 .docs-demo-row { align-items: center; display: flex; flex-wrap: wrap; gap: var(--arcsyn-spacing-3); }
 .docs-demo-stack { display: grid; gap: var(--arcsyn-spacing-3); max-width: 32rem; }
+.docs-carousel-slide { display: grid; gap: var(--arcsyn-spacing-2); }
+.docs-carousel-slide strong { font-size: var(--arcsyn-font-size-lg); }
+.docs-carousel-slide span:last-child { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-sm); }
+.docs-context-area { background: var(--arcsyn-color-surface); border: 1px dashed var(--arcsyn-color-border-strong); border-radius: var(--arcsyn-radius-md); color: var(--arcsyn-color-foreground); cursor: context-menu; max-width: 28rem; padding: var(--arcsyn-spacing-5); }
+.docs-context-area span { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-xs); }
 .docs-field { display: grid; gap: var(--arcsyn-spacing-1); color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-sm); }
 .docs-card-example { display: grid; gap: var(--arcsyn-spacing-3); max-width: 20rem; }
 .docs-card-example > div:first-child { align-items: center; display: flex; justify-content: space-between; }
@@ -83,6 +88,8 @@
 .docs-separator-example { display: grid; gap: var(--arcsyn-spacing-3); max-width: 32rem; }
 .docs-separator-example span { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-sm); }
 .docs-separator-row { align-items: center; display: flex; gap: var(--arcsyn-spacing-3); height: 1rem; }
+.docs-attachment-image { max-width: 20rem; }
+.docs-attachment-image .arcsyn-attachment__media { aspect-ratio: 16 / 9; height: auto; width: 100%; }
 .docs-accessibility { background: color-mix(in srgb, var(--arcsyn-color-primary), transparent 92%); border-left: 3px solid var(--arcsyn-color-primary); padding: var(--arcsyn-spacing-4); }
 .docs-accessibility p:last-child { color: var(--arcsyn-color-muted-foreground); line-height: 1.6; margin: 0; }
 .docs-principles, .docs-catalog { display: grid; gap: var(--arcsyn-spacing-3); grid-template-columns: repeat(3, minmax(0, 1fr)); }

@@ -1,0 +1,11 @@
+@layer components {
+  .arcsyn-carousel { display: grid; gap: var(--arcsyn-spacing-3); max-inline-size: 36rem; }
+  .arcsyn-carousel__viewport { background: var(--arcsyn-color-surface); border: 1px solid var(--arcsyn-color-border); border-radius: var(--arcsyn-radius-md); overflow: hidden; }
+  .arcsyn-carousel__slide { min-block-size: 10rem; padding: var(--arcsyn-spacing-5); }
+  .arcsyn-carousel__controls { align-items: center; display: flex; gap: var(--arcsyn-spacing-2); justify-content: flex-end; }
+  .arcsyn-carousel__button { align-items: center; background: transparent; border: 1px solid var(--arcsyn-color-border); border-radius: var(--arcsyn-radius-sm); color: var(--arcsyn-color-foreground); cursor: pointer; display: inline-flex; font: inherit; inline-size: 2rem; justify-content: center; min-block-size: 2rem; }
+  .arcsyn-carousel__button:hover:not(:disabled) { background: var(--arcsyn-color-muted); }
+  .arcsyn-carousel__button:focus-visible { outline: 2px solid var(--arcsyn-color-focus-ring); outline-offset: 2px; }
+  .arcsyn-carousel__button:disabled { cursor: not-allowed; opacity: 0.45; }
+  .arcsyn-carousel__status { color: var(--arcsyn-color-muted-foreground); font-family: var(--arcsyn-font-mono); font-size: var(--arcsyn-font-size-xs); min-inline-size: 3.5rem; text-align: center; }
+}

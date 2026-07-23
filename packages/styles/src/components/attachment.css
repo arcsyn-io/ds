@@ -1,0 +1,25 @@
+@layer components {
+  .arcsyn-attachment { align-items: center; background: var(--arcsyn-color-surface); border: 1px solid var(--arcsyn-color-border); border-radius: var(--arcsyn-radius-md); display: flex; gap: var(--arcsyn-spacing-3); min-inline-size: 14rem; padding: var(--arcsyn-spacing-3); position: relative; }
+  .arcsyn-attachment[data-orientation="vertical"] { align-items: stretch; flex-direction: column; }
+  .arcsyn-attachment[data-size="sm"] { min-inline-size: 11rem; padding: var(--arcsyn-spacing-2); }
+  .arcsyn-attachment[data-size="xs"] { gap: var(--arcsyn-spacing-2); min-inline-size: 9rem; padding: var(--arcsyn-spacing-2); }
+  .arcsyn-attachment[data-state="error"] { border-color: var(--arcsyn-color-danger); }
+  .arcsyn-attachment__media { align-items: center; background: var(--arcsyn-color-surface-sunken); border-radius: var(--arcsyn-radius-sm); color: var(--arcsyn-color-muted-foreground); display: flex; flex: 0 0 auto; height: 2.5rem; justify-content: center; overflow: hidden; width: 2.5rem; }
+  .arcsyn-attachment[data-size="sm"] .arcsyn-attachment__media { height: 2rem; width: 2rem; }
+  .arcsyn-attachment[data-size="xs"] .arcsyn-attachment__media { height: 1.5rem; width: 1.5rem; }
+  .arcsyn-attachment__media[data-variant="image"] { height: 5rem; width: 5rem; }
+  .arcsyn-attachment__media img { height: 100%; object-fit: cover; width: 100%; }
+  .arcsyn-attachment__content { display: grid; gap: var(--arcsyn-spacing-1); min-inline-size: 0; }
+  .arcsyn-attachment__title { color: var(--arcsyn-color-foreground); font-size: var(--arcsyn-font-size-sm); font-weight: 600; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .arcsyn-attachment__description { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-xs); margin: 0; }
+  .arcsyn-attachment[data-state="error"] .arcsyn-attachment__description { color: var(--arcsyn-color-danger); }
+  .arcsyn-attachment[data-state="uploading"] .arcsyn-attachment__title, .arcsyn-attachment[data-state="processing"] .arcsyn-attachment__title { animation: arcsyn-attachment-shimmer 1.3s ease-in-out infinite; color: transparent; background: linear-gradient(90deg, var(--arcsyn-color-muted) 25%, var(--arcsyn-color-surface-sunken) 50%, var(--arcsyn-color-muted) 75%); background-size: 200% 100%; border-radius: var(--arcsyn-radius-sm); }
+  .arcsyn-attachment__actions { align-items: center; display: flex; gap: var(--arcsyn-spacing-1); margin-left: auto; position: relative; z-index: 1; }
+  .arcsyn-attachment__action { background: transparent; border: 0; border-radius: var(--arcsyn-radius-sm); color: var(--arcsyn-color-muted-foreground); cursor: pointer; font: inherit; height: 1.75rem; width: 1.75rem; }
+  .arcsyn-attachment__action:hover { background: var(--arcsyn-color-surface-sunken); color: var(--arcsyn-color-foreground); }
+  .arcsyn-attachment__action:focus-visible, .arcsyn-attachment__trigger:focus-visible { outline: 2px solid var(--arcsyn-color-focus-ring); outline-offset: 2px; }
+  .arcsyn-attachment__trigger { background: transparent; border: 0; cursor: pointer; inset: 0; position: absolute; z-index: 0; }
+  .arcsyn-attachment-group { display: flex; gap: var(--arcsyn-spacing-3); overflow-x: auto; padding-block: var(--arcsyn-spacing-1); scroll-snap-type: x mandatory; }
+  .arcsyn-attachment-group > .arcsyn-attachment { flex: 0 0 auto; scroll-snap-align: start; }
+  @keyframes arcsyn-attachment-shimmer { to { background-position: -200% 0; } }
+}

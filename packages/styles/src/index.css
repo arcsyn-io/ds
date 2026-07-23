@@ -10,6 +10,7 @@
 @import "./reset.css";
 @import "./themes.css";
 @import "./components/button.css";
+@import "./components/accordion.css";
 @import "./components/input.css";
 @import "./components/field.css";
 @import "./components/input-group.css";
@@ -20,12 +21,19 @@
 @import "./components/select.css";
 @import "./components/select-search.css";
 @import "./components/card.css";
+@import "./components/carousel.css";
+@import "./components/collapsible.css";
+@import "./components/context-menu.css";
 @import "./components/badge.css";
 @import "./components/spinner.css";
+@import "./components/popover.css";
+@import "./components/kbd.css";
 @import "./components/dialog.css";
+@import "./components/dropdown-menu.css";
 @import "./components/alert.css";
 @import "./components/aspect-ratio.css";
 @import "./components/avatar.css";
+@import "./components/attachment.css";
 @import "./components/breadcrumb.css";
 @import "./components/scroll-area.css";
 @import "./components/separator.css";

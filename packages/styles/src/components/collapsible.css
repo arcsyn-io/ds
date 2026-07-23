@@ -1,0 +1,11 @@
+@layer components {
+  .arcsyn-collapsible { border: 1px solid var(--arcsyn-color-border); border-radius: var(--arcsyn-radius-md); max-inline-size: 32rem; }
+  .arcsyn-collapsible__trigger { align-items: center; background: transparent; border: 0; color: var(--arcsyn-color-foreground); cursor: pointer; display: flex; font: inherit; font-size: var(--arcsyn-font-size-sm); font-weight: 600; inline-size: 100%; justify-content: space-between; min-block-size: 2.75rem; padding: var(--arcsyn-spacing-3); text-align: start; }
+  .arcsyn-collapsible__trigger:focus-visible { outline: 2px solid var(--arcsyn-color-focus-ring); outline-offset: 2px; }
+  .arcsyn-collapsible__icon { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-lg); transition: transform var(--arcsyn-duration-fast); }
+  .arcsyn-collapsible__trigger[data-panel-open] .arcsyn-collapsible__icon { transform: rotate(45deg); }
+  .arcsyn-collapsible__panel { height: var(--collapsible-panel-height); overflow: hidden; transition: height var(--arcsyn-duration-normal) ease; }
+  .arcsyn-collapsible__panel[data-starting-style], .arcsyn-collapsible__panel[data-ending-style] { height: 0; }
+  .arcsyn-collapsible__content { border-block-start: 1px solid var(--arcsyn-color-border); color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-sm); line-height: 1.55; padding: var(--arcsyn-spacing-3); }
+  @media (prefers-reduced-motion: reduce) { .arcsyn-collapsible__panel { transition-duration: 1ms; } }
+}

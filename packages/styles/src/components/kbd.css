@@ -1,0 +1,3 @@
+@layer components {
+  .arcsyn-kbd { background: var(--arcsyn-color-surface-sunken); border: 1px solid var(--arcsyn-color-border-strong); border-block-end-width: 2px; border-radius: var(--arcsyn-radius-sm); color: var(--arcsyn-color-foreground); display: inline-flex; font-family: var(--arcsyn-font-mono); font-size: var(--arcsyn-font-size-xs); line-height: 1; min-block-size: 1.5rem; min-inline-size: 1.5rem; align-items: center; justify-content: center; padding-inline: var(--arcsyn-spacing-1); white-space: nowrap; }
+}
