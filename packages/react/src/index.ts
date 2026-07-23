@@ -26,6 +26,7 @@ export * from "./components/popover/index.js";
 export * from "./components/radio-group/index.js";
 export * from "./components/scroll-area/index.js";
 export * from "./components/separator/index.js";
+export * from "./components/sidebar/index.js";
 export * from "./components/textarea/index.js";
 export * from "./components/checkbox/index.js";
 export * from "./components/switch/index.js";

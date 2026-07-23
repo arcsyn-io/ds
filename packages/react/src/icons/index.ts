@@ -9,6 +9,7 @@ export {
   Ellipsis as EllipsisIcon,
   Minus as MinusIcon,
   Plus as PlusIcon,
+  PanelLeft as PanelLeftIcon,
   X as XIcon,
   type LucideProps as IconProps,
 } from "lucide-react";

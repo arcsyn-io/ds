@@ -101,6 +101,22 @@
 .docs-attachment-image { max-width: 20rem; }
 .docs-attachment-image .arcsyn-attachment__media { aspect-ratio: 16 / 9; height: auto; width: 100%; }
 .docs-skeleton-card { display: grid; gap: var(--arcsyn-spacing-3); max-width: 24rem; }
+.docs-sidebar-demo {
+  border: 1px solid var(--arcsyn-color-border);
+  border-radius: var(--arcsyn-radius-md);
+  block-size: 26rem;
+  min-block-size: 0;
+  overflow: hidden;
+}
+.docs-sidebar-demo .arcsyn-sidebar,
+.docs-sidebar-demo .arcsyn-sidebar__panel { block-size: 100%; }
+.docs-sidebar-demo .arcsyn-sidebar__panel { position: relative; }
+.docs-sidebar-demo-brand { align-items: center; display: flex; font-size: var(--arcsyn-font-size-sm); gap: var(--arcsyn-spacing-2); min-block-size: 2rem; overflow: hidden; white-space: nowrap; }
+.docs-sidebar-demo-brand svg { color: var(--arcsyn-color-primary); flex: none; }
+.docs-sidebar-demo-inset { display: flex; flex-direction: column; min-inline-size: 11rem; }
+.docs-sidebar-demo-inset > header { align-items: center; border-block-end: 1px solid var(--arcsyn-color-border); display: flex; font-size: var(--arcsyn-font-size-sm); font-weight: 600; gap: var(--arcsyn-spacing-2); min-block-size: 3rem; padding-inline: var(--arcsyn-spacing-3); }
+.docs-sidebar-demo-inset > div { align-items: flex-start; color: var(--arcsyn-color-muted-foreground); display: flex; flex: 1; flex-direction: column; font-size: var(--arcsyn-font-size-xs); gap: var(--arcsyn-spacing-2); justify-content: center; padding: var(--arcsyn-spacing-5); }
+.docs-sidebar-demo-inset p { color: var(--arcsyn-color-foreground); font-size: var(--arcsyn-font-size-lg); font-weight: 600; margin: 0; }
 .docs-accessibility { background: color-mix(in srgb, var(--arcsyn-color-primary), transparent 92%); border-left: 3px solid var(--arcsyn-color-primary); padding: var(--arcsyn-spacing-4); }
 .docs-accessibility p:last-child { color: var(--arcsyn-color-muted-foreground); line-height: 1.6; margin: 0; }
 .docs-principles, .docs-catalog { display: grid; gap: var(--arcsyn-spacing-3); grid-template-columns: repeat(3, minmax(0, 1fr)); }

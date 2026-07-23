@@ -1,5 +1,5 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, Dialog, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Skeleton, Spinner, Switch, Textarea, ThemeSwitcher, Toaster, toast, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
+import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, Dialog, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Textarea, ThemeSwitcher, Toaster, toast, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleIcon, EllipsisIcon, MinusIcon, PlusIcon, XIcon } from "@arcsyn/react/icons";
 
 type Property = {
@@ -41,6 +41,74 @@ function ControlledCollapsibleDemo() {
 function ControlledPaginationDemo() {
   const [page, setPage] = useState(3);
   return <div className="docs-demo-stack"><Pagination><PaginationContent><PaginationItem><PaginationPrevious href="#pagination-demo" aria-disabled={page === 1} onClick={(event) => { event.preventDefault(); setPage((current) => Math.max(1, current - 1)); }} /></PaginationItem>{[1, 2, 3, 4, 5].map((item) => <PaginationItem key={item}><PaginationLink href="#pagination-demo" active={page === item} onClick={(event) => { event.preventDefault(); setPage(item); }}>{item}</PaginationLink></PaginationItem>)}<PaginationItem><PaginationNext href="#pagination-demo" aria-disabled={page === 5} onClick={(event) => { event.preventDefault(); setPage((current) => Math.min(5, current + 1)); }} /></PaginationItem></PaginationContent></Pagination><span className="docs-muted-copy">Página selecionada: {page}</span></div>;
+}
+
+const sidebarDemoStyle = {
+  "--arcsyn-sidebar-width": "13.5rem",
+  "--arcsyn-sidebar-width-icon": "3.25rem",
+} as CSSProperties;
+
+function SidebarDemoNavigation() {
+  return (
+    <>
+      <SidebarHeader>
+        <strong className="docs-sidebar-demo-brand"><CircleIcon aria-hidden size={16} /><span>ArcSyn Ops</span></strong>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Operação</SidebarGroupLabel>
+          <SidebarGroupAction aria-label="Adicionar ambiente"><PlusIcon aria-hidden size={15} /></SidebarGroupAction>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem><SidebarMenuButton asChild isActive tooltip="Visão geral"><a href="#sidebar-demo"><CircleIcon aria-hidden size={16} /><span>Visão geral</span></a></SidebarMenuButton></SidebarMenuItem>
+              <SidebarMenuItem><SidebarMenuButton asChild tooltip="Ambientes"><a href="#sidebar-demo"><CheckIcon aria-hidden size={16} /><span>Ambientes</span></a></SidebarMenuButton><SidebarMenuBadge>8</SidebarMenuBadge></SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton tooltip="Projetos"><PlusIcon aria-hidden size={16} /><span>Projetos</span></SidebarMenuButton>
+                <SidebarMenuAction aria-label="Opções de projetos" showOnHover><EllipsisIcon aria-hidden size={15} /></SidebarMenuAction>
+                <SidebarMenuSub>
+                  <SidebarMenuSubItem><SidebarMenuSubButton asChild><a href="#sidebar-demo"><span>Plataforma</span></a></SidebarMenuSubButton></SidebarMenuSubItem>
+                  <SidebarMenuSubItem><SidebarMenuSubButton asChild><a href="#sidebar-demo"><span>Observabilidade</span></a></SidebarMenuSubButton></SidebarMenuSubItem>
+                </SidebarMenuSub>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Carregando</SidebarGroupLabel>
+          <SidebarMenu><SidebarMenuItem><SidebarMenuSkeleton showIcon /></SidebarMenuItem></SidebarMenu>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu><SidebarMenuItem><SidebarMenuButton tooltip="Conta"><CircleIcon aria-hidden size={16} /><span>lcosta@arcsyn.io</span></SidebarMenuButton></SidebarMenuItem></SidebarMenu>
+      </SidebarFooter>
+      <SidebarRail />
+    </>
+  );
+}
+
+function SidebarDemo({ collapsible = "icon", variant = "sidebar", side = "left", keyboardShortcut = false }: { collapsible?: SidebarCollapsible; variant?: SidebarVariant; side?: SidebarSide; keyboardShortcut?: string | false }) {
+  return (
+    <SidebarProvider className="docs-sidebar-demo" keyboardShortcut={keyboardShortcut} style={sidebarDemoStyle}>
+      <Sidebar side={side} variant={variant} collapsible={collapsible}><SidebarDemoNavigation /></Sidebar>
+      <SidebarInset className="docs-sidebar-demo-inset">
+        <header><SidebarTrigger /><span>Painel operacional</span></header>
+        <div><p>Conteúdo principal</p><span>Use o trigger, o rail ou {keyboardShortcut ? "Ctrl/Cmd+B" : "o controle"} para alternar.</span></div>
+      </SidebarInset>
+    </SidebarProvider>
+  );
+}
+
+function ControlledSidebarDemo() {
+  const [open, setOpen] = useState(true);
+  return (
+    <div className="docs-demo-stack">
+      <span className="docs-muted-copy">Estado controlado: {open ? "expandido" : "recolhido"}</span>
+      <SidebarProvider className="docs-sidebar-demo" keyboardShortcut={false} open={open} onOpenChange={setOpen} style={sidebarDemoStyle}>
+        <Sidebar collapsible="offcanvas"><SidebarDemoNavigation /></Sidebar>
+        <SidebarInset className="docs-sidebar-demo-inset"><header><SidebarTrigger /><span>Workspace</span></header><div><Button size="sm" variant="secondary" onClick={() => setOpen((current) => !current)}>Alternar externamente</Button></div></SidebarInset>
+      </SidebarProvider>
+    </div>
+  );
 }
 
 const toasterEffects: Array<{ label: string; value: ToasterEffect }> = [
@@ -97,6 +165,33 @@ function DocsThemeSwitcher({ compact = false }: { compact?: boolean }) {
 }
 
 const componentPages: ComponentPage[] = [
+  {
+    id: "sidebar",
+    title: "Sidebar",
+    summary: "Estrutura navegação lateral responsiva, recolhível e composta para aplicações densas.",
+    importCode: 'import {\n  Sidebar, SidebarContent, SidebarGroup, SidebarInset,\n  SidebarMenu, SidebarMenuButton, SidebarMenuItem,\n  SidebarProvider, SidebarTrigger, useSidebar,\n} from "@arcsyn/react";',
+    status: "React estável · Base UI · Web",
+    anatomy: ["SidebarProvider e contexto", "Sidebar com Header, Content e Footer", "Group com Label, Action e Content", "Menu, Item, Button, Action e Badge", "Submenu", "Rail, Trigger e Inset", "Drawer móvel em portal"],
+    accessibility: "Sidebar usa aside nomeado no desktop e um Dialog Base UI no mobile, com foco contido, portal, Escape e backdrop. SidebarTrigger comunica aria-expanded; itens ativos usam aria-current=page. Ícones decorativos devem usar aria-hidden, ações só com ícone precisam de aria-label e tooltip não substitui um nome acessível. Em telas móveis, controles e itens preservam alvo mínimo de 44px. Não há equivalente React Native: use o padrão de navegação fornecido pela aplicação nativa e documente essa divergência.",
+    properties: [
+      { name: "SidebarProvider.defaultOpen", type: "boolean", defaultValue: "true", description: "Estado inicial da sidebar desktop no modo não controlado." },
+      { name: "SidebarProvider.open / onOpenChange", type: "boolean / (open) => void", defaultValue: "—", description: "Controla externamente a abertura no desktop." },
+      { name: "SidebarProvider.keyboardShortcut", type: "string | false", defaultValue: '"b"', description: "Tecla usada com Ctrl ou Cmd; false desativa o atalho." },
+      { name: "SidebarProvider.mobileBreakpoint", type: "number", defaultValue: "768", description: "Breakpoint em pixels que troca a sidebar pelo drawer móvel." },
+      { name: "Sidebar.side", type: '"left" | "right"', defaultValue: '"left"', description: "Posiciona o painel no início ou no fim do layout." },
+      { name: "Sidebar.variant", type: '"sidebar" | "floating" | "inset"', defaultValue: '"sidebar"', description: "Escolhe o tratamento visual do painel." },
+      { name: "Sidebar.collapsible", type: '"offcanvas" | "icon" | "none"', defaultValue: '"offcanvas"', description: "Desloca, reduz a ícones ou mantém a sidebar fixa." },
+      { name: "Sidebar.label", type: "string", defaultValue: '"Navegação principal"', description: "Nome acessível do landmark ou dialog." },
+      { name: "SidebarMenuButton", type: "asChild, isActive, size, tooltip, disabled", defaultValue: "—", description: "Renderiza botão ou link, comunica página ativa e oferece rótulo no modo ícone." },
+      { name: "useSidebar()", type: "SidebarContextValue", defaultValue: "—", description: "Expõe state, open, setOpen, openMobile, setOpenMobile, isMobile e toggleSidebar." },
+      { name: "Variáveis CSS", type: "--arcsyn-sidebar-width / -mobile / -icon", defaultValue: "16rem / 18rem / 3.25rem", description: "Ajustam larguras por instância através de style." },
+    ],
+    examples: [
+      { title: "Recolhimento para ícones", description: "O provider compartilha estado com trigger e rail; tooltip identifica links quando os rótulos ficam ocultos. Nesta prévia, Ctrl/Cmd+B também alterna o painel.", preview: <SidebarDemo keyboardShortcut="b" />, code: '<SidebarProvider>\n  <Sidebar collapsible="icon">\n    <SidebarHeader />\n    <SidebarContent>\n      <SidebarGroup>\n        <SidebarGroupLabel>Operação</SidebarGroupLabel>\n        <SidebarGroupContent>\n          <SidebarMenu>\n            <SidebarMenuItem>\n              <SidebarMenuButton asChild isActive tooltip="Visão geral">\n                <a href="/"><HomeIcon /><span>Visão geral</span></a>\n              </SidebarMenuButton>\n            </SidebarMenuItem>\n          </SidebarMenu>\n        </SidebarGroupContent>\n      </SidebarGroup>\n    </SidebarContent>\n    <SidebarRail />\n  </Sidebar>\n  <SidebarInset><SidebarTrigger />{children}</SidebarInset>\n</SidebarProvider>' },
+      { title: "Flutuante à direita", description: "side e variant são independentes; collapsible=none mantém a navegação sempre visível no desktop.", preview: <SidebarDemo side="right" variant="floating" collapsible="none" />, code: '<SidebarProvider>\n  <Sidebar side="right" variant="floating" collapsible="none">…</Sidebar>\n  <SidebarInset>…</SidebarInset>\n</SidebarProvider>' },
+      { title: "Estado controlado e offcanvas", description: "open e onOpenChange sincronizam trigger, rail e controles externos. Em viewport móvel, o mesmo trigger abre um drawer modal.", preview: <ControlledSidebarDemo />, code: 'const [open, setOpen] = useState(true);\n\n<SidebarProvider open={open} onOpenChange={setOpen}>\n  <Sidebar collapsible="offcanvas">…</Sidebar>\n  <SidebarInset>\n    <SidebarTrigger />\n    <button onClick={() => setOpen((value) => !value)}>Alternar</button>\n  </SidebarInset>\n</SidebarProvider>' },
+    ],
+  },
   {
     id: "theme-switcher",
     title: "Theme Switcher",

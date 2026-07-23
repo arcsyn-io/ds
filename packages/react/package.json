@@ -16,6 +16,10 @@
       "types": "./dist/components/button/index.d.ts",
       "import": "./dist/components/button/index.js"
     },
+    "./sidebar": {
+      "types": "./dist/components/sidebar/index.d.ts",
+      "import": "./dist/components/sidebar/index.js"
+    },
     "./icons": {
       "types": "./dist/icons/index.d.ts",
       "import": "./dist/icons/index.js"
