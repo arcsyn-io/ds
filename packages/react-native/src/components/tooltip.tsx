@@ -110,7 +110,7 @@ export const TooltipTrigger = forwardRef<View, TooltipTriggerProps>(function Too
     if (open) {
       internalRef.current?.measureInWindow((x, y, width, height) => show({ x, y, width, height }));
     }
-  }, [open]);
+  }, [open, show]);
 
   return (
     <Pressable

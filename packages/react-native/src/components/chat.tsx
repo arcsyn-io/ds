@@ -1,6 +1,5 @@
 import { useState, type ReactNode } from "react";
 import {
-  ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,

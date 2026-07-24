@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://arcsyn.io/schemas/design-tokens.json",
+  "title": "ArcSyn DTCG design tokens",
+  "type": "object",
+  "minProperties": 1,
+  "additionalProperties": {
+    "$ref": "#/$defs/node"
+  },
+  "$defs": {
+    "node": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/token"
+        },
+        {
+          "$ref": "#/$defs/group"
+        }
+      ]
+    },
+    "token": {
+      "type": "object",
+      "required": ["$type", "$value"],
+      "properties": {
+        "$type": {
+          "enum": ["color", "dimension", "duration", "fontFamily", "shadow"]
+        },
+        "$value": {
+          "type": ["string", "number"]
+        },
+        "$description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "group": {
+      "type": "object",
+      "minProperties": 1,
+      "not": {
+        "required": ["$value"]
+      },
+      "properties": {
+        "$type": {
+          "enum": ["color", "dimension", "duration", "fontFamily", "shadow"]
+        },
+        "$description": {
+          "type": "string"
+        }
+      },
+      "patternProperties": {
+        "^(?!\\$).+$": {
+          "$ref": "#/$defs/node"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

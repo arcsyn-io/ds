@@ -53,7 +53,6 @@ export function DropdownMenu({
     if (closeOnSelect) setOpen(false);
   }
 
-  let lastGroup: string | undefined;
 
   return (
     <>
@@ -82,9 +81,8 @@ export function DropdownMenu({
             onPress={(event) => event.stopPropagation()}
           >
             <ScrollView>
-              {items.map((item) => {
-                const group = item.group !== lastGroup ? item.group : undefined;
-                lastGroup = item.group;
+              {items.map((item, index) => {
+                const group = item.group !== items[index - 1]?.group ? item.group : undefined;
                 return (
                   <View key={item.id}>
                     {group ? <Text style={[styles.group, { color: colors.mutedForeground, fontFamily: tokens.fontFamily.sansSemibold }]}>{group}</Text> : null}

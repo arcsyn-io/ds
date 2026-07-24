@@ -39,8 +39,8 @@ export const ChatHeader = divPart("header");
 export const ChatHeaderContent = divPart("header-content");
 export const ChatActions = divPart("actions");
 
-export const ChatTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadingElement>>(function ChatTitle({ className, ...props }, ref) {
-  return <h3 ref={ref} className={cx("arcsyn-chat__title", className)} {...props} />;
+export const ChatTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadingElement>>(function ChatTitle({ className, children, ...props }, ref) {
+  return <h3 ref={ref} className={cx("arcsyn-chat__title", className)} {...props}>{children}</h3>;
 });
 
 export const ChatDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagraphElement>>(function ChatDescription({ className, ...props }, ref) {

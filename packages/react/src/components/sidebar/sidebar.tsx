@@ -307,7 +307,7 @@ function renderSlottable(
   });
 }
 
-export interface SidebarGroupLabelProps extends SlottableProps {}
+export type SidebarGroupLabelProps = SlottableProps;
 export const SidebarGroupLabel = forwardRef<HTMLElement, SidebarGroupLabelProps>(function SidebarGroupLabel(
   { className, asChild = false, children, ...props },
   ref,

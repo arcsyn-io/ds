@@ -2,6 +2,7 @@
   "name": "@arcsyn/icons",
   "version": "0.1.0",
   "description": "Framework-agnostic ArcSyn SVG icons.",
+  "type": "module",
   "files": ["src"],
   "exports": {
     "./check.svg": "./src/check.svg",
