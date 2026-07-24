@@ -8,8 +8,15 @@ export function PopoverRoot(props: PopoverRootProps) { return <BasePopover.Root 
 type TriggerPrimitiveProps = Omit<ComponentPropsWithoutRef<typeof BasePopover.Trigger>, "className">;
 export interface PopoverTriggerProps extends TriggerPrimitiveProps { className?: string; variant?: ButtonVariant; size?: ButtonSize; }
 export const PopoverTrigger = forwardRef<HTMLButtonElement, PopoverTriggerProps>(function PopoverTrigger({ className, variant = "secondary", size = "md", ...props }, ref) { return <BasePopover.Trigger ref={ref} className={cx("arcsyn-button", "arcsyn-popover__trigger", className)} data-variant={variant} data-size={size} {...props} />; });
-export type PopoverContentProps = ComponentPropsWithoutRef<typeof BasePopover.Popup>;
-export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(function PopoverContent({ className, children, ...props }, ref) { return <BasePopover.Portal><BasePopover.Positioner className="arcsyn-popover__positioner" sideOffset={6}><BasePopover.Popup ref={ref} className={(state) => cx("arcsyn-popover", typeof className === "function" ? className(state) : className)} {...props}>{children}</BasePopover.Popup></BasePopover.Positioner></BasePopover.Portal>; });
+type PopoverPositionerProps = ComponentPropsWithoutRef<typeof BasePopover.Positioner>;
+export type PopoverContentProps = ComponentPropsWithoutRef<typeof BasePopover.Popup> & {
+  side?: PopoverPositionerProps["side"];
+  align?: PopoverPositionerProps["align"];
+  sideOffset?: PopoverPositionerProps["sideOffset"];
+  collisionAvoidance?: PopoverPositionerProps["collisionAvoidance"];
+  collisionPadding?: PopoverPositionerProps["collisionPadding"];
+};
+export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(function PopoverContent({ className, children, side, align, sideOffset = 6, collisionAvoidance, collisionPadding, ...props }, ref) { return <BasePopover.Portal><BasePopover.Positioner className="arcsyn-popover__positioner" side={side} align={align} sideOffset={sideOffset} collisionAvoidance={collisionAvoidance} collisionPadding={collisionPadding}><BasePopover.Popup ref={ref} className={(state) => cx("arcsyn-popover", typeof className === "function" ? className(state) : className)} {...props}>{children}</BasePopover.Popup></BasePopover.Positioner></BasePopover.Portal>; });
 export type PopoverTitleProps = ComponentPropsWithoutRef<typeof BasePopover.Title>;
 export const PopoverTitle = forwardRef<HTMLHeadingElement, PopoverTitleProps>(function PopoverTitle({ className, ...props }, ref) { return <BasePopover.Title ref={ref} className={(state) => cx("arcsyn-popover__title", typeof className === "function" ? className(state) : className)} {...props} />; });
 export type PopoverDescriptionProps = ComponentPropsWithoutRef<typeof BasePopover.Description>;

@@ -6,6 +6,8 @@
 
 - `StatCard`, `LineChart`, `BarChart`, `Sparkline`, `ChartLegend` and `ChartTooltip`.
 - `PageHeader`, `SearchInput`, `StatusIndicator`, `ActivityFeed`, `UserMenu` and `DataState`.
+- Composed `Chat` with message delivery states, typing indicator and an accessible composer, plus a React Native adapter.
+- `NotificationCenter` with unread count, a five-item popover and a React Native modal adapter.
 - Composed `Card` anatomy while preserving the existing root API.
 - Data state support in `DataTable`.
 - Dashboard, application, deployment, monitoring, account, notification, filtering and action icons in both adapters.

@@ -103,6 +103,11 @@
 .docs-user-menu-stage > div { display: grid; gap: var(--arcsyn-spacing-2); }
 .docs-user-menu-stage > div > span { color: var(--arcsyn-color-muted-foreground); font-family: var(--arcsyn-font-mono); font-size: var(--arcsyn-font-size-xs); }
 .docs-data-state-grid { display: grid; gap: var(--arcsyn-spacing-3); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.docs-chat-demo { inline-size: 100%; max-inline-size: 48rem; }
+.docs-notification-stage { align-items: center; background: var(--arcsyn-color-surface-raised); border: 1px solid var(--arcsyn-color-border); border-radius: var(--arcsyn-radius-md); display: flex; inline-size: 100%; justify-content: space-between; max-inline-size: 42rem; min-block-size: 5.5rem; padding: var(--arcsyn-spacing-4); }
+.docs-notification-stage > div { display: grid; gap: var(--arcsyn-spacing-1); }
+.docs-notification-stage > div > strong { color: var(--arcsyn-color-foreground); font-size: var(--arcsyn-font-size-sm); }
+.docs-notification-stage > div > span { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-xs); }
 .docs-data-table-project { display: grid; gap: 0.125rem; }
 .docs-data-table-project strong { font-weight: 600; }
 .docs-data-table-project code,

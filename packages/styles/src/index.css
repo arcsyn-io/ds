@@ -77,3 +77,5 @@
 @import "./components/activity-feed.css";
 @import "./components/user-menu.css";
 @import "./components/data-state.css";
+@import "./components/chat.css";
+@import "./components/notification-center.css";

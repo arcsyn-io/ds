@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, Tooltip, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleIcon, EllipsisIcon, MinusIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn/react/icons";
-import { ActivityFeed, BarChart, ChartLegend, DataState, LineChart, PageHeader, SearchInput, Sparkline, StatCard, StatusIndicator, UserMenu } from "@arcsyn/react";
+import { ActivityFeed, BarChart, ChartLegend, Chat, DataState, LineChart, NotificationCenter, PageHeader, SearchInput, Sparkline, StatCard, StatusIndicator, UserMenu } from "@arcsyn/react";
 import * as ArcSynIcons from "@arcsyn/react/icons";
 
 type Property = {
@@ -257,6 +257,103 @@ const chartDemoData = [
 function SearchInputDemo() {
   const [query, setQuery] = useState("");
   return <SearchInput aria-label="Buscar no workspace" placeholder="Buscar no workspace..." value={query} onValueChange={setQuery} shortcut="mod+k" onShortcut={() => undefined} clearable />;
+}
+
+type DemoChatMessage = {
+  id: string;
+  direction: "incoming" | "outgoing";
+  author: string;
+  content: string;
+  timestamp: string;
+  dateTime: string;
+  status?: "sent" | "read";
+};
+
+const initialChatMessages: DemoChatMessage[] = [
+  {
+    id: "message-1",
+    direction: "incoming",
+    author: "Marina Rocha",
+    content: "O deploy do portal-clientes terminou. Pode confirmar a telemetria do ambiente?",
+    timestamp: "09:42",
+    dateTime: "2026-07-24T09:42:00-03:00",
+  },
+  {
+    id: "message-2",
+    direction: "outgoing",
+    author: "Lucas Silva",
+    content: "Confirmado. Latência e taxa de erro estão dentro do esperado.",
+    timestamp: "09:44",
+    dateTime: "2026-07-24T09:44:00-03:00",
+    status: "read",
+  },
+];
+
+function ChatDemo() {
+  const [messages, setMessages] = useState(initialChatMessages);
+  return (
+    <Chat className="docs-chat-demo" aria-label="Conversa da equipe de operações">
+      <Chat.Header>
+        <Chat.HeaderContent>
+          <Chat.Title>Operação · Portal Clientes</Chat.Title>
+          <Chat.Description><StatusIndicator status="success" label="3 participantes online" /></Chat.Description>
+        </Chat.HeaderContent>
+        <Chat.Actions><Button size="sm" variant="ghost">Detalhes</Button></Chat.Actions>
+      </Chat.Header>
+      <Chat.Messages aria-label="Histórico da conversa">
+        <Chat.SystemMessage>Hoje · 24 de julho</Chat.SystemMessage>
+        {messages.map((message) => (
+          <Chat.Message
+            author={message.author}
+            dateTime={message.dateTime}
+            direction={message.direction}
+            key={message.id}
+            status={message.status}
+            timestamp={message.timestamp}
+          >
+            {message.content}
+          </Chat.Message>
+        ))}
+        <Chat.TypingIndicator label="Marina está digitando" />
+      </Chat.Messages>
+      <Chat.Composer
+        inputLabel="Mensagem para Operação · Portal Clientes"
+        maxLength={500}
+        onSend={(content) => setMessages((current) => [...current, {
+          id: `message-${Date.now()}`,
+          direction: "outgoing",
+          author: "Lucas Silva",
+          content,
+          timestamp: new Intl.DateTimeFormat("pt-BR", { hour: "2-digit", minute: "2-digit" }).format(new Date()),
+          dateTime: new Date().toISOString(),
+          status: "sent",
+        }])}
+      />
+    </Chat>
+  );
+}
+
+function NotificationCenterDemo() {
+  return (
+    <div className="docs-notification-stage">
+      <div>
+        <strong>Central de operações</strong>
+        <span>Workspace ArcSyn</span>
+      </div>
+      <NotificationCenter
+        description="Atualizações recentes do workspace."
+        onSeeAll={() => toast.info("Abrindo histórico de notificações")}
+        items={[
+          { id: "notification-1", title: "Deploy concluído", description: "portal-clientes v2.8.4 está disponível em produção.", timestamp: "Há 2 min", dateTime: "2026-07-24T10:18:00-03:00", tone: "success", unread: true, onSelect: () => toast.success("Deploy concluído") },
+          { id: "notification-2", title: "Marina mencionou você", description: "“Pode revisar a telemetria antes da janela de mudança?”", timestamp: "Há 8 min", dateTime: "2026-07-24T10:12:00-03:00", actor: <Avatar id="marina-notification" name="Marina Rocha" size="sm" />, unread: true, onSelect: () => toast.info("Abrindo conversa") },
+          { id: "notification-3", title: "Latência degradada", description: "API de pagamentos ultrapassou o limite de 450 ms.", timestamp: "Há 16 min", dateTime: "2026-07-24T10:04:00-03:00", tone: "warning", unread: true },
+          { id: "notification-4", title: "Aprovação registrada", description: "A mudança CHG-248 foi aprovada por Carlos Lima.", timestamp: "Há 31 min", dateTime: "2026-07-24T09:49:00-03:00", tone: "info" },
+          { id: "notification-5", title: "Sincronização concluída", description: "12 ambientes e 86 recursos foram atualizados.", timestamp: "Há 47 min", dateTime: "2026-07-24T09:33:00-03:00", tone: "success" },
+          { id: "notification-6", title: "Notificação anterior", description: "Este item não aparece porque o limite padrão é cinco.", timestamp: "Ontem", dateTime: "2026-07-23T18:00:00-03:00" },
+        ]}
+      />
+    </div>
+  );
 }
 
 function IconCatalogDemo() {
@@ -1570,6 +1667,58 @@ const componentPages: ComponentPage[] = [
       { name: "DataTable loading / emptyState / noResultsState / errorState", type: "boolean / ReactNode", defaultValue: "false / —", description: "Integra todo o ciclo sem desmontar filtros, seleção ou paginação." },
     ],
     examples: [{ title: "Ciclo de dados", description: "empty descreve uma coleção nova; no-results indica que filtros removeram todos os itens.", preview: <div className="docs-data-state-grid"><Card padding="none"><DataState state="loading" size="compact" /></Card><Card padding="none"><DataState state="empty" size="compact" title="Nenhuma aplicação" action={<Button size="sm">Nova aplicação</Button>} /></Card><Card padding="none"><DataState state="no-results" size="compact" description="Ajuste os filtros." action={<Button size="sm" variant="outline">Limpar filtros</Button>} /></Card><Card padding="none"><DataState state="error" size="compact" action={<Button size="sm" variant="outline">Tentar novamente</Button>} /></Card><Card padding="none"><DataState state="permission" size="compact" /></Card></div>, code: '<DataState state="empty" title="Nenhuma aplicação encontrada" action={<Button>Nova aplicação</Button>} />\n<DataTable loading={isLoading} emptyState={<DataState state="empty" />} errorState={<DataState state="error" />} />' }],
+  },
+  {
+    id: "chat",
+    title: "Chat",
+    summary: "Estrutura conversas operacionais com histórico, autoria, estados de entrega, digitação e composer.",
+    importCode: 'import { Chat } from "@arcsyn/react";',
+    status: "React estável · React Native",
+    anatomy: ["Root", "Header e Actions", "Messages com role log", "Message e metadados", "SystemMessage", "TypingIndicator", "Composer"],
+    accessibility: "Messages usa role=log e anuncia apenas adições relevantes. Cada mensagem mantém autor, horário e estado no DOM; o composer possui rótulo acessível e envia com Enter, preservando Shift+Enter para quebra de linha. Não mova o foco automaticamente quando novas mensagens chegarem. Em React Native, Chat expõe mensagens como dados e usa accessibilityLiveRegion no indicador de digitação.",
+    properties: [
+      { name: "Chat.Root density", type: '"compact" | "default"', defaultValue: '"default"', description: "Ajusta a densidade da superfície sem reduzir os alvos interativos." },
+      { name: "Chat.Messages loading / empty / live", type: "boolean / ReactNode / \"off\" | \"polite\"", defaultValue: 'false / — / "polite"', description: "Controla carregamento, ausência de histórico e anúncios de novas mensagens." },
+      { name: "Chat.Message direction / status", type: '"incoming" | "outgoing" / ChatMessageStatus', defaultValue: '"incoming" / —', description: "Define alinhamento e comunica envio, entrega, leitura ou falha." },
+      { name: "Chat.Message author / avatar / timestamp", type: "ReactNode", defaultValue: "—", description: "Identifica a autoria e fornece metadados visuais e temporais." },
+      { name: "Chat.Composer value / onValueChange", type: "string / function", defaultValue: "não controlado", description: "Permite uso controlado ou estado interno do campo." },
+      { name: "Chat.Composer onSend", type: "(message: string) => void", defaultValue: "—", description: "Entrega a mensagem normalizada ao produto; persistência e transporte ficam fora do DS." },
+      { name: "Chat.Composer sending / disabled", type: "boolean", defaultValue: "false", description: "Comunica envio em andamento e impede submissões duplicadas." },
+    ],
+    examples: [
+      {
+        title: "Conversa operacional",
+        description: "O exemplo é interativo: escreva uma mensagem e envie com Enter ou pelo botão. O DS não pressupõe websocket, armazenamento ou provedor de IA.",
+        preview: <ChatDemo />,
+        code: '<Chat aria-label="Conversa da equipe">\n  <Chat.Header>\n    <Chat.HeaderContent>\n      <Chat.Title>Operação · Portal Clientes</Chat.Title>\n      <Chat.Description>3 participantes online</Chat.Description>\n    </Chat.HeaderContent>\n  </Chat.Header>\n  <Chat.Messages aria-label="Histórico da conversa">\n    <Chat.Message author="Marina" timestamp="09:42">\n      O deploy terminou. Pode confirmar a telemetria?\n    </Chat.Message>\n    <Chat.Message direction="outgoing" author="Lucas" status="read" timestamp="09:44">\n      Confirmado. Tudo dentro do esperado.\n    </Chat.Message>\n    <Chat.TypingIndicator label="Marina está digitando" />\n  </Chat.Messages>\n  <Chat.Composer onSend={sendMessage} maxLength={500} />\n</Chat>',
+      },
+    ],
+  },
+  {
+    id: "notification-center",
+    title: "Notification Center",
+    summary: "Reúne notificações recentes em um popover acionado por sino, com contador de não lidas e acesso ao histórico.",
+    importCode: 'import { NotificationCenter } from "@arcsyn/react";',
+    status: "React estável · Base UI · React Native",
+    anatomy: ["Trigger com sino e contador", "Popover", "Header e resumo", "Lista com até cinco itens", "Estado lido ou não lido", "Ação Ver todas"],
+    accessibility: "O trigger informa a quantidade de notificações não lidas no nome acessível e expõe o estado expandido. Cada item interativo usa link ou botão real; o ponto de não lida sempre acompanha informação textual no trigger e no conteúdo. O popover recebe foco e fecha com Escape graças à Base UI. No React Native, a lista abre em Modal nativo, oferece fechamento explícito e mantém alvos de toque de 44 px.",
+    properties: [
+      { name: "items", type: "readonly NotificationCenterItem[]", defaultValue: "obrigatório", description: "Recebe as notificações ordenadas da mais recente para a mais antiga." },
+      { name: "maxVisible", type: "number", defaultValue: "5", description: "Limita os itens exibidos sem alterar a coleção original." },
+      { name: "unreadCount", type: "number", defaultValue: "derivado de items", description: "Sobrescreve a contagem calculada a partir de item.unread." },
+      { name: "loading / empty", type: "boolean / ReactNode", defaultValue: "false / mensagem padrão", description: "Padroniza carregamento e ausência de notificações." },
+      { name: "open / onOpenChange", type: "boolean / function", defaultValue: "não controlado", description: "Permite controlar a abertura do popover." },
+      { name: "seeAllLabel / onSeeAll / seeAllHref", type: "ReactNode / function / string", defaultValue: '"Ver todas" / — / —', description: "Configura a ação que leva ao histórico completo." },
+      { name: "item.href / item.onSelect", type: "string / function", defaultValue: "—", description: "Transforma uma notificação em link ou botão acessível." },
+    ],
+    examples: [
+      {
+        title: "Últimas notificações",
+        description: "O sexto item permanece fora do popover porque o limite padrão é cinco. A ordenação e a paginação completa pertencem ao produto.",
+        preview: <NotificationCenterDemo />,
+        code: '<NotificationCenter\n  items={notifications}\n  maxVisible={5}\n  onSeeAll={() => navigate("/notifications")}\n/>\n\nconst notifications = [\n  {\n    id: "deploy-248",\n    title: "Deploy concluído",\n    description: "portal-clientes v2.8.4 está em produção.",\n    timestamp: "Há 2 min",\n    tone: "success",\n    unread: true,\n  },\n];',
+      },
+    ],
   },
 ];
 

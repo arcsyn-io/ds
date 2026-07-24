@@ -56,6 +56,14 @@
       "types": "./dist/components/data-state/index.d.ts",
       "import": "./dist/components/data-state/index.js"
     },
+    "./chat": {
+      "types": "./dist/components/chat/index.d.ts",
+      "import": "./dist/components/chat/index.js"
+    },
+    "./notification-center": {
+      "types": "./dist/components/notification-center/index.d.ts",
+      "import": "./dist/components/notification-center/index.js"
+    },
     "./icons": {
       "types": "./dist/icons/index.d.ts",
       "import": "./dist/icons/index.js"
