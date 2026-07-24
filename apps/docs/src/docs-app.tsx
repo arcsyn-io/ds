@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
-import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
+import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, Tooltip, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleIcon, EllipsisIcon, MinusIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn/react/icons";
 
 type Property = {
@@ -1244,6 +1244,84 @@ const componentPages: ComponentPage[] = [
           </Tabs.Root>
         ),
         code: '<Tabs.Root defaultValue="general" orientation="vertical">\n  <Tabs.List>\n    <Tabs.Tab value="general">Geral</Tabs.Tab>\n    <Tabs.Tab value="members">Integrantes</Tabs.Tab>\n    <Tabs.Tab value="security">Segurança</Tabs.Tab>\n    <Tabs.Indicator />\n  </Tabs.List>\n  <Tabs.Panels>…</Tabs.Panels>\n</Tabs.Root>',
+      },
+    ],
+  },
+  {
+    id: "tooltip",
+    title: "Tooltip",
+    summary: "Exibe uma dica curta e complementar quando um controle recebe hover, foco ou toque longo.",
+    importCode: 'import { Tooltip } from "@arcsyn/react";',
+    status: "React estável · Base UI · React Native",
+    anatomy: ["Provider opcional para atrasos compartilhados", "Root", "Trigger", "Portal e Positioner internos", "Content", "Arrow opcional no web"],
+    accessibility: "Tooltips complementam, mas não substituem, o nome acessível ou o rótulo visível do trigger. Mantenha o conteúdo curto, sem controles interativos e disponível por foco de teclado; Base UI abre por hover ou foco e fecha com Escape. No React Native, o trigger abre a dica por toque longo e o conteúdo aparece em uma camada dispensável por toque ou pelo botão voltar. Hover e Arrow são exclusivos do web.",
+    properties: [
+      { name: "Tooltip.Provider.delay", type: "number", defaultValue: "500", description: "Define em milissegundos o atraso compartilhado antes da abertura." },
+      { name: "Tooltip.Provider.closeDelay", type: "number", defaultValue: "100", description: "Define o atraso compartilhado antes do fechamento no web." },
+      { name: "Tooltip.Root.open", type: "boolean", defaultValue: "—", description: "Controla a visibilidade da dica." },
+      { name: "Tooltip.Root.defaultOpen", type: "boolean", defaultValue: "false", description: "Define o estado inicial não controlado." },
+      { name: "Tooltip.Root.onOpenChange", type: "(open: boolean) => void", defaultValue: "—", description: "Recebe mudanças causadas por hover, foco, toque, Escape ou fechamento externo." },
+      { name: "Tooltip.Root.disabled", type: "boolean", defaultValue: "false", description: "Impede a abertura sem remover o trigger." },
+      { name: "Tooltip.Trigger.delay", type: "number", defaultValue: "600 / Provider", description: "Sobrescreve o atraso de abertura deste trigger no web." },
+      { name: "Tooltip.Trigger.closeOnClick", type: "boolean", defaultValue: "true", description: "Fecha a dica quando o trigger é acionado no web." },
+      { name: "Tooltip.Content.side", type: '"top" | "right" | "bottom" | "left"', defaultValue: '"top"', description: "Define o lado preferencial, com inversão automática quando não houver espaço." },
+      { name: "Tooltip.Content.align", type: '"start" | "center" | "end"', defaultValue: '"center"', description: "Alinha a dica ao trigger." },
+      { name: "Tooltip.Content.sideOffset", type: "number", defaultValue: "8", description: "Define a distância entre trigger e dica no web; use offset no React Native." },
+    ],
+    examples: [
+      {
+        title: "Ação somente com ícone",
+        description: "Use Tooltip para esclarecer um ícone, mantendo o próprio botão com um nome acessível independente.",
+        preview: (
+          <Tooltip.Root>
+            <Tooltip.Trigger render={<Button aria-label="Configurações" size="sm" variant="ghost" />}>
+              <SettingsIcon aria-hidden size={16} />
+            </Tooltip.Trigger>
+            <Tooltip.Content>
+              <Tooltip.Arrow />
+              Configurações
+            </Tooltip.Content>
+          </Tooltip.Root>
+        ),
+        code: '<Tooltip.Root>\n  <Tooltip.Trigger\n    render={<Button aria-label="Configurações" size="sm" variant="ghost" />}\n  >\n    <SettingsIcon aria-hidden />\n  </Tooltip.Trigger>\n  <Tooltip.Content>\n    <Tooltip.Arrow />\n    Configurações\n  </Tooltip.Content>\n</Tooltip.Root>',
+      },
+      {
+        title: "Grupo com atraso compartilhado",
+        description: "Provider coordena uma sequência de dicas: após a primeira abrir, controles vizinhos respondem sem repetir todo o atraso.",
+        preview: (
+          <Tooltip.Provider delay={300}>
+            <div className="docs-demo-row">
+              <Tooltip.Root>
+                <Tooltip.Trigger render={<Button variant="outline" size="sm" />}>Anterior</Tooltip.Trigger>
+                <Tooltip.Content side="bottom"><Tooltip.Arrow />Voltar para o registro anterior</Tooltip.Content>
+              </Tooltip.Root>
+              <Tooltip.Root>
+                <Tooltip.Trigger render={<Button variant="outline" size="sm" />}>Próximo</Tooltip.Trigger>
+                <Tooltip.Content side="bottom"><Tooltip.Arrow />Avançar para o próximo registro</Tooltip.Content>
+              </Tooltip.Root>
+              <Tooltip.Root>
+                <Tooltip.Trigger render={<Button variant="ghost" size="sm" />}>Fechar</Tooltip.Trigger>
+                <Tooltip.Content side="bottom"><Tooltip.Arrow />Fechar esta visualização</Tooltip.Content>
+              </Tooltip.Root>
+            </div>
+          </Tooltip.Provider>
+        ),
+        code: '<Tooltip.Provider delay={300}>\n  <Tooltip.Root>\n    <Tooltip.Trigger render={<Button>Anterior</Button>} />\n    <Tooltip.Content side="bottom">\n      <Tooltip.Arrow />\n      Voltar para o registro anterior\n    </Tooltip.Content>\n  </Tooltip.Root>\n  {/* Outros tooltips relacionados */}\n</Tooltip.Provider>',
+      },
+      {
+        title: "Posicionamento",
+        description: "Escolha o lado que preserva a relação espacial com o controle. O posicionador evita colisões com as bordas da viewport.",
+        preview: (
+          <div className="docs-demo-row">
+            {(["top", "right", "bottom", "left"] as const).map((side) => (
+              <Tooltip.Root key={side}>
+                <Tooltip.Trigger render={<Button variant="secondary" size="sm" />}>{side}</Tooltip.Trigger>
+                <Tooltip.Content side={side}><Tooltip.Arrow />Dica em {side}</Tooltip.Content>
+              </Tooltip.Root>
+            ))}
+          </div>
+        ),
+        code: '<Tooltip.Content side="right" align="center">\n  <Tooltip.Arrow />\n  Dica contextual\n</Tooltip.Content>',
       },
     ],
   },

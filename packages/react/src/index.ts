@@ -33,6 +33,7 @@ export * from "./components/textarea/index.js";
 export * from "./components/checkbox/index.js";
 export * from "./components/switch/index.js";
 export * from "./components/tabs/index.js";
+export * from "./components/tooltip/index.js";
 export * from "./components/theme-switcher/index.js";
 export * from "./components/select/index.js";
 export * from "./components/select-search/index.js";
