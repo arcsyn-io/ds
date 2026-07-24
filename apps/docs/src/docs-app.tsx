@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
-import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Textarea, ThemeSwitcher, Toaster, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
+import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleIcon, EllipsisIcon, MinusIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn/react/icons";
 
 type Property = {
@@ -41,6 +41,31 @@ function ControlledCollapsibleDemo() {
 function ControlledPaginationDemo() {
   const [page, setPage] = useState(3);
   return <div className="docs-demo-stack"><Pagination><PaginationContent><PaginationItem><PaginationPrevious href="#pagination-demo" aria-disabled={page === 1} onClick={(event) => { event.preventDefault(); setPage((current) => Math.max(1, current - 1)); }} /></PaginationItem>{[1, 2, 3, 4, 5].map((item) => <PaginationItem key={item}><PaginationLink href="#pagination-demo" active={page === item} onClick={(event) => { event.preventDefault(); setPage(item); }}>{item}</PaginationLink></PaginationItem>)}<PaginationItem><PaginationNext href="#pagination-demo" aria-disabled={page === 5} onClick={(event) => { event.preventDefault(); setPage((current) => Math.min(5, current + 1)); }} /></PaginationItem></PaginationContent></Pagination><span className="docs-muted-copy">Página selecionada: {page}</span></div>;
+}
+
+function ControlledTabsDemo() {
+  const [value, setValue] = useState("activity");
+
+  return (
+    <div className="docs-demo-stack">
+      <div className="docs-demo-row">
+        <Button size="sm" variant="ghost" onClick={() => setValue("activity")}>Atividade</Button>
+        <Button size="sm" variant="ghost" onClick={() => setValue("permissions")}>Permissões</Button>
+        <Badge variant="accent">Ativa: {value === "activity" ? "Atividade" : "Permissões"}</Badge>
+      </div>
+      <Tabs.Root value={value} onValueChange={(nextValue) => setValue(String(nextValue))}>
+        <Tabs.List>
+          <Tabs.Tab value="activity">Atividade</Tabs.Tab>
+          <Tabs.Tab value="permissions">Permissões</Tabs.Tab>
+          <Tabs.Indicator />
+        </Tabs.List>
+        <Tabs.Panels>
+          <Tabs.Panel value="activity">Eventos e alterações recentes do workspace.</Tabs.Panel>
+          <Tabs.Panel value="permissions">Papéis, grupos e políticas de acesso.</Tabs.Panel>
+        </Tabs.Panels>
+      </Tabs.Root>
+    </div>
+  );
 }
 
 const sidebarDemoStyle = {
@@ -1067,6 +1092,162 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
+    id: "drawer",
+    title: "Drawer",
+    summary: "Abre um painel modal a partir de uma borda para tarefas contextuais sem perder o contexto da página.",
+    importCode: 'import { Drawer } from "@arcsyn/react";',
+    status: "React estável · Base UI · React Native",
+    anatomy: ["Root e Trigger", "Portal, Backdrop e Viewport", "Content", "Header: Title e Description", "Body rolável", "Footer e Close", "Handle opcional para top e bottom"],
+    accessibility: "No web, Base UI move e restringe o foco, bloqueia o scroll da página, fecha com Escape ou gesto e devolve o foco ao trigger. Inclua sempre Title, Description e uma ação Close visível. No React Native, Drawer usa Modal, fecha pelo botão voltar no Android e oferece Close explícito; os quatro lados são suportados, mas gestos de arrastar e snap points estão disponíveis apenas no web.",
+    properties: [
+      { name: "Drawer.Root.side", type: '"top" | "right" | "bottom" | "left"', defaultValue: '"right"', description: "Define a borda de origem e a direção do gesto de fechamento." },
+      { name: "Drawer.Root.open", type: "boolean", defaultValue: "—", description: "Controla a visibilidade do painel." },
+      { name: "Drawer.Root.defaultOpen", type: "boolean", defaultValue: "false", description: "Define o estado inicial não controlado." },
+      { name: "Drawer.Root.onOpenChange", type: "(open: boolean) => void", defaultValue: "—", description: "Recebe mudanças causadas pelo trigger, Escape, backdrop, gesto ou Close." },
+      { name: "Drawer.Root.modal", type: "boolean | 'trap-focus'", defaultValue: "true", description: "Controla bloqueio do fundo, scroll e contenção de foco no web." },
+      { name: "Drawer.Root.snapPoints", type: "Array<number | string>", defaultValue: "—", description: "Define posições intermediárias para drawers web verticais." },
+      { name: "Drawer.Trigger.variant", type: "ButtonVariant", defaultValue: '"secondary"', description: "Aplica uma variante oficial de Button ao trigger." },
+      { name: "Drawer.Content.className", type: "string", defaultValue: "—", description: "Complementa dimensões e layout do painel web." },
+      { name: "Drawer.Close.variant", type: "ButtonVariant", defaultValue: '"secondary"', description: "Define o tratamento visual da ação de fechamento." },
+    ],
+    examples: [
+      {
+        title: "Edição contextual",
+        description: "Use o lado direito para editar uma entidade sem retirar a pessoa da listagem ou painel de origem.",
+        preview: (
+          <Drawer.Root>
+            <Drawer.Trigger>Editar ambiente</Drawer.Trigger>
+            <Drawer.Content>
+              <Drawer.Header>
+                <Drawer.Title>Editar ambiente</Drawer.Title>
+                <Drawer.Description>Atualize os dados de Produção Brasil.</Drawer.Description>
+              </Drawer.Header>
+              <Drawer.Body>
+                <div className="docs-demo-stack">
+                  <Field.Root>
+                    <Field.Label htmlFor="drawer-environment-name">Nome</Field.Label>
+                    <Input id="drawer-environment-name" defaultValue="Produção Brasil" />
+                    <Field.Description>Visível para todos os integrantes do workspace.</Field.Description>
+                  </Field.Root>
+                  <Field.Root>
+                    <Field.Label htmlFor="drawer-environment-owner">Responsável</Field.Label>
+                    <Input id="drawer-environment-owner" type="email" defaultValue="operacoes@arcsyn.io" />
+                  </Field.Root>
+                  <div className="docs-theme-options"><label><Switch defaultChecked />Sincronização automática</label></div>
+                </div>
+              </Drawer.Body>
+              <Drawer.Footer>
+                <Drawer.Close>Cancelar</Drawer.Close>
+                <Drawer.Close variant="primary">Salvar alterações</Drawer.Close>
+              </Drawer.Footer>
+            </Drawer.Content>
+          </Drawer.Root>
+        ),
+        code: '<Drawer.Root side="right">\n  <Drawer.Trigger>Editar ambiente</Drawer.Trigger>\n  <Drawer.Content>\n    <Drawer.Header>\n      <Drawer.Title>Editar ambiente</Drawer.Title>\n      <Drawer.Description>Atualize os dados do ambiente.</Drawer.Description>\n    </Drawer.Header>\n    <Drawer.Body>{/* Campos */}</Drawer.Body>\n    <Drawer.Footer>\n      <Drawer.Close>Cancelar</Drawer.Close>\n      <Drawer.Close variant="primary">Salvar alterações</Drawer.Close>\n    </Drawer.Footer>\n  </Drawer.Content>\n</Drawer.Root>',
+      },
+      {
+        title: "Filtros em painel inferior",
+        description: "Em telas estreitas, o lado inferior mantém controles próximos da área de alcance e oferece um handle visual para o gesto.",
+        preview: (
+          <Drawer.Root side="bottom">
+            <Drawer.Trigger variant="outline">Filtrar projetos</Drawer.Trigger>
+            <Drawer.Content>
+              <Drawer.Handle />
+              <Drawer.Header>
+                <Drawer.Title>Filtrar projetos</Drawer.Title>
+                <Drawer.Description>Refine a lista por ambiente e condição operacional.</Drawer.Description>
+              </Drawer.Header>
+              <Drawer.Body>
+                <div className="docs-demo-stack">
+                  <strong>Ambiente</strong>
+                  <label><Checkbox defaultChecked /> Produção</label>
+                  <label><Checkbox /> Homologação</label>
+                  <label><Checkbox /> Desenvolvimento</label>
+                </div>
+              </Drawer.Body>
+              <Drawer.Footer>
+                <Drawer.Close>Limpar</Drawer.Close>
+                <Drawer.Close variant="primary">Aplicar filtros</Drawer.Close>
+              </Drawer.Footer>
+            </Drawer.Content>
+          </Drawer.Root>
+        ),
+        code: '<Drawer.Root side="bottom">\n  <Drawer.Trigger variant="outline">Filtrar projetos</Drawer.Trigger>\n  <Drawer.Content>\n    <Drawer.Handle />\n    <Drawer.Header>\n      <Drawer.Title>Filtrar projetos</Drawer.Title>\n      <Drawer.Description>Refine a lista atual.</Drawer.Description>\n    </Drawer.Header>\n    <Drawer.Body>{/* Filtros */}</Drawer.Body>\n    <Drawer.Footer>\n      <Drawer.Close variant="primary">Aplicar filtros</Drawer.Close>\n    </Drawer.Footer>\n  </Drawer.Content>\n</Drawer.Root>',
+      },
+    ],
+  },
+  {
+    id: "tabs",
+    title: "Tabs",
+    summary: "Alterna entre painéis relacionados dentro do mesmo contexto, preservando uma hierarquia compacta.",
+    importCode: 'import { Tabs } from "@arcsyn/react";',
+    status: "React estável · Base UI · React Native",
+    anatomy: ["Root", "List com semântica tablist", "Tab com value único", "Indicator visual no web", "Panels", "Panel associado pelo mesmo value"],
+    accessibility: "Base UI associa tabs e painéis, aplica os papéis ARIA, gerencia roving focus e oferece navegação por setas, Home e End. Por padrão, foco e ativação são separados; use activateOnFocus apenas quando o conteúdo trocar sem custo perceptível. No React Native, List e Tab expõem papéis e estado selected, cada alvo tem no mínimo 44px e a tab ativa recebe o indicador diretamente; a peça Indicator separada é exclusiva do web.",
+    properties: [
+      { name: "Tabs.Root.value", type: "string | number", defaultValue: "—", description: "Controla a tab ativa." },
+      { name: "Tabs.Root.defaultValue", type: "string | number", defaultValue: "0", description: "Define a tab inicial no modo não controlado." },
+      { name: "Tabs.Root.onValueChange", type: "(value) => void", defaultValue: "—", description: "Recebe alterações de seleção." },
+      { name: "Tabs.Root.orientation", type: '"horizontal" | "vertical"', defaultValue: '"horizontal"', description: "Alinha a lista e define as teclas de direção usadas na navegação." },
+      { name: "Tabs.List.activateOnFocus", type: "boolean", defaultValue: "false", description: "Ativa a tab ao receber foco pelas setas no web." },
+      { name: "Tabs.List.loopFocus", type: "boolean", defaultValue: "true", description: "Retorna ao início quando a navegação alcança o fim da lista." },
+      { name: "Tabs.Tab.value", type: "string | number", defaultValue: "obrigatório", description: "Identifica a tab e seu painel correspondente." },
+      { name: "Tabs.Tab.disabled", type: "boolean", defaultValue: "false", description: "Mantém a tab visível, mas indisponível para seleção." },
+      { name: "Tabs.Panel.value", type: "string | number", defaultValue: "obrigatório", description: "Associa o painel a uma Tab." },
+      { name: "Tabs.Panel.keepMounted", type: "boolean", defaultValue: "false", description: "Preserva o painel inativo no DOM ou na árvore nativa." },
+    ],
+    examples: [
+      {
+        title: "Visão de um workspace",
+        description: "Use tabs para alternar categorias equivalentes, mantendo rótulos curtos e uma seleção inicial explícita.",
+        preview: (
+          <Tabs.Root className="docs-tabs-demo" defaultValue="overview">
+            <Tabs.List>
+              <Tabs.Tab value="overview">Visão geral</Tabs.Tab>
+              <Tabs.Tab value="activity">Atividade</Tabs.Tab>
+              <Tabs.Tab value="settings">Configurações</Tabs.Tab>
+              <Tabs.Tab value="billing" disabled>Faturamento</Tabs.Tab>
+              <Tabs.Indicator />
+            </Tabs.List>
+            <Tabs.Panels>
+              <Tabs.Panel value="overview"><div className="docs-tabs-panel"><strong>Workspace operacional</strong><p>12 projetos ativos, 3 ambientes e nenhuma interrupção crítica.</p></div></Tabs.Panel>
+              <Tabs.Panel value="activity"><div className="docs-tabs-panel"><strong>Atividade recente</strong><p>Quatro configurações foram publicadas nas últimas 24 horas.</p></div></Tabs.Panel>
+              <Tabs.Panel value="settings"><div className="docs-tabs-panel"><strong>Configurações</strong><p>Preferências de acesso, alertas e integrações do workspace.</p></div></Tabs.Panel>
+              <Tabs.Panel value="billing"><div className="docs-tabs-panel"><strong>Faturamento</strong><p>Área temporariamente indisponível.</p></div></Tabs.Panel>
+            </Tabs.Panels>
+          </Tabs.Root>
+        ),
+        code: '<Tabs.Root defaultValue="overview">\n  <Tabs.List>\n    <Tabs.Tab value="overview">Visão geral</Tabs.Tab>\n    <Tabs.Tab value="activity">Atividade</Tabs.Tab>\n    <Tabs.Tab value="settings">Configurações</Tabs.Tab>\n    <Tabs.Indicator />\n  </Tabs.List>\n  <Tabs.Panels>\n    <Tabs.Panel value="overview">…</Tabs.Panel>\n    <Tabs.Panel value="activity">…</Tabs.Panel>\n    <Tabs.Panel value="settings">…</Tabs.Panel>\n  </Tabs.Panels>\n</Tabs.Root>',
+      },
+      {
+        title: "Estado controlado",
+        description: "Controle value quando outra parte da interface também precisar alterar ou refletir a tab ativa.",
+        preview: <ControlledTabsDemo />,
+        code: 'const [value, setValue] = useState("activity");\n\n<Tabs.Root value={value} onValueChange={setValue}>\n  <Tabs.List>…</Tabs.List>\n  <Tabs.Panels>…</Tabs.Panels>\n</Tabs.Root>',
+      },
+      {
+        title: "Orientação vertical",
+        description: "Use a orientação vertical quando os rótulos forem numerosos ou precisarem de mais espaço horizontal.",
+        preview: (
+          <Tabs.Root className="docs-tabs-demo" defaultValue="general" orientation="vertical">
+            <Tabs.List>
+              <Tabs.Tab value="general">Geral</Tabs.Tab>
+              <Tabs.Tab value="members">Integrantes</Tabs.Tab>
+              <Tabs.Tab value="security">Segurança</Tabs.Tab>
+              <Tabs.Indicator />
+            </Tabs.List>
+            <Tabs.Panels>
+              <Tabs.Panel value="general"><div className="docs-tabs-panel"><strong>Geral</strong><p>Nome, região e preferências principais.</p></div></Tabs.Panel>
+              <Tabs.Panel value="members"><div className="docs-tabs-panel"><strong>Integrantes</strong><p>Gerencie convites, papéis e grupos.</p></div></Tabs.Panel>
+              <Tabs.Panel value="security"><div className="docs-tabs-panel"><strong>Segurança</strong><p>Políticas de sessão e autenticação.</p></div></Tabs.Panel>
+            </Tabs.Panels>
+          </Tabs.Root>
+        ),
+        code: '<Tabs.Root defaultValue="general" orientation="vertical">\n  <Tabs.List>\n    <Tabs.Tab value="general">Geral</Tabs.Tab>\n    <Tabs.Tab value="members">Integrantes</Tabs.Tab>\n    <Tabs.Tab value="security">Segurança</Tabs.Tab>\n    <Tabs.Indicator />\n  </Tabs.List>\n  <Tabs.Panels>…</Tabs.Panels>\n</Tabs.Root>',
+      },
+    ],
+  },
+  {
     id: "dropdown-menu",
     title: "Dropdown Menu",
     summary: "Organiza ações contextuais e configurações compactas a partir de um botão.",
@@ -1492,6 +1673,130 @@ function ThemeDetailPage({ theme }: { theme: ThemeComparison }) {
   );
 }
 
+const typographyScale = [
+  { token: "2xl", size: "1.5rem · 24px", use: "Título de página", sample: "Visão geral da operação" },
+  { token: "xl", size: "1.25rem · 20px", use: "Título de seção", sample: "Ambientes monitorados" },
+  { token: "lg", size: "1.125rem · 18px", use: "Título de componente", sample: "Detalhes da publicação" },
+  { token: "md", size: "1rem · 16px", use: "Texto de leitura", sample: "Acompanhe alterações e eventos recentes." },
+  { token: "sm", size: "0.875rem · 14px", use: "Interface e controles", sample: "Sincronização automática ativada" },
+  { token: "xs", size: "0.75rem · 12px", use: "Metadados e ajuda", sample: "Atualizado há 4 minutos" },
+] as const;
+
+const typographyWeights = [
+  { weight: "400", name: "Regular", use: "Textos, descrições e conteúdo contínuo." },
+  { weight: "500", name: "Medium", use: "Rótulos, estados e ênfase discreta." },
+  { weight: "600", name: "Semibold", use: "Títulos, botões e ações prioritárias." },
+] as const;
+
+function TypographyPage() {
+  return (
+    <article className="docs-page docs-typography-page">
+      <header className="docs-page-header">
+        <p className="docs-eyebrow">Fundação</p>
+        <h1>Tipografia</h1>
+        <p>A tipografia da ArcSyn prioriza leitura rápida, hierarquia clara e precisão em interfaces operacionais densas.</p>
+      </header>
+
+      <section className="docs-section" aria-labelledby="typography-families">
+        <div className="docs-section-heading">
+          <p className="docs-eyebrow">Famílias</p>
+          <h2 id="typography-families">Uma voz para interface, outra para dados</h2>
+        </div>
+        <div className="docs-type-families">
+          <article className="docs-type-family docs-type-family--sans">
+            <div className="docs-type-family-heading">
+              <div><span>Interface</span><h3>IBM Plex Sans</h3></div>
+              <code>--arcsyn-font-sans</code>
+            </div>
+            <p className="docs-type-alphabet">Aa Bb Cc Dd Ee Ff Gg</p>
+            <p>Use em navegação, títulos, controles e conteúdo. A família foi escolhida por sua leitura neutra e técnica em tamanhos compactos.</p>
+          </article>
+          <article className="docs-type-family docs-type-family--mono">
+            <div className="docs-type-family-heading">
+              <div><span>Dados técnicos</span><h3>IBM Plex Mono</h3></div>
+              <code>--arcsyn-font-mono</code>
+            </div>
+            <p className="docs-type-alphabet">ARC-0192 · 23:48:07</p>
+            <p>Reserve para código, IDs, horários, valores tabulares e metadados cuja forma precisa ser comparada rapidamente.</p>
+          </article>
+        </div>
+        <p className="docs-type-note">As preferências desta documentação permitem comparar famílias sem alterar o contrato público dos tokens.</p>
+      </section>
+
+      <section className="docs-section" aria-labelledby="typography-scale">
+        <div className="docs-section-heading">
+          <p className="docs-eyebrow">Escala</p>
+          <h2 id="typography-scale">Tamanhos e papéis semânticos</h2>
+        </div>
+        <div className="docs-type-scale" role="list">
+          {typographyScale.map(({ token, size, use, sample }) => (
+            <article className="docs-type-scale-row" role="listitem" key={token}>
+              <div className="docs-type-token">
+                <code>{`font-size-${token}`}</code>
+                <span>{size}</span>
+              </div>
+              <p style={{ fontSize: `var(--arcsyn-font-size-${token})` }}>{sample}</p>
+              <span>{use}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="docs-section" aria-labelledby="typography-weight">
+        <div className="docs-section-heading">
+          <p className="docs-eyebrow">Ênfase</p>
+          <h2 id="typography-weight">Pesos e contraste</h2>
+        </div>
+        <div className="docs-type-weights">
+          {typographyWeights.map(({ weight, name, use }) => (
+            <article key={weight}>
+              <span style={{ fontWeight: Number(weight) }}>{`${weight} · ${name}`}</span>
+              <p>{use}</p>
+            </article>
+          ))}
+        </div>
+        <div className="docs-type-guidance">
+          <Card><strong>Hierarquia antes de tamanho</strong><p>Combine posição, espaçamento e contraste antes de aumentar o texto. Em telas densas, poucos níveis tornam a leitura previsível.</p></Card>
+          <Card><strong>Mono com intenção</strong><p>Não use monoespaçada em parágrafos ou botões. Ela sinaliza conteúdo técnico e perde essa função quando aparece em excesso.</p></Card>
+          <Card><strong>Alinhamento de números</strong><p>Em tabelas, alinhe valores numéricos à direita e use algarismos tabulares quando a comparação vertical for importante.</p></Card>
+        </div>
+      </section>
+
+      <section className="docs-section" aria-labelledby="typography-implementation">
+        <div className="docs-section-heading">
+          <p className="docs-eyebrow">Implementação</p>
+          <h2 id="typography-implementation">Use tokens, não valores isolados</h2>
+        </div>
+        <div className="docs-overview-grid">
+          <pre className="docs-code"><code>{`.page-title {
+  font-family: var(--arcsyn-font-sans);
+  font-size: var(--arcsyn-font-size-2xl);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.resource-id {
+  font-family: var(--arcsyn-font-mono);
+  font-size: var(--arcsyn-font-size-xs);
+}`}</code></pre>
+          <div className="docs-type-implementation-preview">
+            <span>Workspace de produção</span>
+            <strong>Observabilidade central</strong>
+            <p>Monitore disponibilidade, custos e alterações críticas do ambiente.</p>
+            <code>workspace_arc_0192</code>
+          </div>
+        </div>
+      </section>
+
+      <section className="docs-section docs-accessibility" aria-labelledby="typography-accessibility">
+        <p className="docs-eyebrow">Acessibilidade</p>
+        <h2 id="typography-accessibility">Leitura confortável em diferentes contextos</h2>
+        <p>Mantenha texto de leitura em pelo menos 16px, não dependa apenas de peso ou cor para comunicar hierarquia, preserve zoom do navegador e limite linhas longas a aproximadamente 75 caracteres. Em mobile, o tamanho visual do texto não substitui o alvo de toque mínimo de 44px.</p>
+      </section>
+    </article>
+  );
+}
+
 function ComponentDocumentation({ page }: { page: ComponentPage }) {
   return (
     <article className="docs-page">
@@ -1555,8 +1860,9 @@ export function DocsApp() {
   const route = useRoute();
   const page = componentPages.find((item) => route === `/components/${item.id}`);
   const isTheming = route === "/theming" || route.startsWith("/theming/");
+  const isTypography = route === "/typography";
   const themePage = themeComparisons.find((item) => route === `/theming/${item.id}`);
-  const currentPageTitle = themePage?.name ?? (isTheming ? "Theming" : page?.title ?? "Visão geral");
+  const currentPageTitle = themePage?.name ?? (isTheming ? "Theming" : isTypography ? "Tipografia" : page?.title ?? "Visão geral");
 
   useEffect(() => {
     document.documentElement.dataset.arcsynTheme = theme;
@@ -1590,8 +1896,8 @@ export function DocsApp() {
   }, [monoFont]);
 
   useEffect(() => {
-    document.title = themePage ? `${themePage.name} · ArcSyn DS` : isTheming ? "Theming · ArcSyn DS" : page ? `${page.title} · ArcSyn DS` : "ArcSyn Design System";
-  }, [isTheming, page, themePage]);
+    document.title = themePage ? `${themePage.name} · ArcSyn DS` : isTheming ? "Theming · ArcSyn DS" : isTypography ? "Tipografia · ArcSyn DS" : page ? `${page.title} · ArcSyn DS` : "ArcSyn Design System";
+  }, [isTheming, isTypography, page, themePage]);
 
   return (
     <DocsThemeContext.Provider value={{ theme, setTheme, font, setFont, monoFont, setMonoFont }}>
@@ -1610,6 +1916,7 @@ export function DocsApp() {
                   <SidebarMenu>
                     <DocsSidebarLink active={route === "/"} href="#/" icon={<CircleIcon aria-hidden size={15} />}>Visão geral</DocsSidebarLink>
                     <DocsSidebarLink active={isTheming} href="#/theming" icon={<CheckIcon aria-hidden size={15} />}>Theming</DocsSidebarLink>
+                    <DocsSidebarLink active={isTypography} href="#/typography">Tipografia</DocsSidebarLink>
                   </SidebarMenu>
                 </SidebarGroupContent>
               </SidebarGroup>
@@ -1634,7 +1941,7 @@ export function DocsApp() {
               <span className="docs-topbar-title">{currentPageTitle}</span>
               <Kbd className="docs-sidebar-shortcut">Ctrl B</Kbd>
             </header>
-            <div className="docs-main">{themePage ? <ThemeDetailPage theme={themePage} /> : isTheming ? <ThemingPage /> : page ? <ComponentDocumentation page={page} /> : <HomePage />}</div>
+            <div className="docs-main">{themePage ? <ThemeDetailPage theme={themePage} /> : isTheming ? <ThemingPage /> : isTypography ? <TypographyPage /> : page ? <ComponentDocumentation page={page} /> : <HomePage />}</div>
           </SidebarInset>
         </SidebarProvider>
         <Toaster />

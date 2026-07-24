@@ -1,0 +1,15 @@
+export {
+  Tabs,
+  TabsIndicator,
+  TabsList,
+  TabsPanel,
+  TabsPanels,
+  TabsRoot,
+  TabsTab,
+  type TabsIndicatorProps,
+  type TabsListProps,
+  type TabsPanelProps,
+  type TabsPanelsProps,
+  type TabsRootProps,
+  type TabsTabProps,
+} from "./tabs.js";
