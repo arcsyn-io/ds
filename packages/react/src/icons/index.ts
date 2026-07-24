@@ -10,6 +10,7 @@ export {
   Minus as MinusIcon,
   Plus as PlusIcon,
   PanelLeft as PanelLeftIcon,
+  Settings as SettingsIcon,
   X as XIcon,
   type LucideProps as IconProps,
 } from "lucide-react";

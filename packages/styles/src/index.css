@@ -1,8 +1,24 @@
+@import "@fontsource/alexandria/arabic-400.css";
+@import "@fontsource/alexandria/latin-400.css";
+@import "@fontsource/alexandria/arabic-500.css";
+@import "@fontsource/alexandria/latin-500.css";
+@import "@fontsource/alexandria/arabic-600.css";
+@import "@fontsource/alexandria/latin-600.css";
 @import "@fontsource/ibm-plex-sans/latin-400.css";
 @import "@fontsource/ibm-plex-sans/latin-500.css";
 @import "@fontsource/ibm-plex-sans/latin-600.css";
+@import "@fontsource/readex-pro/arabic-400.css";
+@import "@fontsource/readex-pro/latin-400.css";
+@import "@fontsource/readex-pro/arabic-500.css";
+@import "@fontsource/readex-pro/latin-500.css";
+@import "@fontsource/readex-pro/arabic-600.css";
+@import "@fontsource/readex-pro/latin-600.css";
 @import "@fontsource/ibm-plex-mono/latin-400.css";
 @import "@fontsource/ibm-plex-mono/latin-500.css";
+@import "@fontsource/jetbrains-mono/latin-400.css";
+@import "@fontsource/jetbrains-mono/latin-500.css";
+@import "@fontsource/geist-mono/latin-400.css";
+@import "@fontsource/geist-mono/latin-500.css";
 
 @import "@arcsyn/tokens/css";
 @import "@arcsyn/tokens/themes/light.css";

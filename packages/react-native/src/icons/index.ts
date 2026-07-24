@@ -9,6 +9,7 @@ export {
   Ellipsis as EllipsisIcon,
   Minus as MinusIcon,
   Plus as PlusIcon,
+  Settings as SettingsIcon,
   X as XIcon,
   type LucideProps as IconProps,
 } from "lucide-react-native";

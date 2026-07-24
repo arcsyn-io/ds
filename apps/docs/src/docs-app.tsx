@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
-import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, Dialog, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Textarea, ThemeSwitcher, Toaster, toast, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
-import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleIcon, EllipsisIcon, MinusIcon, PlusIcon, XIcon } from "@arcsyn/react/icons";
+import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, Dialog, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Textarea, ThemeSwitcher, Toaster, toast, useSidebar, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
+import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleIcon, EllipsisIcon, MinusIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn/react/icons";
 
 type Property = {
   name: string;
@@ -126,6 +126,21 @@ function ToasterEffectsDemo() {
 
 const docsThemeStorageKey = "arcsyn-docs-theme";
 const docsThemes: readonly ThemeSwitcherTheme[] = ["light", "dark", "deep-dark"];
+const docsFontStorageKey = "arcsyn-docs-font";
+const docsFonts = [
+  { id: "alexandria", label: "Alexandria", family: "'Alexandria', ui-sans-serif, system-ui, sans-serif" },
+  { id: "ibm-plex-sans", label: "IBM Plex Sans", family: "'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif" },
+  { id: "readex-pro", label: "Readex Pro", family: "'Readex Pro', ui-sans-serif, system-ui, sans-serif" },
+] as const;
+const docsMonoFontStorageKey = "arcsyn-docs-mono-font";
+const docsMonoFonts = [
+  { id: "ibm-plex-mono", label: "IBM Plex Mono", family: "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace" },
+  { id: "jetbrains-mono", label: "JetBrains Mono", family: "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace" },
+  { id: "geist-mono", label: "Geist Mono", family: "'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace" },
+] as const;
+
+type DocsFont = (typeof docsFonts)[number]["id"];
+type DocsMonoFont = (typeof docsMonoFonts)[number]["id"];
 
 function isDocsTheme(value: string | null): value is ThemeSwitcherTheme {
   return docsThemes.some((theme) => theme === value);
@@ -143,25 +158,137 @@ function currentDocsTheme(): ThemeSwitcherTheme {
   return isDocsTheme(documentTheme) ? documentTheme : "dark";
 }
 
+function isDocsFont(value: string | null): value is DocsFont {
+  return docsFonts.some((font) => font.id === value);
+}
+
+function currentDocsFont(): DocsFont {
+  try {
+    const storedFont = window.localStorage.getItem(docsFontStorageKey);
+    if (isDocsFont(storedFont)) return storedFont;
+  } catch {
+    // Storage may be unavailable in privacy-restricted browser contexts.
+  }
+
+  return "alexandria";
+}
+
+function isDocsMonoFont(value: string | null): value is DocsMonoFont {
+  return docsMonoFonts.some((font) => font.id === value);
+}
+
+function currentDocsMonoFont(): DocsMonoFont {
+  try {
+    const storedFont = window.localStorage.getItem(docsMonoFontStorageKey);
+    if (isDocsMonoFont(storedFont)) return storedFont;
+  } catch {
+    // Storage may be unavailable in privacy-restricted browser contexts.
+  }
+
+  return "ibm-plex-mono";
+}
+
 type DocsThemeContextValue = {
   theme: ThemeSwitcherTheme;
   setTheme: (theme: ThemeSwitcherTheme) => void;
+  font: DocsFont;
+  setFont: (font: DocsFont) => void;
+  monoFont: DocsMonoFont;
+  setMonoFont: (font: DocsMonoFont) => void;
 };
 
 const DocsThemeContext = createContext<DocsThemeContextValue>({
   theme: "dark",
   setTheme: () => undefined,
+  font: "alexandria",
+  setFont: () => undefined,
+  monoFont: "ibm-plex-mono",
+  setMonoFont: () => undefined,
 });
 
-const compactThemeOptions = [
-  { value: "light", label: "Light" },
-  { value: "dark", label: "Dark" },
-  { value: "deep-dark", label: "Deep" },
-] as const;
-
-function DocsThemeSwitcher({ compact = false }: { compact?: boolean }) {
+function DocsThemeSwitcher() {
   const { theme, setTheme } = useContext(DocsThemeContext);
-  return <ThemeSwitcher value={theme} onValueChange={setTheme} options={compact ? compactThemeOptions : undefined} label="Tema da documentação" />;
+  return <ThemeSwitcher value={theme} onValueChange={setTheme} label="Tema da documentação" />;
+}
+
+function DocsFontSwitcher() {
+  const { font, setFont } = useContext(DocsThemeContext);
+  return (
+    <NativeSelect
+      aria-label="Fonte da documentação"
+      size="sm"
+      value={font}
+      onChange={(event) => setFont(event.currentTarget.value as DocsFont)}
+    >
+      {docsFonts.map((option) => <NativeSelectOption key={option.id} value={option.id}>{option.label}</NativeSelectOption>)}
+    </NativeSelect>
+  );
+}
+
+function DocsMonoFontSwitcher() {
+  const { monoFont, setMonoFont } = useContext(DocsThemeContext);
+  return (
+    <NativeSelect
+      aria-label="Fonte monoespaçada da documentação"
+      size="sm"
+      value={monoFont}
+      onChange={(event) => setMonoFont(event.currentTarget.value as DocsMonoFont)}
+    >
+      {docsMonoFonts.map((option) => <NativeSelectOption key={option.id} value={option.id}>{option.label}</NativeSelectOption>)}
+    </NativeSelect>
+  );
+}
+
+function DocsPreferencesDialog() {
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger className="docs-settings-trigger" variant="ghost" size="sm">
+        <SettingsIcon aria-hidden size={16} />
+        <span>Configurações</span>
+      </Dialog.Trigger>
+      <Dialog.Content className="docs-settings-dialog">
+        <Dialog.Header>
+          <Dialog.Title>Configurações de aparência</Dialog.Title>
+          <Dialog.Description>Personalize o tema e a tipografia usada nesta documentação.</Dialog.Description>
+        </Dialog.Header>
+        <div className="docs-settings-fields">
+          <div className="docs-settings-field">
+            <span>Tema</span>
+            <DocsThemeSwitcher />
+          </div>
+          <div className="docs-settings-field">
+            <span>Fonte da interface</span>
+            <DocsFontSwitcher />
+          </div>
+          <div className="docs-settings-field">
+            <span>Fonte monoespaçada</span>
+            <DocsMonoFontSwitcher />
+          </div>
+        </div>
+        <div className="docs-settings-preview" aria-label="Prévia tipográfica">
+          <span>Interface · ArcSyn Design System</span>
+          <code>const theme = "arcsyn";</code>
+        </div>
+        <Dialog.Footer>
+          <Dialog.Close variant="primary">Concluir</Dialog.Close>
+        </Dialog.Footer>
+      </Dialog.Content>
+    </Dialog.Root>
+  );
+}
+
+function DocsSidebarLink({ active, children, href, icon }: { active: boolean; children: ReactNode; href: string; icon?: ReactNode }) {
+  const { isMobile, setOpenMobile } = useSidebar();
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton asChild isActive={active}>
+        <a href={href} onClick={() => { if (isMobile) setOpenMobile(false); }}>
+          {icon}
+          <span>{children}</span>
+        </a>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  );
 }
 
 const componentPages: ComponentPage[] = [
@@ -187,7 +314,7 @@ const componentPages: ComponentPage[] = [
       { name: "Variáveis CSS", type: "--arcsyn-sidebar-width / -mobile / -icon", defaultValue: "16rem / 18rem / 3.25rem", description: "Ajustam larguras por instância através de style." },
     ],
     examples: [
-      { title: "Recolhimento para ícones", description: "O provider compartilha estado com trigger e rail; tooltip identifica links quando os rótulos ficam ocultos. Nesta prévia, Ctrl/Cmd+B também alterna o painel.", preview: <SidebarDemo keyboardShortcut="b" />, code: '<SidebarProvider>\n  <Sidebar collapsible="icon">\n    <SidebarHeader />\n    <SidebarContent>\n      <SidebarGroup>\n        <SidebarGroupLabel>Operação</SidebarGroupLabel>\n        <SidebarGroupContent>\n          <SidebarMenu>\n            <SidebarMenuItem>\n              <SidebarMenuButton asChild isActive tooltip="Visão geral">\n                <a href="/"><HomeIcon /><span>Visão geral</span></a>\n              </SidebarMenuButton>\n            </SidebarMenuItem>\n          </SidebarMenu>\n        </SidebarGroupContent>\n      </SidebarGroup>\n    </SidebarContent>\n    <SidebarRail />\n  </Sidebar>\n  <SidebarInset><SidebarTrigger />{children}</SidebarInset>\n</SidebarProvider>' },
+      { title: "Recolhimento para ícones", description: "O provider compartilha estado com trigger e rail; tooltip identifica links quando os rótulos ficam ocultos.", preview: <SidebarDemo />, code: '<SidebarProvider>\n  <Sidebar collapsible="icon">\n    <SidebarHeader />\n    <SidebarContent>\n      <SidebarGroup>\n        <SidebarGroupLabel>Operação</SidebarGroupLabel>\n        <SidebarGroupContent>\n          <SidebarMenu>\n            <SidebarMenuItem>\n              <SidebarMenuButton asChild isActive tooltip="Visão geral">\n                <a href="/"><HomeIcon /><span>Visão geral</span></a>\n              </SidebarMenuButton>\n            </SidebarMenuItem>\n          </SidebarMenu>\n        </SidebarGroupContent>\n      </SidebarGroup>\n    </SidebarContent>\n    <SidebarRail />\n  </Sidebar>\n  <SidebarInset><SidebarTrigger />{children}</SidebarInset>\n</SidebarProvider>' },
       { title: "Flutuante à direita", description: "side e variant são independentes; collapsible=none mantém a navegação sempre visível no desktop.", preview: <SidebarDemo side="right" variant="floating" collapsible="none" />, code: '<SidebarProvider>\n  <Sidebar side="right" variant="floating" collapsible="none">…</Sidebar>\n  <SidebarInset>…</SidebarInset>\n</SidebarProvider>' },
       { title: "Estado controlado e offcanvas", description: "open e onOpenChange sincronizam trigger, rail e controles externos. Em viewport móvel, o mesmo trigger abre um drawer modal.", preview: <ControlledSidebarDemo />, code: 'const [open, setOpen] = useState(true);\n\n<SidebarProvider open={open} onOpenChange={setOpen}>\n  <Sidebar collapsible="offcanvas">…</Sidebar>\n  <SidebarInset>\n    <SidebarTrigger />\n    <button onClick={() => setOpen((value) => !value)}>Alternar</button>\n  </SidebarInset>\n</SidebarProvider>' },
     ],
@@ -241,7 +368,7 @@ const componentPages: ComponentPage[] = [
       {
         title: "Catálogo curado",
         description: "Use os exports ArcSyn para manter os mesmos nomes nas duas plataformas.",
-        preview: <div className="docs-icon-grid"><span><ArrowLeftIcon aria-hidden size={20} />ArrowLeftIcon</span><span><ArrowRightIcon aria-hidden size={20} />ArrowRightIcon</span><span><CheckIcon aria-hidden size={20} />CheckIcon</span><span><ChevronDownIcon aria-hidden size={20} />ChevronDownIcon</span><span><ChevronLeftIcon aria-hidden size={20} />ChevronLeftIcon</span><span><ChevronRightIcon aria-hidden size={20} />ChevronRightIcon</span><span><CircleIcon aria-hidden size={20} />CircleIcon</span><span><EllipsisIcon aria-hidden size={20} />EllipsisIcon</span><span><MinusIcon aria-hidden size={20} />MinusIcon</span><span><PlusIcon aria-hidden size={20} />PlusIcon</span><span><XIcon aria-hidden size={20} />XIcon</span></div>,
+        preview: <div className="docs-icon-grid"><span><ArrowLeftIcon aria-hidden size={20} />ArrowLeftIcon</span><span><ArrowRightIcon aria-hidden size={20} />ArrowRightIcon</span><span><CheckIcon aria-hidden size={20} />CheckIcon</span><span><ChevronDownIcon aria-hidden size={20} />ChevronDownIcon</span><span><ChevronLeftIcon aria-hidden size={20} />ChevronLeftIcon</span><span><ChevronRightIcon aria-hidden size={20} />ChevronRightIcon</span><span><CircleIcon aria-hidden size={20} />CircleIcon</span><span><EllipsisIcon aria-hidden size={20} />EllipsisIcon</span><span><MinusIcon aria-hidden size={20} />MinusIcon</span><span><PlusIcon aria-hidden size={20} />PlusIcon</span><span><SettingsIcon aria-hidden size={20} />SettingsIcon</span><span><XIcon aria-hidden size={20} />XIcon</span></div>,
         code: 'import { CheckIcon, PlusIcon } from "@arcsyn/react/icons";\n\n<CheckIcon aria-hidden size={16} />\n<PlusIcon aria-hidden size={16} />',
       },
       {
@@ -1276,7 +1403,6 @@ function HomePage() {
         <p className="docs-eyebrow">ArcSyn Design System</p>
         <h1>Documentação de componentes</h1>
         <p className="docs-home-summary">Uma base compacta e corporativa, construída sobre tokens agnósticos, CSS compartilhado e adaptadores de framework.</p>
-        <div className="docs-home-theme-control"><span>Tema da documentação</span><DocsThemeSwitcher /></div>
       </header>
       <section className="docs-section" aria-labelledby="foundations-title">
         <div className="docs-section-heading"><p className="docs-eyebrow">Fundação</p><h2 id="foundations-title">Princípios de implementação</h2></div>
@@ -1292,10 +1418,13 @@ function HomePage() {
 
 export function DocsApp() {
   const [theme, setTheme] = useState<ThemeSwitcherTheme>(currentDocsTheme);
+  const [font, setFont] = useState<DocsFont>(currentDocsFont);
+  const [monoFont, setMonoFont] = useState<DocsMonoFont>(currentDocsMonoFont);
   const route = useRoute();
   const page = componentPages.find((item) => route === `/components/${item.id}`);
   const isTheming = route === "/theming" || route.startsWith("/theming/");
   const themePage = themeComparisons.find((item) => route === `/theming/${item.id}`);
+  const currentPageTitle = themePage?.name ?? (isTheming ? "Theming" : page?.title ?? "Visão geral");
 
   useEffect(() => {
     document.documentElement.dataset.arcsynTheme = theme;
@@ -1307,23 +1436,75 @@ export function DocsApp() {
   }, [theme]);
 
   useEffect(() => {
+    const selectedFont = docsFonts.find((option) => option.id === font) ?? docsFonts[0];
+    document.documentElement.dataset.arcsynFont = selectedFont.id;
+    document.documentElement.style.setProperty("--arcsyn-font-sans", selectedFont.family);
+    try {
+      window.localStorage.setItem(docsFontStorageKey, selectedFont.id);
+    } catch {
+      // The selected font still applies for the current session.
+    }
+  }, [font]);
+
+  useEffect(() => {
+    const selectedFont = docsMonoFonts.find((option) => option.id === monoFont) ?? docsMonoFonts[0];
+    document.documentElement.dataset.arcsynMonoFont = selectedFont.id;
+    document.documentElement.style.setProperty("--arcsyn-font-mono", selectedFont.family);
+    try {
+      window.localStorage.setItem(docsMonoFontStorageKey, selectedFont.id);
+    } catch {
+      // The selected font still applies for the current session.
+    }
+  }, [monoFont]);
+
+  useEffect(() => {
     document.title = themePage ? `${themePage.name} · ArcSyn DS` : isTheming ? "Theming · ArcSyn DS" : page ? `${page.title} · ArcSyn DS` : "ArcSyn Design System";
   }, [isTheming, page, themePage]);
 
   return (
-    <DocsThemeContext.Provider value={{ theme, setTheme }}>
-      <div className="docs-shell">
-        <div className="docs-layout">
-          <aside className="docs-sidebar">
+    <DocsThemeContext.Provider value={{ theme, setTheme, font, setFont, monoFont, setMonoFont }}>
+      <>
+        <SidebarProvider className="docs-shell" style={{ "--arcsyn-sidebar-width": "16rem", "--arcsyn-sidebar-width-mobile": "18rem" }}>
+          <Sidebar className="docs-app-sidebar" collapsible="offcanvas">
+            <SidebarHeader>
             <a className="docs-brand" href="#/">Arc<span>Syn</span><small>Design System</small></a>
-            <nav className="docs-nav" aria-label="Documentação"><p>Fundação</p><a className={route === "/" ? "is-active" : ""} href="#/">Visão geral</a><a className={isTheming ? "is-active" : ""} href="#/theming">Theming</a><p>Componentes</p>{componentPages.map((item) => <a className={page?.id === item.id ? "is-active" : ""} href={`#/components/${item.id}`} key={item.id}>{item.title}</a>)}</nav>
-            <div className="docs-sidebar-theme"><span>Tema</span><DocsThemeSwitcher compact /></div>
-            <div className="docs-sidebar-footer"><span>v0.1.0</span><span>React</span></div>
-          </aside>
-          <main className="docs-main">{themePage ? <ThemeDetailPage theme={themePage} /> : isTheming ? <ThemingPage /> : page ? <ComponentDocumentation page={page} /> : <HomePage />}</main>
-        </div>
+            </SidebarHeader>
+            <SidebarContent>
+              <SidebarGroup>
+                <SidebarGroupLabel>Fundação</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    <DocsSidebarLink active={route === "/"} href="#/" icon={<CircleIcon aria-hidden size={15} />}>Visão geral</DocsSidebarLink>
+                    <DocsSidebarLink active={isTheming} href="#/theming" icon={<CheckIcon aria-hidden size={15} />}>Theming</DocsSidebarLink>
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+              <SidebarGroup>
+                <SidebarGroupLabel>Componentes</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {componentPages.map((item) => <DocsSidebarLink active={page?.id === item.id} href={`#/components/${item.id}`} key={item.id}>{item.title}</DocsSidebarLink>)}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            </SidebarContent>
+            <SidebarFooter>
+              <DocsPreferencesDialog />
+              <div className="docs-sidebar-footer"><span>v0.1.0</span><span>React</span></div>
+            </SidebarFooter>
+            <SidebarRail />
+          </Sidebar>
+          <SidebarInset className="docs-app-inset">
+            <header className="docs-topbar">
+              <SidebarTrigger />
+              <span className="docs-topbar-title">{currentPageTitle}</span>
+              <Kbd className="docs-sidebar-shortcut">Ctrl B</Kbd>
+            </header>
+            <div className="docs-main">{themePage ? <ThemeDetailPage theme={themePage} /> : isTheming ? <ThemingPage /> : page ? <ComponentDocumentation page={page} /> : <HomePage />}</div>
+          </SidebarInset>
+        </SidebarProvider>
         <Toaster />
-      </div>
+      </>
     </DocsThemeContext.Provider>
   );
 }

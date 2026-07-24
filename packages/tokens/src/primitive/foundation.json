@@ -18,7 +18,7 @@
     "full": { "$type": "dimension", "$value": "9999px" }
   },
   "font": {
-    "sans": { "$type": "fontFamily", "$value": "'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif" },
+    "sans": { "$type": "fontFamily", "$value": "'Alexandria', ui-sans-serif, system-ui, sans-serif" },
     "mono": { "$type": "fontFamily", "$value": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace" }
   },
   "fontSize": {

@@ -321,29 +321,45 @@
   }
 
   .arcsyn-sidebar__rail {
+    --arcsyn-sidebar-rail-chevron-rotation: 135deg;
+
     appearance: none;
     background: transparent;
     border: 0;
-    cursor: ew-resize;
-    inline-size: 0.75rem;
+    cursor: pointer;
+    inline-size: 1rem;
     inset-block: 0;
-    inset-inline-end: -0.375rem;
+    inset-inline-end: -0.5rem;
     padding: 0;
     position: absolute;
     z-index: 30;
   }
 
-  .arcsyn-sidebar[data-side="right"] .arcsyn-sidebar__rail { inset-inline-end: auto; inset-inline-start: -0.375rem; }
-  .arcsyn-sidebar__rail::after {
-    background: transparent;
-    content: "";
-    inline-size: 2px;
-    inset-block: 0;
-    inset-inline-start: 50%;
-    position: absolute;
-    transition: background-color var(--arcsyn-duration-fast);
+  .arcsyn-sidebar[data-side="right"] .arcsyn-sidebar__rail { inset-inline-end: auto; inset-inline-start: -0.5rem; }
+  .arcsyn-sidebar[data-side="left"][data-state="collapsed"] .arcsyn-sidebar__rail,
+  .arcsyn-sidebar[data-side="right"][data-state="expanded"] .arcsyn-sidebar__rail {
+    --arcsyn-sidebar-rail-chevron-rotation: -45deg;
   }
-  .arcsyn-sidebar__rail:hover::after { background: color-mix(in srgb, var(--arcsyn-color-primary), transparent 35%); }
+  .arcsyn-sidebar__rail::before {
+    block-size: 0.4rem;
+    border-block-end: 1.5px solid currentColor;
+    border-inline-end: 1.5px solid currentColor;
+    color: var(--arcsyn-color-primary);
+    content: "";
+    inline-size: 0.4rem;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    transform: translate(-50%, -50%) rotate(var(--arcsyn-sidebar-rail-chevron-rotation));
+    transition: opacity var(--arcsyn-duration-fast), transform var(--arcsyn-duration-fast);
+  }
+  .arcsyn-sidebar__rail:hover::before,
+  .arcsyn-sidebar__rail:focus-visible::before {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--arcsyn-sidebar-rail-chevron-rotation)) scale(1.12);
+  }
 
   .arcsyn-sidebar__inset {
     background: var(--arcsyn-color-background);
