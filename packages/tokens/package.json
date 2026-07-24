@@ -13,6 +13,9 @@
     "./themes/light.css": "./dist/css/theme-light.css",
     "./themes/dark.css": "./dist/css/theme-dark.css",
     "./themes/deep-dark.css": "./dist/css/theme-deep-dark.css",
+    "./themes/corporate-dark.css": "./dist/css/theme-corporate-dark.css",
+    "./themes/catppuccin-mocha.css": "./dist/css/theme-catppuccin-mocha.css",
+    "./themes/catppuccin-latte.css": "./dist/css/theme-catppuccin-latte.css",
     "./tailwind.css": "./dist/css/tailwind.css",
     "./react-native": {
       "types": "./dist/react-native/index.d.ts",

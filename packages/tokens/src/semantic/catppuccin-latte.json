@@ -1,0 +1,33 @@
+{
+  "color": {
+    "background": { "$type": "color", "$value": "#eff1f5" },
+    "foreground": { "$type": "color", "$value": "#4c4f69" },
+    "surface": { "$type": "color", "$value": "#e6e9ef" },
+    "surfaceRaised": { "$type": "color", "$value": "#ffffff" },
+    "surfaceSunken": { "$type": "color", "$value": "#dce0e8" },
+    "muted": { "$type": "color", "$value": "#ccd0da" },
+    "mutedForeground": { "$type": "color", "$value": "#5c5f77" },
+    "primary": { "$type": "color", "$value": "#8839ef" },
+    "primaryForeground": { "$type": "color", "$value": "#ffffff" },
+    "primaryHover": { "$type": "color", "$value": "#7028d8" },
+    "accent": { "$type": "color", "$value": "#e6e9ef" },
+    "accentForeground": { "$type": "color", "$value": "#4c4f69" },
+    "accentBorder": { "$type": "color", "$value": "#acb0be" },
+    "accentSolid": { "$type": "color", "$value": "#7287fd" },
+    "border": { "$type": "color", "$value": "#ccd0da" },
+    "borderStrong": { "$type": "color", "$value": "#bcc0cc" },
+    "focusRing": { "$type": "color", "$value": "#8839ef" },
+    "success": { "$type": "color", "$value": "#40a02b" },
+    "successBackground": { "$type": "color", "$value": "#e3f1df" },
+    "successForeground": { "$type": "color", "$value": "#2d7020" },
+    "successBorder": { "$type": "color", "$value": "#9bc693" },
+    "warning": { "$type": "color", "$value": "#df8e1d" },
+    "warningBackground": { "$type": "color", "$value": "#f9edcf" },
+    "warningForeground": { "$type": "color", "$value": "#6f470e" },
+    "warningBorder": { "$type": "color", "$value": "#d7b260" },
+    "danger": { "$type": "color", "$value": "#d20f39" },
+    "dangerBackground": { "$type": "color", "$value": "#f4dce2" },
+    "dangerForeground": { "$type": "color", "$value": "#8d0b27" },
+    "dangerBorder": { "$type": "color", "$value": "#d899a8" }
+  }
+}

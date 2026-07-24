@@ -1,0 +1,7 @@
+[data-arcsyn-theme="catppuccin-mocha"] .docs-brand img {
+  filter: hue-rotate(92.25deg) saturate(127%) brightness(88%);
+}
+
+[data-arcsyn-theme="catppuccin-latte"] .docs-brand img {
+  filter: invert(82.66%) sepia(0.05%) saturate(615.6%) hue-rotate(262.35deg) brightness(141.3%) contrast(88.2%);
+}

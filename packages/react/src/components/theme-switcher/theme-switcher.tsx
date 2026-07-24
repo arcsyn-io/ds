@@ -1,7 +1,7 @@
 import { forwardRef, useState, type HTMLAttributes } from "react";
 import { cx } from "../../utilities/cx.js";
 
-export type ThemeSwitcherTheme = "light" | "dark" | "deep-dark";
+export type ThemeSwitcherTheme = "light" | "dark" | "deep-dark" | "corporate-dark" | "catppuccin-mocha" | "catppuccin-latte";
 
 export interface ThemeSwitcherOption {
   value: ThemeSwitcherTheme;
@@ -21,6 +21,9 @@ const defaultOptions: readonly ThemeSwitcherOption[] = [
   { value: "light", label: "Light" },
   { value: "dark", label: "Dark" },
   { value: "deep-dark", label: "Deep Dark" },
+  { value: "corporate-dark", label: "Corporate Dark" },
+  { value: "catppuccin-mocha", label: "Catppuccin Mocha" },
+  { value: "catppuccin-latte", label: "Catppuccin Latte" },
 ];
 
 export const ThemeSwitcher = forwardRef<HTMLDivElement, ThemeSwitcherProps>(function ThemeSwitcher(

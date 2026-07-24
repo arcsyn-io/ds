@@ -95,18 +95,24 @@ function tokensWithPrefix(tokens, prefix, transform = toReactNativeValue) {
   );
 }
 
-const [colors, foundation, light, dark, deepDark] = await Promise.all([
+const [colors, foundation, light, dark, deepDark, corporateDark, catppuccinMocha, catppuccinLatte] = await Promise.all([
   readJson(join(source, "primitive", "colors.json")),
   readJson(join(source, "primitive", "foundation.json")),
   readJson(join(source, "semantic", "light.json")),
   readJson(join(source, "semantic", "dark.json")),
   readJson(join(source, "semantic", "deep-dark.json")),
+  readJson(join(source, "semantic", "corporate-dark.json")),
+  readJson(join(source, "semantic", "catppuccin-mocha.json")),
+  readJson(join(source, "semantic", "catppuccin-latte.json")),
 ]);
 
 const primitives = { ...flatten(colors), ...flatten(foundation) };
 const lightTokens = flatten(light);
 const darkTokens = flatten(dark);
 const deepDarkTokens = flatten(deepDark);
+const corporateDarkTokens = flatten(corporateDark);
+const catppuccinMochaTokens = flatten(catppuccinMocha);
+const catppuccinLatteTokens = flatten(catppuccinLatte);
 
 await rm(output, { recursive: true, force: true });
 await Promise.all(["css", "js", "json", "react-native"].map((folder) => mkdir(join(output, folder), { recursive: true })));
@@ -116,9 +122,12 @@ await writeFile(join(output, "css", "tokens.css"), `${banner}:root {\n${declarat
 await writeFile(join(output, "css", "theme-light.css"), `${banner}:root, [data-arcsyn-theme=\"light\"] {\n  color-scheme: light;\n${declarations(lightTokens)}\n}\n`);
 await writeFile(join(output, "css", "theme-dark.css"), `${banner}[data-arcsyn-theme=\"dark\"] {\n  color-scheme: dark;\n${declarations(darkTokens)}\n}\n`);
 await writeFile(join(output, "css", "theme-deep-dark.css"), `${banner}[data-arcsyn-theme=\"deep-dark\"] {\n  color-scheme: dark;\n${declarations(deepDarkTokens)}\n}\n`);
+await writeFile(join(output, "css", "theme-corporate-dark.css"), `${banner}[data-arcsyn-theme=\"corporate-dark\"] {\n  color-scheme: dark;\n${declarations(corporateDarkTokens)}\n}\n`);
+await writeFile(join(output, "css", "theme-catppuccin-mocha.css"), `${banner}[data-arcsyn-theme=\"catppuccin-mocha\"] {\n  color-scheme: dark;\n${declarations(catppuccinMochaTokens)}\n}\n`);
+await writeFile(join(output, "css", "theme-catppuccin-latte.css"), `${banner}[data-arcsyn-theme=\"catppuccin-latte\"] {\n  color-scheme: light;\n${declarations(catppuccinLatteTokens)}\n}\n`);
 await writeFile(join(output, "css", "tailwind.css"), `${banner}@theme {\n${tailwindDeclarations(primitives)}\n}\n`);
 
-const payload = { primitives, themes: { light: lightTokens, dark: darkTokens, "deep-dark": deepDarkTokens } };
+const payload = { primitives, themes: { light: lightTokens, dark: darkTokens, "deep-dark": deepDarkTokens, "corporate-dark": corporateDarkTokens, "catppuccin-mocha": catppuccinMochaTokens, "catppuccin-latte": catppuccinLatteTokens } };
 const resolvedThemes = Object.fromEntries(
   Object.entries(payload.themes).map(([theme, themeTokens]) => [
     theme,
@@ -144,8 +153,8 @@ const reactNativePayload = {
 };
 await writeFile(join(output, "json", "tokens.json"), `${JSON.stringify(payload, null, 2)}\n`);
 await writeFile(join(output, "js", "index.js"), `export const tokens = ${JSON.stringify(payload, null, 2)};\nexport const { primitives, themes } = tokens;\n`);
-await writeFile(join(output, "js", "index.d.ts"), "export declare const tokens: Record<string, unknown>;\nexport declare const primitives: Record<string, string>;\nexport declare const themes: { light: Record<string, string>; dark: Record<string, string>; \"deep-dark\": Record<string, string> };\n");
+await writeFile(join(output, "js", "index.d.ts"), "export declare const tokens: Record<string, unknown>;\nexport declare const primitives: Record<string, string>;\nexport declare const themes: { light: Record<string, string>; dark: Record<string, string>; \"deep-dark\": Record<string, string>; \"corporate-dark\": Record<string, string>; \"catppuccin-mocha\": Record<string, string>; \"catppuccin-latte\": Record<string, string> };\n");
 await writeFile(join(output, "react-native", "index.js"), `export const tokens = ${JSON.stringify(reactNativePayload, null, 2)};\nexport const { color, spacing, radius, fontSize, duration, fontFamily, themes } = tokens;\nexport default tokens;\n`);
-await writeFile(join(output, "react-native", "index.d.ts"), "export interface ArcSynReactNativeTokens {\n  color: Record<string, unknown>;\n  spacing: Record<string, number>;\n  radius: Record<string, number>;\n  fontSize: Record<string, number>;\n  duration: Record<string, number>;\n  fontFamily: Record<string, string>;\n  themes: { light: { color: Record<string, string> }; dark: { color: Record<string, string> }; \"deep-dark\": { color: Record<string, string> } };\n}\nexport declare const tokens: ArcSynReactNativeTokens;\nexport declare const color: ArcSynReactNativeTokens['color'];\nexport declare const spacing: ArcSynReactNativeTokens['spacing'];\nexport declare const radius: ArcSynReactNativeTokens['radius'];\nexport declare const fontSize: ArcSynReactNativeTokens['fontSize'];\nexport declare const duration: ArcSynReactNativeTokens['duration'];\nexport declare const fontFamily: ArcSynReactNativeTokens['fontFamily'];\nexport declare const themes: ArcSynReactNativeTokens['themes'];\nexport default tokens;\n");
+await writeFile(join(output, "react-native", "index.d.ts"), "export interface ArcSynReactNativeTokens {\n  color: Record<string, unknown>;\n  spacing: Record<string, number>;\n  radius: Record<string, number>;\n  fontSize: Record<string, number>;\n  duration: Record<string, number>;\n  fontFamily: Record<string, string>;\n  themes: { light: { color: Record<string, string> }; dark: { color: Record<string, string> }; \"deep-dark\": { color: Record<string, string> }; \"corporate-dark\": { color: Record<string, string> }; \"catppuccin-mocha\": { color: Record<string, string> }; \"catppuccin-latte\": { color: Record<string, string> } };\n}\nexport declare const tokens: ArcSynReactNativeTokens;\nexport declare const color: ArcSynReactNativeTokens['color'];\nexport declare const spacing: ArcSynReactNativeTokens['spacing'];\nexport declare const radius: ArcSynReactNativeTokens['radius'];\nexport declare const fontSize: ArcSynReactNativeTokens['fontSize'];\nexport declare const duration: ArcSynReactNativeTokens['duration'];\nexport declare const fontFamily: ArcSynReactNativeTokens['fontFamily'];\nexport declare const themes: ArcSynReactNativeTokens['themes'];\nexport default tokens;\n");
 
 console.log("Built @arcsyn/tokens");

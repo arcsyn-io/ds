@@ -2,7 +2,7 @@
 @import "@arcsyn/tokens/tailwind.css";
 @import "@arcsyn/styles";
 
-@custom-variant dark (&:where([data-arcsyn-theme="dark"], [data-arcsyn-theme="dark"] *, [data-arcsyn-theme="deep-dark"], [data-arcsyn-theme="deep-dark"] *));
+@custom-variant dark (&:where([data-arcsyn-theme="dark"], [data-arcsyn-theme="dark"] *, [data-arcsyn-theme="deep-dark"], [data-arcsyn-theme="deep-dark"] *, [data-arcsyn-theme="corporate-dark"], [data-arcsyn-theme="corporate-dark"] *, [data-arcsyn-theme="catppuccin-mocha"], [data-arcsyn-theme="catppuccin-mocha"] *));
 
 @theme inline {
   --color-background: var(--arcsyn-color-background);
@@ -80,11 +80,11 @@
 .docs-table-wrap td { color: var(--arcsyn-color-muted-foreground); line-height: 1.5; }
 .docs-table-wrap td:first-child { color: var(--arcsyn-color-foreground); font-weight: 600; }
 .docs-table-wrap code { color: var(--arcsyn-color-foreground); font-size: 0.68rem; }
-:where([data-arcsyn-theme="dark"], [data-arcsyn-theme="deep-dark"]) .docs-table-wrap th { font-weight: 500; }
-:where([data-arcsyn-theme="dark"], [data-arcsyn-theme="deep-dark"]) .docs-table-wrap td:first-child { font-weight: 500; }
-:where([data-arcsyn-theme="dark"], [data-arcsyn-theme="deep-dark"]) .docs-eyebrow,
-:where([data-arcsyn-theme="dark"], [data-arcsyn-theme="deep-dark"]) .docs-card-eyebrow,
-:where([data-arcsyn-theme="dark"], [data-arcsyn-theme="deep-dark"]) .docs-status { font-weight: 500; }
+:where([data-arcsyn-theme="dark"], [data-arcsyn-theme="deep-dark"], [data-arcsyn-theme="corporate-dark"], [data-arcsyn-theme="catppuccin-mocha"]) .docs-table-wrap th { font-weight: 500; }
+:where([data-arcsyn-theme="dark"], [data-arcsyn-theme="deep-dark"], [data-arcsyn-theme="corporate-dark"], [data-arcsyn-theme="catppuccin-mocha"]) .docs-table-wrap td:first-child { font-weight: 500; }
+:where([data-arcsyn-theme="dark"], [data-arcsyn-theme="deep-dark"], [data-arcsyn-theme="corporate-dark"], [data-arcsyn-theme="catppuccin-mocha"]) .docs-eyebrow,
+:where([data-arcsyn-theme="dark"], [data-arcsyn-theme="deep-dark"], [data-arcsyn-theme="corporate-dark"], [data-arcsyn-theme="catppuccin-mocha"]) .docs-card-eyebrow,
+:where([data-arcsyn-theme="dark"], [data-arcsyn-theme="deep-dark"], [data-arcsyn-theme="corporate-dark"], [data-arcsyn-theme="catppuccin-mocha"]) .docs-status { font-weight: 500; }
 .docs-example-list { display: grid; gap: var(--arcsyn-spacing-4); }
 .docs-example { border: 1px solid var(--arcsyn-color-border); border-radius: var(--arcsyn-radius-lg); overflow: hidden; }
 .docs-example-copy { display: grid; gap: var(--arcsyn-spacing-1); padding: var(--arcsyn-spacing-4) var(--arcsyn-spacing-4) 0; }

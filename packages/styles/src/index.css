@@ -24,6 +24,9 @@
 @import "@arcsyn/tokens/themes/light.css";
 @import "@arcsyn/tokens/themes/dark.css";
 @import "@arcsyn/tokens/themes/deep-dark.css";
+@import "@arcsyn/tokens/themes/corporate-dark.css";
+@import "@arcsyn/tokens/themes/catppuccin-mocha.css";
+@import "@arcsyn/tokens/themes/catppuccin-latte.css";
 @import "./reset.css";
 @import "./themes.css";
 @import "./components/button.css";

@@ -150,7 +150,15 @@ function ToasterEffectsDemo() {
 }
 
 const docsThemeStorageKey = "arcsyn-docs-theme";
-const docsThemes: readonly ThemeSwitcherTheme[] = ["light", "dark", "deep-dark"];
+const docsThemes: readonly ThemeSwitcherTheme[] = ["light", "dark", "deep-dark", "corporate-dark", "catppuccin-mocha", "catppuccin-latte"];
+const docsThemeOptions = [
+  { value: "light", label: "Light" },
+  { value: "dark", label: "Dark" },
+  { value: "deep-dark", label: "Deep Dark" },
+  { value: "corporate-dark", label: "Corporate Dark" },
+  { value: "catppuccin-mocha", label: "Catppuccin Mocha" },
+  { value: "catppuccin-latte", label: "Catppuccin Latte" },
+] as const;
 const docsFontStorageKey = "arcsyn-docs-font";
 const docsFonts = [
   { id: "alexandria", label: "Alexandria", family: "'Alexandria', ui-sans-serif, system-ui, sans-serif" },
@@ -233,7 +241,7 @@ const DocsThemeContext = createContext<DocsThemeContextValue>({
 
 function DocsThemeSwitcher() {
   const { theme, setTheme } = useContext(DocsThemeContext);
-  return <ThemeSwitcher value={theme} onValueChange={setTheme} label="Tema da documentação" />;
+  return <ThemeSwitcher value={theme} options={docsThemeOptions} onValueChange={setTheme} label="Tema da documentação" />;
 }
 
 function DocsFontSwitcher() {
@@ -485,10 +493,10 @@ const componentPages: ComponentPage[] = [
     anatomy: ["Wrapper", "Select nativo", "Opções de tema", "Callback de mudança"],
     accessibility: "O componente usa um select nativo nomeado pelo label, preservando teclado, foco e anúncio da opção selecionada pelo navegador. Forneça um label que descreva o escopo afetado. Não há equivalente React Native: no mobile, controle a prop theme de ArcSynProvider com componentes nativos da aplicação.",
     properties: [
-      { name: "value", type: '"light" | "dark" | "deep-dark"', defaultValue: "—", description: "Tema selecionado no modo controlado." },
-      { name: "defaultValue", type: '"light" | "dark" | "deep-dark"', defaultValue: '"dark"', description: "Tema inicial no modo não controlado." },
+      { name: "value", type: '"light" | "dark" | "deep-dark" | "corporate-dark" | "catppuccin-mocha" | "catppuccin-latte"', defaultValue: "—", description: "Tema selecionado no modo controlado." },
+      { name: "defaultValue", type: '"light" | "dark" | "deep-dark" | "corporate-dark" | "catppuccin-mocha" | "catppuccin-latte"', defaultValue: '"dark"', description: "Tema inicial no modo não controlado." },
       { name: "onValueChange", type: "(theme) => void", defaultValue: "—", description: "Recebe o tema escolhido pelo usuário." },
-      { name: "options", type: "readonly ThemeSwitcherOption[]", defaultValue: "3 temas ArcSyn", description: "Personaliza temas disponíveis e seus rótulos." },
+      { name: "options", type: "readonly ThemeSwitcherOption[]", defaultValue: "6 temas ArcSyn", description: "Personaliza temas disponíveis e seus rótulos." },
       { name: "label", type: "string", defaultValue: '"Tema"', description: "Nome acessível do grupo." },
       { name: "disabled", type: "boolean", defaultValue: "false", description: "Desabilita todas as opções." },
     ],
@@ -1530,6 +1538,57 @@ const themeComparisons: readonly ThemeComparison[] = [
       danger: "#b95b65", dangerBackground: "#211114", dangerForeground: "#edc3c7", dangerBorder: "#70353c",
     },
   },
+  {
+    id: "corporate-dark",
+    name: "Corporate Dark",
+    description: "Ardósia violeta profunda, hierarquia precisa e ciano institucional.",
+    theme: "corporate-dark",
+    colors: {
+      background: "#111018", foreground: "#f1eef5", surface: "#181720",
+      surfaceRaised: "#22212d", surfaceSunken: "#0c0b11", muted: "#2a2836",
+      mutedForeground: "#aaa5b6", primary: "#90dddf", primaryForeground: "#071315",
+      primaryHover: "#a8e7e9", accent: "#162a30", accentForeground: "#cceff0",
+      accentBorder: "#37636b", accentSolid: "#5f9fa6",
+      border: "#343141", borderStrong: "#4b465a", focusRing: "#90dddf",
+      success: "#63c692", successBackground: "#10291f", successForeground: "#bcebd3", successBorder: "#2f6b50",
+      warning: "#e0b85c", warningBackground: "#2b2413", warningForeground: "#f4dda5", warningBorder: "#735e2d",
+      danger: "#e17b84", dangerBackground: "#2c171b", dangerForeground: "#f6c7cb", dangerBorder: "#7b3f46",
+    },
+  },
+  {
+    id: "catppuccin-mocha",
+    name: "Catppuccin Mocha",
+    description: "Aconchego escuro do Mocha com Mauve aplicado à marca ArcSyn.",
+    theme: "catppuccin-mocha",
+    colors: {
+      background: "#1e1e2e", foreground: "#cdd6f4", surface: "#181825",
+      surfaceRaised: "#313244", surfaceSunken: "#11111b", muted: "#313244",
+      mutedForeground: "#a6adc8", primary: "#cba6f7", primaryForeground: "#11111b",
+      primaryHover: "#b4befe", accent: "#313244", accentForeground: "#cdd6f4",
+      accentBorder: "#585b70", accentSolid: "#b4befe",
+      border: "#313244", borderStrong: "#45475a", focusRing: "#cba6f7",
+      success: "#a6e3a1", successBackground: "#24332a", successForeground: "#d1f3ce", successBorder: "#4f7251",
+      warning: "#f9e2af", warningBackground: "#352f24", warningForeground: "#f9e2af", warningBorder: "#776a4c",
+      danger: "#f38ba8", dangerBackground: "#39232d", dangerForeground: "#f5c2e7", dangerBorder: "#7e4054",
+    },
+  },
+  {
+    id: "catppuccin-latte",
+    name: "Catppuccin Latte",
+    description: "Clareza suave do Latte com Mauve aplicado à marca ArcSyn.",
+    theme: "catppuccin-latte",
+    colors: {
+      background: "#eff1f5", foreground: "#4c4f69", surface: "#e6e9ef",
+      surfaceRaised: "#ffffff", surfaceSunken: "#dce0e8", muted: "#ccd0da",
+      mutedForeground: "#5c5f77", primary: "#8839ef", primaryForeground: "#ffffff",
+      primaryHover: "#7028d8", accent: "#e6e9ef", accentForeground: "#4c4f69",
+      accentBorder: "#acb0be", accentSolid: "#7287fd",
+      border: "#ccd0da", borderStrong: "#bcc0cc", focusRing: "#8839ef",
+      success: "#40a02b", successBackground: "#e3f1df", successForeground: "#2d7020", successBorder: "#9bc693",
+      warning: "#df8e1d", warningBackground: "#f9edcf", warningForeground: "#6f470e", warningBorder: "#d7b260",
+      danger: "#d20f39", dangerBackground: "#f4dce2", dangerForeground: "#8d0b27", dangerBorder: "#d899a8",
+    },
+  },
 ];
 
 const previewColorKeys = ["background", "surface", "border", "primary", "foreground"] as const;
@@ -1546,7 +1605,7 @@ function ThemePreview({ theme, onSelect }: { theme: ThemeComparison; onSelect: (
           <span><strong id={`theme-${theme.id}`}>{theme.name}</strong><small>{theme.description}</small></span>
           <span className="docs-theme-choice-action">Abrir tema →</span>
         </button>
-        {theme.id === "dark" ? <Badge variant="accent">Padrão</Badge> : theme.id === "deep-dark" ? <Badge variant="accent">Novo</Badge> : null}
+        {theme.id === "dark" ? <Badge variant="accent">Padrão</Badge> : theme.id === "catppuccin-latte" ? <Badge variant="accent">Novo</Badge> : null}
       </header>
 
       <div className="docs-theme-swatches" aria-label={`Tokens principais do tema ${theme.name}`}>
@@ -1738,7 +1797,7 @@ function ThemeDetailPage({ theme }: { theme: ThemeComparison }) {
         <p className="docs-eyebrow">Tema ArcSyn</p>
         <div className="docs-page-title-row">
           <div><h1>{theme.name}</h1><p>{theme.description}</p></div>
-          {theme.id === "dark" ? <Badge variant="accent">Padrão</Badge> : null}
+          {theme.id === "dark" ? <Badge variant="accent">Padrão</Badge> : theme.id === "catppuccin-latte" ? <Badge variant="accent">Novo</Badge> : null}
         </div>
         <div className="docs-theme-hero-swatches" aria-label={`Resumo da paleta ${theme.name}`}>
           {previewColorKeys.map((key) => <span key={key} style={{ backgroundColor: theme.colors[key] }} title={`${key}: ${theme.colors[key]}`} />)}

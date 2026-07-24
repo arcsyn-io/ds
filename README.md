@@ -29,10 +29,19 @@ tokens → styles → react
 
 ## Temas
 
-Web aceita `light`, `dark` e `deep-dark` pelo atributo `data-arcsyn-theme`.
+Web aceita `light`, `dark`, `deep-dark`, `corporate-dark`,
+`catppuccin-mocha` e `catppuccin-latte` pelo atributo `data-arcsyn-theme`.
 O tema `deep-dark` parte de `#000000` e preserva o primary ciano e o foreground
-azure claro. No React Native, use os mesmos nomes na propriedade `theme` de
-`ArcSynProvider`.
+azure claro. O tema isolado `corporate-dark` usa uma base ardósia violeta moderna
+e mantém o ciano da marca (`#90dddf`) em `primary`. No React Native, use os mesmos
+nomes na propriedade `theme` de `ArcSynProvider`.
+
+O tema `catppuccin-mocha` adapta a paleta Mocha e usa o Mauve oficial
+(`#cba6f7`) como `primary`; na documentação, o detalhe ciano da logo também
+assume Mauve enquanto esse tema estiver ativo.
+
+O tema `catppuccin-latte` usa Base, Mantle e Crust da variante clara e aplica o
+Mauve Latte (`#8839ef`) em `primary` e na adaptação temática da logo.
 
 ## React Native
 
