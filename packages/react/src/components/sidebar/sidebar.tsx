@@ -234,7 +234,7 @@ export const SidebarTrigger = forwardRef<HTMLButtonElement, ButtonHTMLAttributes
       }}
       {...props}
     >
-      {children ?? <PanelLeftIcon aria-hidden size={18} />}
+      {children ?? <PanelLeftIcon aria-hidden size={16} />}
     </button>
   );
 });

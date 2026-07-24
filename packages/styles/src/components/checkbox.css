@@ -15,6 +15,8 @@
   .arcsyn-checkbox::after { border: solid var(--arcsyn-color-primary-foreground); border-width: 0 2px 2px 0; content: ""; height: 0.45rem; opacity: 0; transform: rotate(45deg) translate(-1px, -1px); width: 0.22rem; }
   .arcsyn-checkbox:checked { background: var(--arcsyn-color-primary); border-color: var(--arcsyn-color-primary); }
   .arcsyn-checkbox:checked::after { opacity: 1; }
+  .arcsyn-checkbox:indeterminate { background: var(--arcsyn-color-primary); border-color: var(--arcsyn-color-primary); }
+  .arcsyn-checkbox:indeterminate::after { background: var(--arcsyn-color-primary-foreground); border: 0; height: 2px; opacity: 1; transform: none; width: 0.5rem; }
   .arcsyn-checkbox:focus-visible { box-shadow: 0 0 0 3px color-mix(in srgb, var(--arcsyn-color-focus-ring), transparent 78%); outline: none; }
   .arcsyn-checkbox[data-invalid="true"] { border-color: var(--arcsyn-color-danger); }
   .arcsyn-checkbox:disabled { cursor: not-allowed; opacity: 0.5; }

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
-import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, Dialog, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Textarea, ThemeSwitcher, Toaster, toast, useSidebar, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
+import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Textarea, ThemeSwitcher, Toaster, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleIcon, EllipsisIcon, MinusIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn/react/icons";
 
 type Property = {
@@ -291,7 +291,139 @@ function DocsSidebarLink({ active, children, href, icon }: { active: boolean; ch
   );
 }
 
+type ProjectRow = {
+  id: string;
+  name: string;
+  status: "Operacional" | "Atenção" | "Pausado";
+  owner: string;
+  environment: string;
+  monthlyCost: number;
+};
+
+const projectRows: ProjectRow[] = [
+  { id: "ARC-1042", name: "Gateway de pagamentos", status: "Operacional", owner: "Ana Costa", environment: "Produção", monthlyCost: 18420 },
+  { id: "ARC-1038", name: "Observabilidade central", status: "Atenção", owner: "Bruno Lima", environment: "Produção", monthlyCost: 12780 },
+  { id: "ARC-1029", name: "Portal de parceiros", status: "Operacional", owner: "Camila Nunes", environment: "Homologação", monthlyCost: 6340 },
+  { id: "ARC-1017", name: "Pipeline de dados", status: "Pausado", owner: "Diego Martins", environment: "Desenvolvimento", monthlyCost: 4210 },
+  { id: "ARC-1008", name: "Gestão de identidades", status: "Operacional", owner: "Elisa Rocha", environment: "Produção", monthlyCost: 15900 },
+  { id: "ARC-0996", name: "Catálogo interno", status: "Atenção", owner: "Felipe Alves", environment: "Homologação", monthlyCost: 7850 },
+  { id: "ARC-0984", name: "Motor antifraude", status: "Operacional", owner: "Giovana Reis", environment: "Produção", monthlyCost: 22160 },
+  { id: "ARC-0971", name: "Console de suporte", status: "Pausado", owner: "Hugo Melo", environment: "Desenvolvimento", monthlyCost: 2980 },
+];
+
+const projectColumns: DataTableColumn<ProjectRow>[] = [
+  {
+    accessorKey: "name",
+    header: "Projeto",
+    sortable: true,
+    hideable: false,
+    width: "32%",
+    cell: ({ row }) => <span className="docs-data-table-project"><strong>{row.name}</strong><code>{row.id}</code></span>,
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    sortable: true,
+    cell: ({ row }) => <Badge variant={row.status === "Operacional" ? "success" : row.status === "Atenção" ? "warning" : "neutral"}>{row.status}</Badge>,
+  },
+  { accessorKey: "owner", header: "Responsável", sortable: true },
+  { accessorKey: "environment", header: "Ambiente", sortable: true },
+  {
+    accessorKey: "monthlyCost",
+    header: "Custo mensal",
+    sortable: true,
+    align: "end",
+    cell: ({ row }) => <span className="docs-data-table-currency">{new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(row.monthlyCost)}</span>,
+  },
+];
+
+function DataTableDemo() {
+  return (
+    <DataTable
+      caption="Projetos da operação"
+      columns={projectColumns}
+      data={projectRows}
+      getRowId={(row) => row.id}
+      initialPageSize={5}
+      pageSizeOptions={[5, 10, 20]}
+      initialSort={{ columnId: "name", direction: "asc" }}
+      filterPlaceholder="Filtrar projetos..."
+      rowActions={(row) => (
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger className="docs-data-table-action" variant="ghost" size="sm" aria-label={`Ações de ${row.name}`}>
+            <EllipsisIcon aria-hidden size={16} />
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content align="end">
+            <DropdownMenu.Item>Ver detalhes</DropdownMenu.Item>
+            <DropdownMenu.Item>Duplicar projeto</DropdownMenu.Item>
+            <DropdownMenu.Separator />
+            <DropdownMenu.Item variant="danger">Arquivar</DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
+      )}
+    />
+  );
+}
+
 const componentPages: ComponentPage[] = [
+  {
+    id: "data-table",
+    title: "Data Table",
+    summary: "Organiza conjuntos de dados com formatação de células, ações, ordenação, filtros e controles de visualização.",
+    importCode: 'import { DataTable, type DataTableColumn } from "@arcsyn/react";',
+    status: "React estável · Web",
+    anatomy: ["Toolbar com filtro e visibilidade", "Cabeçalho ordenável", "Linhas e células formatáveis", "Seleção por linha e página", "Ações por linha", "Status e paginação"],
+    accessibility: "DataTable usa table, caption, thead, tbody e cabeçalhos de coluna nativos. Ordenação é comunicada por aria-sort; seleção e paginação têm nomes acessíveis, e a contagem usa aria-live. Forneça caption descritivo e aria-label em ações somente com ícone. Em telas estreitas, a tabela preserva sua estrutura semântica e permite rolagem horizontal, enquanto os controles mantêm alvos de 44px. Não há equivalente React Native: para grandes conjuntos de dados, use FlatList com filtros e ordenação fornecidos pela aplicação.",
+    properties: [
+      { name: "data / columns", type: "readonly T[] / DataTableColumn<T>[]", defaultValue: "—", description: "Define as linhas e o contrato de acesso, apresentação e comportamento de cada coluna." },
+      { name: "column.cell", type: "(context) => ReactNode", defaultValue: "valor bruto", description: "Formata a célula com acesso ao valor, à linha e ao índice." },
+      { name: "column.sortable / sort", type: "boolean / (a, b) => number", defaultValue: "false / automático", description: "Ativa ordenação em três estados e permite um comparador customizado." },
+      { name: "column.filterable / filter", type: "boolean / function", defaultValue: "true / textual", description: "Inclui a coluna no filtro global ou substitui a comparação padrão." },
+      { name: "column.hideable", type: "boolean", defaultValue: "true", description: "Permite ocultar e restaurar a coluna pelo menu de visibilidade." },
+      { name: "rowActions", type: "(row, rowIndex) => ReactNode", defaultValue: "—", description: "Renderiza ações contextuais no fim de cada linha." },
+      { name: "enableRowSelection", type: "boolean", defaultValue: "true", description: "Exibe seleção individual e seleção de todas as linhas da página atual." },
+      { name: "selectedRowIds / onRowSelectionChange", type: "readonly string[] / (ids) => void", defaultValue: "não controlado", description: "Controla externamente a seleção; defaultSelectedRowIds define o estado inicial." },
+      { name: "initialSort / initialPageSize", type: "DataTableSort / number", defaultValue: "— / 10", description: "Configura a ordenação e o tamanho inicial da página." },
+      { name: "initialColumnVisibility", type: "Record<string, boolean>", defaultValue: "{}", description: "Define quais colunas começam ocultas." },
+      { name: "caption / getRowId", type: "ReactNode / (row, index) => string", defaultValue: '"Tabela de dados" / índice', description: "Fornece nome acessível e identidade estável para seleção e renderização." },
+    ],
+    examples: [
+      {
+        title: "Operação de projetos",
+        description: "Use cell para formatar identidade, status e moeda; rowActions recebe a linha original. Experimente filtrar, ordenar, ocultar colunas, selecionar linhas e trocar de página.",
+        preview: <DataTableDemo />,
+        code: `const columns: DataTableColumn<Project>[] = [
+  {
+    accessorKey: "name",
+    header: "Projeto",
+    sortable: true,
+    hideable: false,
+    cell: ({ row }) => (
+      <div>
+        <strong>{row.name}</strong>
+        <code>{row.id}</code>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    sortable: true,
+    cell: ({ row }) => <Badge variant="success">{row.status}</Badge>,
+  },
+];
+
+<DataTable
+  caption="Projetos da operação"
+  columns={columns}
+  data={projects}
+  getRowId={(row) => row.id}
+  initialPageSize={5}
+  rowActions={(row) => <ProjectActions project={row} />}
+/>`,
+      },
+    ],
+  },
   {
     id: "sidebar",
     title: "Sidebar",
@@ -1467,7 +1599,9 @@ export function DocsApp() {
         <SidebarProvider className="docs-shell" style={{ "--arcsyn-sidebar-width": "16rem", "--arcsyn-sidebar-width-mobile": "18rem" }}>
           <Sidebar className="docs-app-sidebar" collapsible="offcanvas">
             <SidebarHeader>
-            <a className="docs-brand" href="#/">Arc<span>Syn</span><small>Design System</small></a>
+            <a className="docs-brand" href="#/" aria-label="ArcSyn Design System">
+              <img src="/arcsyn-logo.svg" alt="" />
+            </a>
             </SidebarHeader>
             <SidebarContent>
               <SidebarGroup>

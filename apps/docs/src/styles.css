@@ -32,9 +32,9 @@
 }
 .docs-app-sidebar .arcsyn-sidebar__content::-webkit-scrollbar { display: none; }
 .docs-app-inset { min-height: 100vh; }
-.docs-brand { display: grid; font-size: 1.125rem; font-weight: 700; letter-spacing: -0.05em; line-height: 1; text-decoration: none; }
-.docs-brand span { color: var(--arcsyn-color-primary); }
-.docs-brand small { color: var(--arcsyn-color-muted-foreground); font-size: 0.625rem; font-weight: 600; letter-spacing: 0.12em; margin-top: 0.4rem; text-transform: uppercase; }
+.docs-brand { block-size: 3rem; display: block; overflow: hidden; text-decoration: none; }
+.docs-brand img { display: block; inline-size: 10rem; transform: translateY(-1.25rem); }
+[data-arcsyn-theme="light"] .docs-brand img { filter: brightness(0) saturate(100%); opacity: 0.82; }
 .docs-sidebar-footer { color: var(--arcsyn-color-muted-foreground); display: flex; font-family: var(--arcsyn-font-mono); font-size: 0.625rem; justify-content: space-between; padding-top: var(--arcsyn-spacing-2); }
 .docs-settings-trigger { justify-content: flex-start; width: 100%; }
 .docs-settings-trigger svg { color: var(--arcsyn-color-primary); }
@@ -93,6 +93,11 @@
 .docs-example .docs-code { border: 0; border-radius: 0; border-top: 1px solid var(--arcsyn-color-border); }
 .docs-demo-row { align-items: center; display: flex; flex-wrap: wrap; gap: var(--arcsyn-spacing-3); }
 .docs-demo-stack { display: grid; gap: var(--arcsyn-spacing-3); max-width: 32rem; }
+.docs-data-table-project { display: grid; gap: 0.125rem; }
+.docs-data-table-project strong { font-weight: 600; }
+.docs-data-table-project code,
+.docs-data-table-currency { color: var(--arcsyn-color-muted-foreground); font-family: var(--arcsyn-font-mono); font-size: var(--arcsyn-font-size-xs); }
+.docs-data-table-action { inline-size: 2rem; padding: 0; }
 .docs-icon-grid { display: grid; gap: var(--arcsyn-spacing-2); grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); }
 .docs-icon-grid span { align-items: center; border: 1px solid var(--arcsyn-color-border); border-radius: var(--arcsyn-radius-sm); color: var(--arcsyn-color-muted-foreground); display: flex; font-family: var(--arcsyn-font-mono); font-size: var(--arcsyn-font-size-xs); gap: var(--arcsyn-spacing-2); min-block-size: 2.75rem; padding-inline: var(--arcsyn-spacing-3); }
 .docs-icon-grid svg { color: var(--arcsyn-color-foreground); flex: none; }

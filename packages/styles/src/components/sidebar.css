@@ -314,8 +314,6 @@
   .arcsyn-sidebar__input::placeholder { color: var(--arcsyn-color-muted-foreground); }
 
   .arcsyn-sidebar__trigger {
-    background: color-mix(in srgb, var(--arcsyn-color-surface), transparent 18%);
-    border: 1px solid color-mix(in srgb, var(--arcsyn-color-border), transparent 28%);
     block-size: 2rem;
     inline-size: 2rem;
   }

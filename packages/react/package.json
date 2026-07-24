@@ -20,6 +20,10 @@
       "types": "./dist/components/sidebar/index.d.ts",
       "import": "./dist/components/sidebar/index.js"
     },
+    "./data-table": {
+      "types": "./dist/components/data-table/index.d.ts",
+      "import": "./dist/components/data-table/index.js"
+    },
     "./icons": {
       "types": "./dist/icons/index.d.ts",
       "import": "./dist/icons/index.js"
