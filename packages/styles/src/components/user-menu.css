@@ -1,0 +1,29 @@
+@layer components {
+  .arcsyn-user-menu { min-inline-size: 0; }
+  .arcsyn-user-menu:not([data-collapsed]) { inline-size: min(16rem, 100%); }
+  .arcsyn-user-menu__trigger {
+    background: var(--arcsyn-color-surface);
+    border: 1px solid var(--arcsyn-color-border);
+    border-radius: var(--arcsyn-radius-md);
+    inline-size: 100%;
+    justify-content: flex-start;
+    min-block-size: 2.75rem;
+    min-inline-size: 0;
+    padding: var(--arcsyn-spacing-1) var(--arcsyn-spacing-2);
+  }
+  .arcsyn-user-menu__trigger:hover { background: var(--arcsyn-color-muted); border-color: var(--arcsyn-color-border-strong); }
+  .arcsyn-user-menu__trigger[data-popup-open] { background: var(--arcsyn-color-muted); border-color: var(--arcsyn-color-focus-ring); }
+  .arcsyn-user-menu[data-variant="compact"] .arcsyn-user-menu__trigger { min-block-size: 2.25rem; }
+  .arcsyn-user-menu[data-variant="sidebar"] .arcsyn-user-menu__trigger { min-block-size: 3rem; }
+  .arcsyn-user-menu[data-collapsed] .arcsyn-user-menu__trigger { inline-size: 2.75rem; justify-content: center; padding: var(--arcsyn-spacing-1); }
+  .arcsyn-user-menu__identity { display: grid; flex: 1; line-height: 1.25; min-inline-size: 0; text-align: start; }
+  .arcsyn-user-menu__identity strong, .arcsyn-user-menu__identity span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .arcsyn-user-menu__identity strong { color: var(--arcsyn-color-foreground); font-size: var(--arcsyn-font-size-sm); }
+  .arcsyn-user-menu__identity span, .arcsyn-user-menu__menu-description { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-xs); }
+  .arcsyn-user-menu__chevron { border-inline-start: 1px solid var(--arcsyn-color-border); box-sizing: content-box; flex: none; margin-inline-start: var(--arcsyn-spacing-1); padding-inline-start: var(--arcsyn-spacing-2); transition: transform var(--arcsyn-duration-fast); }
+  .arcsyn-user-menu__trigger[data-popup-open] .arcsyn-user-menu__chevron { transform: rotate(180deg); }
+  .arcsyn-user-menu__content { min-inline-size: 15rem; padding: var(--arcsyn-spacing-2); }
+  .arcsyn-user-menu__content .arcsyn-dropdown-menu__item { min-block-size: 2.25rem; }
+  .arcsyn-user-menu__menu-name, .arcsyn-user-menu__menu-description { display: block; }
+  .arcsyn-user-menu__danger-hint { block-size: 1px; clip-path: inset(50%); inline-size: 1px; overflow: hidden; position: absolute; }
+}

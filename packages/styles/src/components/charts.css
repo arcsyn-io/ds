@@ -1,0 +1,86 @@
+@layer components {
+  .arcsyn-chart {
+    color: var(--arcsyn-color-foreground);
+    display: flex;
+    flex-direction: column;
+    gap: var(--arcsyn-spacing-2);
+    inline-size: 100%;
+    min-block-size: 10rem;
+    min-inline-size: 0;
+  }
+  .arcsyn-chart__plot {
+    background-image: linear-gradient(to top, var(--arcsyn-color-border) 1px, transparent 1px);
+    background-position: 0 100%;
+    background-size: 100% 25%;
+    border-block-end: 1px solid var(--arcsyn-color-border-strong);
+    flex: 1;
+    min-block-size: 8rem;
+    position: relative;
+  }
+  .arcsyn-chart__plot > svg { block-size: 100%; inline-size: 100%; overflow: visible; }
+  .arcsyn-chart__axis { stroke: var(--arcsyn-color-border-strong); stroke-width: .5; vector-effect: non-scaling-stroke; }
+  .arcsyn-chart__line { fill: none; stroke: currentColor; stroke-linecap: square; stroke-linejoin: miter; stroke-width: 2; vector-effect: non-scaling-stroke; }
+  .arcsyn-chart__line[data-pattern="1"] { stroke-dasharray: 5 3; }
+  .arcsyn-chart__line[data-pattern="2"] { stroke-dasharray: 2 2; }
+  .arcsyn-chart rect { fill: currentColor; opacity: .9; }
+  [data-color="primary"] { color: var(--arcsyn-color-primary); }
+  [data-color="accent"] { color: var(--arcsyn-color-accent-solid); }
+  [data-color="secondary"] { color: var(--arcsyn-color-muted-foreground); }
+  [data-color="success"] { color: var(--arcsyn-color-success); }
+  [data-color="warning"] { color: var(--arcsyn-color-warning); }
+  [data-color="danger"] { color: var(--arcsyn-color-danger); }
+  .arcsyn-chart__points, .arcsyn-chart__bar-targets { inset: 0; position: absolute; }
+  .arcsyn-chart__point, .arcsyn-chart__bar-targets > button {
+    appearance: none;
+    background: currentColor;
+    border: 2px solid var(--arcsyn-color-surface-raised);
+    border-radius: var(--arcsyn-radius-full);
+    block-size: .625rem;
+    cursor: pointer;
+    inline-size: .625rem;
+    padding: 0;
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
+  .arcsyn-chart__bar-targets > button { background: transparent; border: 0; block-size: 1.5rem; inline-size: 1.5rem; }
+  .arcsyn-chart__point:hover { box-shadow: 0 0 0 3px color-mix(in srgb, currentColor, transparent 70%); }
+  .arcsyn-chart__point:focus-visible, .arcsyn-chart__bar-targets > button:focus-visible { outline: 2px solid var(--arcsyn-color-focus-ring); outline-offset: 2px; }
+  .arcsyn-chart__x-axis { color: var(--arcsyn-color-muted-foreground); display: flex; font-family: var(--arcsyn-font-mono); font-size: .625rem; justify-content: space-between; padding-inline: 8% 4%; }
+  .arcsyn-chart-legend {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: var(--arcsyn-font-size-xs);
+    gap: var(--arcsyn-spacing-2) var(--arcsyn-spacing-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .arcsyn-chart-legend--bottom { justify-content: center; padding-block-start: var(--arcsyn-spacing-1); }
+  .arcsyn-chart-legend li { align-items: center; color: var(--arcsyn-color-muted-foreground); display: inline-flex; gap: var(--arcsyn-spacing-2); }
+  .arcsyn-chart-legend li > span { background: currentColor; block-size: 2px; inline-size: 1rem; }
+  .arcsyn-chart-tooltip {
+    background: var(--arcsyn-color-surface-raised);
+    border: 1px solid var(--arcsyn-color-border-strong);
+    border-radius: var(--arcsyn-radius-md);
+    box-shadow: var(--arcsyn-shadow-md);
+    display: grid;
+    font-size: var(--arcsyn-font-size-xs);
+    gap: var(--arcsyn-spacing-1);
+    max-inline-size: 14rem;
+    padding: var(--arcsyn-spacing-2) var(--arcsyn-spacing-3);
+    pointer-events: none;
+    position: absolute;
+    transform: translate(-50%, calc(-100% - .75rem));
+    z-index: 2;
+  }
+  .arcsyn-chart-tooltip span { color: var(--arcsyn-color-muted-foreground); }
+  .arcsyn-chart-tooltip strong { color: var(--arcsyn-color-foreground); font-family: var(--arcsyn-font-mono); font-variant-numeric: tabular-nums; }
+  .arcsyn-chart__table { block-size: 1px; clip-path: inset(50%); inline-size: 1px; overflow: hidden; position: absolute; white-space: nowrap; }
+  .arcsyn-sparkline { color: var(--arcsyn-color-accent-solid); inline-size: 100%; min-inline-size: 3rem; }
+  .arcsyn-sparkline[data-sentiment="positive"] { color: var(--arcsyn-color-success); }
+  .arcsyn-sparkline[data-sentiment="negative"] { color: var(--arcsyn-color-danger); }
+  .arcsyn-sparkline svg { block-size: 100%; inline-size: 100%; overflow: visible; }
+  .arcsyn-sparkline polyline { fill: none; stroke: currentColor; stroke-linecap: square; stroke-linejoin: miter; stroke-width: 2; vector-effect: non-scaling-stroke; }
+  @media (prefers-reduced-motion: reduce) { .arcsyn-chart *, .arcsyn-sparkline * { transition: none !important; } }
+}

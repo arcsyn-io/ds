@@ -10,6 +10,7 @@ import { ArrowLeftIcon, ArrowRightIcon, ChevronDownIcon, EllipsisIcon } from "..
 import { cx } from "../../utilities/cx.js";
 import { Checkbox } from "../checkbox/checkbox.js";
 import { DropdownMenu } from "../dropdown-menu/dropdown-menu.js";
+import { DataState } from "../data-state/data-state.js";
 
 export type DataTableSortDirection = "asc" | "desc";
 
@@ -58,6 +59,12 @@ export interface DataTableProps<T> {
   selectedRowIds?: readonly string[];
   defaultSelectedRowIds?: readonly string[];
   onRowSelectionChange?: (rowIds: string[]) => void;
+  loading?: boolean;
+  loadingLabel?: string;
+  emptyState?: ReactNode;
+  noResultsState?: ReactNode;
+  error?: boolean;
+  errorState?: ReactNode;
 }
 
 function getColumnId<T>(column: DataTableColumn<T>, index: number) {
@@ -146,6 +153,12 @@ export function DataTable<T>({
   selectedRowIds,
   defaultSelectedRowIds = [],
   onRowSelectionChange,
+  loading = false,
+  loadingLabel = "Carregando tabela",
+  emptyState,
+  noResultsState,
+  error = false,
+  errorState,
 }: DataTableProps<T>) {
   const columnEntries = useMemo(
     () => columns.map((column, index) => ({ column, id: getColumnId(column, index) })),
@@ -310,7 +323,13 @@ export function DataTable<T>({
             </tr>
           </thead>
           <tbody>
-            {pageRowEntries.length ? pageRowEntries.map(({ row, rowId, rowIndex }) => {
+            {loading || error || !pageRowEntries.length ? (
+              <tr>
+                <td className="arcsyn-data-table__state" colSpan={visibleColumns.length + (enableRowSelection ? 1 : 0) + (rowActions ? 1 : 0)}>
+                  {loading ? <DataState state="loading" size="compact" loadingLabel={loadingLabel} /> : error ? (errorState ?? <DataState state="error" size="compact" />) : normalizedQuery && data.length ? (noResultsState ?? emptyState ?? emptyMessage) : (emptyState ?? emptyMessage)}
+                </td>
+              </tr>
+            ) : pageRowEntries.map(({ row, rowId, rowIndex }) => {
               const selected = selectedIds.has(rowId);
               const selectable = isRowSelectable(row);
               return (
@@ -341,13 +360,7 @@ export function DataTable<T>({
                   {rowActions ? <td className="arcsyn-data-table__actions">{rowActions(row, rowIndex)}</td> : null}
                 </tr>
               );
-            }) : (
-              <tr>
-                <td className="arcsyn-data-table__empty" colSpan={visibleColumns.length + (enableRowSelection ? 1 : 0) + (rowActions ? 1 : 0)}>
-                  {emptyMessage}
-                </td>
-              </tr>
-            )}
+            })}
           </tbody>
         </table>
       </div>

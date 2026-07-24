@@ -132,6 +132,7 @@
     padding-block: var(--arcsyn-spacing-10) !important;
     text-align: center !important;
   }
+  .arcsyn-data-table__state { padding: 0 !important; text-align: center !important; }
 
   .arcsyn-data-table__footer {
     align-items: center;

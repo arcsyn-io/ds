@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, Tooltip, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleIcon, EllipsisIcon, MinusIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn/react/icons";
+import { ActivityFeed, BarChart, ChartLegend, DataState, LineChart, PageHeader, SearchInput, Sparkline, StatCard, StatusIndicator, UserMenu } from "@arcsyn/react";
+import * as ArcSynIcons from "@arcsyn/react/icons";
 
 type Property = {
   name: string;
@@ -242,6 +244,25 @@ const DocsThemeContext = createContext<DocsThemeContextValue>({
 function DocsThemeSwitcher() {
   const { theme, setTheme } = useContext(DocsThemeContext);
   return <ThemeSwitcher value={theme} options={docsThemeOptions} onValueChange={setTheme} label="Tema da documentação" />;
+}
+
+const chartDemoData = [
+  { day: "Seg", requests: 42, jobs: 28 },
+  { day: "Ter", requests: 58, jobs: 34 },
+  { day: "Qua", requests: 51, jobs: 39 },
+  { day: "Qui", requests: 74, jobs: 46 },
+  { day: "Sex", requests: 69, jobs: 52 },
+];
+
+function SearchInputDemo() {
+  const [query, setQuery] = useState("");
+  return <SearchInput aria-label="Buscar no workspace" placeholder="Buscar no workspace..." value={query} onValueChange={setQuery} shortcut="mod+k" onShortcut={() => undefined} clearable />;
+}
+
+function IconCatalogDemo() {
+  const [query, setQuery] = useState("");
+  const entries = Object.entries(ArcSynIcons).filter(([name, value]) => name.endsWith("Icon") && typeof value === "object" && name.toLocaleLowerCase().includes(query.toLocaleLowerCase()));
+  return <div className="docs-demo-stack"><SearchInput aria-label="Filtrar catálogo de ícones" placeholder="Buscar ícone..." value={query} onValueChange={setQuery} clearable /><div className="docs-icon-grid">{entries.map(([name, Icon]) => { const Component = Icon as typeof ArcSynIcons.CheckIcon; return <span key={name}><Component aria-hidden size={20} />{name}</span>; })}</div></div>;
 }
 
 function DocsFontSwitcher() {
@@ -533,7 +554,7 @@ const componentPages: ComponentPage[] = [
       {
         title: "Catálogo curado",
         description: "Use os exports ArcSyn para manter os mesmos nomes nas duas plataformas.",
-        preview: <div className="docs-icon-grid"><span><ArrowLeftIcon aria-hidden size={20} />ArrowLeftIcon</span><span><ArrowRightIcon aria-hidden size={20} />ArrowRightIcon</span><span><CheckIcon aria-hidden size={20} />CheckIcon</span><span><ChevronDownIcon aria-hidden size={20} />ChevronDownIcon</span><span><ChevronLeftIcon aria-hidden size={20} />ChevronLeftIcon</span><span><ChevronRightIcon aria-hidden size={20} />ChevronRightIcon</span><span><CircleIcon aria-hidden size={20} />CircleIcon</span><span><EllipsisIcon aria-hidden size={20} />EllipsisIcon</span><span><MinusIcon aria-hidden size={20} />MinusIcon</span><span><PlusIcon aria-hidden size={20} />PlusIcon</span><span><SettingsIcon aria-hidden size={20} />SettingsIcon</span><span><XIcon aria-hidden size={20} />XIcon</span></div>,
+        preview: <IconCatalogDemo />,
         code: 'import { CheckIcon, PlusIcon } from "@arcsyn/react/icons";\n\n<CheckIcon aria-hidden size={16} />\n<PlusIcon aria-hidden size={16} />',
       },
       {
@@ -1028,19 +1049,21 @@ const componentPages: ComponentPage[] = [
     summary: "Agrupa informações relacionadas em uma superfície elevada, com hierarquia definida por bordas e contraste.",
     importCode: 'import { Card } from "@arcsyn/react";',
     status: "React estável",
-    anatomy: ["Container", "Conteúdo livre", "Ações opcionais"],
-    accessibility: "Card é um container sem semântica própria. Escolha section, article ou outro elemento semântico usando as propriedades HTML apropriadas quando o conteúdo exigir.",
+    anatomy: ["Root", "Header e Heading", "Eyebrow, Title e Description", "Actions", "Content", "Footer"],
+    accessibility: "Card é um container sem semântica própria. Card.Title aceita as para escolher o heading. Em cards interativos, forneça tabIndex, role e handlers de teclado adequados e não aninhe outros controles interativos.",
     properties: [
       { name: "children", type: "ReactNode", defaultValue: "—", description: "Conteúdo exibido dentro do container." },
       { name: "className", type: "string", defaultValue: "—", description: "Complementa o layout do conteúdo interno." },
+      { name: "padding", type: '"none" | "compact" | "default"', defaultValue: '"default"', description: "Controla o espaço interno sem CSS local." },
+      { name: "interactive", type: "boolean", defaultValue: "false", description: "Ativa estados visuais; a semântica e os eventos continuam sob controle do consumidor." },
       { name: "...divProps", type: "HTMLAttributes<HTMLDivElement>", defaultValue: "—", description: "Inclui id, role, aria-* e demais atributos nativos de div." },
     ],
     examples: [
       {
         title: "Resumo operacional",
         description: "Use spacing interno controlado por layout, sem adicionar sombras pesadas.",
-        preview: <Card className="docs-card-example"><div><p className="docs-card-eyebrow">Ambiente</p><strong>Produção</strong></div><Badge variant="success">Operacional</Badge><p className="docs-card-copy">Todos os serviços respondem dentro do SLA acordado.</p></Card>,
-        code: '<Card>\n  <Badge variant="success">Operacional</Badge>\n  <strong>Produção</strong>\n  <p>Todos os serviços respondem dentro do SLA.</p>\n</Card>',
+        preview: <Card><Card.Header separated><Card.Heading><Card.Eyebrow>Ambiente</Card.Eyebrow><Card.Title>Produção</Card.Title><Card.Description>Todos os serviços respondem dentro do SLA.</Card.Description></Card.Heading><Card.Actions><Badge variant="success">Operacional</Badge></Card.Actions></Card.Header><Card.Content>Versão ativa: <code>v2.8.4</code></Card.Content><Card.Footer separated><Button size="sm" variant="outline">Gerenciar</Button></Card.Footer></Card>,
+        code: '<Card>\n  <Card.Header separated>\n    <Card.Heading><Card.Title>Produção</Card.Title></Card.Heading>\n    <Card.Actions><Badge variant="success">Operacional</Badge></Card.Actions>\n  </Card.Header>\n  <Card.Content>Conteúdo</Card.Content>\n  <Card.Footer separated>Ações</Card.Footer>\n</Card>',
       },
     ],
   },
@@ -1425,6 +1448,128 @@ const componentPages: ComponentPage[] = [
         code: '<Alert\n  variant="success"\n  title="Alterações salvas"\n  description="A versão atual já está disponível para a equipe."\n/>',
       },
     ],
+  },
+  {
+    id: "stat-card",
+    title: "Stat Card",
+    summary: "Exibe KPIs com valor, tendência, contexto e visualização opcional sem CSS da aplicação.",
+    importCode: 'import { StatCard } from "@arcsyn/react";',
+    status: "React estável · React Native",
+    anatomy: ["Root", "Header com Label e Icon", "Value", "Trend", "Description", "Visualization opcional"],
+    accessibility: "Trend combina texto e ícone com a cor. Use valueAriaLabel quando a leitura visual do valor não for adequada para leitores de tela. A visualização é complementar e precisa de nome próprio quando carregar informação.",
+    properties: [
+      { name: "label / value", type: "ReactNode", defaultValue: "obrigatório", description: "Define o nome e o valor principal da métrica." },
+      { name: "trend", type: "{ value, direction, sentiment }", defaultValue: "—", description: "Separa direção da mudança e seu significado positivo, negativo ou neutro." },
+      { name: "density / loading", type: '"compact" | "default" / boolean', defaultValue: '"default" / false', description: "Controla densidade e reserva o layout com Skeleton." },
+    ],
+    examples: [
+      { title: "KPIs e densidades", description: "Sentimento não é inferido pela direção; uma queda de latência pode ser positiva.", preview: <div className="docs-principles"><StatCard label="Disponibilidade" value="99,98%" description="Nos últimos 30 dias" trend={{ value: "0,12%", direction: "up", sentiment: "positive" }} icon={<ArcSynIcons.ActivityIcon />} visualization={<Sparkline aria-label="Disponibilidade crescente" values={[42, 55, 48, 66, 74, 86, 94]} sentiment="positive" />} /><StatCard density="compact" label="Latência P95" value="184 ms" trend={{ value: "16 ms", direction: "down", sentiment: "positive" }} /><StatCard label="Alertas" value="12" trend={{ value: "3", direction: "up", sentiment: "negative" }} /><StatCard label="Deploys" value="—" loading /></div>, code: '<StatCard label="Disponibilidade" value="99,98%" trend={{ value: "0,12%", direction: "up", sentiment: "positive" }} visualization={<Sparkline values={values} />} />' },
+    ],
+  },
+  {
+    id: "charts",
+    title: "Charts",
+    summary: "Visualizações declarativas, responsivas e acessíveis para séries temporais, comparações e tendências compactas.",
+    importCode: 'import { LineChart, BarChart, Sparkline, ChartLegend, ChartTooltip } from "@arcsyn/react";',
+    status: "React estável · Web",
+    anatomy: ["Container responsivo", "Legenda semântica", "Área SVG", "Pontos focáveis e tooltip", "Resumo tabular para leitores de tela"],
+    accessibility: "Forneça aria-label descritivo. Cada ponto pode receber foco por teclado e expõe série, categoria e valor; padrões de linha diferenciam séries além da cor. Uma tabela invisível preserva os dados para tecnologias assistivas. Animações respeitam movimento reduzido. Não há equivalente React Native nesta versão; use uma visualização nativa com resumo textual equivalente.",
+    properties: [
+      { name: "data / xKey / series", type: "T[] / keyof T / ChartSeries<T>[]", defaultValue: "obrigatório", description: "Contrato comum e genérico dos gráficos." },
+      { name: "state", type: '"ready" | "loading" | "empty" | "error"', defaultValue: '"ready"', description: "Integra o ciclo de dados sem alterar a geometria principal." },
+      { name: "orientation", type: '"vertical" | "horizontal"', defaultValue: '"vertical"', description: "Disponível em BarChart." },
+    ],
+    examples: [
+      { title: "Linhas e múltiplas séries", description: "Use para evolução temporal e comparação de tendências.", preview: <Card className="docs-chart-card"><Card.Header separated><Card.Heading><Card.Eyebrow>Tráfego</Card.Eyebrow><Card.Title>Requisições</Card.Title><Card.Description>Últimos cinco dias úteis</Card.Description></Card.Heading><Card.Actions><strong className="docs-chart-total">1,8 mi</strong></Card.Actions></Card.Header><Card.Content><LineChart aria-label="Requisições e jobs durante a semana" data={chartDemoData} xKey="day" series={[{ key: "requests", label: "Requisições", color: "primary" }, { key: "jobs", label: "Jobs", color: "accent" }]} height={240} /></Card.Content></Card>, code: '<Card>\n  <Card.Header><Card.Title>Requisições</Card.Title></Card.Header>\n  <Card.Content><LineChart aria-label="Requisições na semana" data={data} xKey="day" series={series} /></Card.Content>\n</Card>' },
+      { title: "Barras e sparkline", description: "Barras comparam magnitudes; Sparkline comunica apenas a forma geral da tendência.", preview: <div className="docs-chart-grid"><Card className="docs-chart-card"><Card.Header separated><Card.Heading><Card.Eyebrow>Processamento</Card.Eyebrow><Card.Title>Jobs</Card.Title></Card.Heading><Card.Actions><strong className="docs-chart-total">842 mil</strong></Card.Actions></Card.Header><Card.Content><BarChart aria-label="Comparação diária" data={chartDemoData} xKey="day" series={[{ key: "requests", label: "Requisições" }, { key: "jobs", label: "Jobs", color: "success" }]} height={220} /></Card.Content></Card><Card className="docs-sparkline-card" padding="compact"><Card.Header><Card.Heading><Card.Eyebrow>Disponibilidade</Card.Eyebrow><Card.Title>99,98%</Card.Title></Card.Heading><StatusIndicator status="success" label="+12%" /></Card.Header><Card.Content><Sparkline aria-label="Tendência positiva" values={[12, 18, 16, 25, 31, 38]} sentiment="positive" /></Card.Content></Card></div>, code: '<BarChart orientation="vertical" data={data} xKey="day" series={series} />\n<Sparkline aria-label="Tendência positiva" values={values} sentiment="positive" />' },
+    ],
+  },
+  {
+    id: "page-header",
+    title: "Page Header",
+    summary: "Padroniza breadcrumb, título, descrição, metadados e ações no início de páginas.",
+    importCode: 'import { PageHeader } from "@arcsyn/react";',
+    status: "React estável · React Native",
+    anatomy: ["Breadcrumb", "Content", "Eyebrow", "Title", "Description", "Metadata", "Actions"],
+    accessibility: "Title renderiza h1 por padrão e aceita as para outros níveis. A ordem do DOM permanece breadcrumb, conteúdo e ações no mobile; nenhuma ação é ocultada por falta de espaço.",
+    properties: [
+      { name: "density", type: '"default" | "compact"', defaultValue: '"default"', description: "Ajusta espaço e escala do título." },
+      { name: "sticky", type: "boolean", defaultValue: "false", description: "Fixa o header no início do container de rolagem." },
+    ],
+    examples: [{ title: "Página operacional", description: "Funciona com apenas Title ou com todos os slots.", preview: <PageHeader><PageHeader.Breadcrumb><Breadcrumb><BreadcrumbList><BreadcrumbItem><BreadcrumbLink href="#/">Início</BreadcrumbLink><BreadcrumbSeparator /></BreadcrumbItem><BreadcrumbItem><BreadcrumbPage>Visão geral</BreadcrumbPage></BreadcrumbItem></BreadcrumbList></Breadcrumb></PageHeader.Breadcrumb><PageHeader.Content><PageHeader.Eyebrow>Workspace</PageHeader.Eyebrow><PageHeader.Title>Visão geral <Badge variant="success">Operacional</Badge></PageHeader.Title><PageHeader.Description>Acompanhe a operação dos seus ambientes e automações.</PageHeader.Description><PageHeader.Metadata>Atualizado há 4 minutos</PageHeader.Metadata></PageHeader.Content><PageHeader.Actions><Button variant="outline">Exportar</Button><Button>Nova automação</Button></PageHeader.Actions></PageHeader>, code: '<PageHeader>\n  <PageHeader.Content><PageHeader.Title>Visão geral</PageHeader.Title></PageHeader.Content>\n  <PageHeader.Actions><Button>Nova automação</Button></PageHeader.Actions>\n</PageHeader>' }],
+  },
+  {
+    id: "search-input",
+    title: "Search Input",
+    summary: "Combina busca, limpeza, carregamento e atalho opcional em um único controle.",
+    importCode: 'import { SearchInput } from "@arcsyn/react";',
+    status: "React estável · React Native",
+    anatomy: ["Ícone de busca", "Input", "Spinner ou botão de limpar", "Atalho opcional"],
+    accessibility: "aria-label é obrigatório na API web. O botão de limpar tem rótulo traduzível, Escape limpa o valor sem perder foco e o atalho global ignora inputs, textareas, selects e regiões editáveis.",
+    properties: [
+      { name: "value / defaultValue", type: "string", defaultValue: "não controlado", description: "Suporta ambos os modelos de estado." },
+      { name: "shortcut / onShortcut", type: "string / function", defaultValue: "—", description: "mod usa ⌘ no macOS e Ctrl nas demais plataformas." },
+      { name: "clearable / clearLabel", type: "boolean / string", defaultValue: 'false / "Limpar busca"', description: "Exibe uma ação acessível de limpeza." },
+    ],
+    examples: [{ title: "Busca global", description: "O componente continua funcional sem atalho e sem integração com Command.", preview: <div className="docs-demo-stack"><SearchInputDemo /><SearchInput aria-label="Busca carregando" placeholder="Sincronizando índice..." loading defaultValue="ArcSyn" /><SearchInput aria-label="Busca inválida" invalid placeholder="Filtro inválido" /></div>, code: '<SearchInput aria-label="Buscar no workspace" value={query} onValueChange={setQuery} shortcut="mod+k" clearable />' }],
+  },
+  {
+    id: "status-indicator",
+    title: "Status Indicator",
+    summary: "Comunica presença, saúde operacional e sincronização sem reduzir o estado a uma cor.",
+    importCode: 'import { StatusIndicator } from "@arcsyn/react";',
+    status: "React estável · React Native",
+    anatomy: ["Indicador visual", "Label visível ou nome acessível", "Formato inline ou pill"],
+    accessibility: "O label é visível por padrão. No modo iconOnly, accessibleLabel fornece o nome; role=status e aria-live só devem ser ativados para mudanças assíncronas relevantes. Pulse é decorativo e respeita movimento reduzido.",
+    properties: [
+      { name: "status", type: '"neutral" | "info" | "success" | "warning" | "danger" | "loading"', defaultValue: '"neutral"', description: "Define o significado operacional." },
+      { name: "indicator / pulse", type: '"dot" | "spinner" | "icon" | "none" / boolean', defaultValue: "automático / false", description: "Controla o apoio visual sem remover o texto." },
+    ],
+    examples: [{ title: "Estados e formatos", description: "Use Badge para classificação curta, Alert para mensagens e Spinner quando não houver label de estado.", preview: <div className="docs-demo-row"><StatusIndicator status="neutral" label="Inativo" /><StatusIndicator status="info" label="Informativo" format="pill" /><StatusIndicator status="success" label="Ambiente operacional" pulse /><StatusIndicator status="warning" label="Degradado" /><StatusIndicator status="danger" label="Indisponível" /><StatusIndicator status="loading">Sincronizando</StatusIndicator></div>, code: '<StatusIndicator status="success" label="Ambiente operacional" pulse />' }],
+  },
+  {
+    id: "activity-feed",
+    title: "Activity Feed",
+    summary: "Estrutura eventos cronológicos com ator, descrição, horário, status e ações.",
+    importCode: 'import { ActivityFeed } from "@arcsyn/react";',
+    status: "React estável · React Native",
+    anatomy: ["Root ordenado", "Item", "Actor ou Icon", "Title e Description", "Timestamp", "Actions", "LoadMore"],
+    accessibility: "Root usa lista ordenada e preserva a ordem cronológica no DOM. Timestamp aceita dateTime legível por máquina. A linha da timeline é puramente decorativa e ações precisam de nomes acessíveis.",
+    properties: [
+      { name: "mode / compact", type: '"feed" | "timeline" / boolean', defaultValue: '"feed" / false', description: "Escolhe separadores ou linha cronológica e ajusta densidade." },
+      { name: "loading / loadingCount", type: "boolean / number", defaultValue: "false / 3", description: "Reserva itens com Skeleton." },
+    ],
+    examples: [{ title: "Timeline recente", description: "Avatar, ícone ou status ocupam o mesmo marcador.", preview: <Card className="docs-activity-card"><Card.Header separated><Card.Heading><Card.Eyebrow>Operação</Card.Eyebrow><Card.Title>Atividade recente</Card.Title></Card.Heading><Card.Actions><Button size="sm" variant="outline">Ver todas</Button></Card.Actions></Card.Header><Card.Content><ActivityFeed mode="timeline"><ActivityFeed.Item avatar={<Avatar id="marina" name="Marina Rocha" />} title="Deploy aprovado" description="Marina publicou portal-clientes v2.8.4" timestamp="Há 4 minutos" dateTime="2026-07-24T08:36:00-03:00" status="success" /><ActivityFeed.Item icon={<ArcSynIcons.WorkflowIcon aria-hidden />} title="Automação concluída" description="12 ambientes sincronizados" timestamp="Há 18 minutos" /><ActivityFeed.LoadMore /></ActivityFeed></Card.Content></Card>, code: '<Card>\n  <Card.Header><Card.Title>Atividade recente</Card.Title></Card.Header>\n  <Card.Content><ActivityFeed mode="timeline">…</ActivityFeed></Card.Content>\n</Card>' }],
+  },
+  {
+    id: "user-menu",
+    title: "User Menu",
+    summary: "Representa o usuário atual e ações de conta em headers e sidebars.",
+    importCode: 'import { UserMenu } from "@arcsyn/react";',
+    status: "React estável · Base UI · Web",
+    anatomy: ["Trigger com Avatar e identidade", "Dropdown", "Labels e separadores", "Ações comuns e destrutivas", "Tooltip no modo recolhido"],
+    accessibility: "O trigger é um botão real, informa expansão e recebe o foco de volta ao fechar graças à Base UI. A ação destrutiva inclui texto semântico além da cor. No React Native, use Avatar com DropdownMenu; a API composta de UserMenu ainda não tem paridade.",
+    properties: [
+      { name: "user / items", type: "UserMenuUser / UserMenuItem[]", defaultValue: "obrigatório", description: "Dados de apresentação e ações sem vínculo com provedor de autenticação." },
+      { name: "variant / collapsed", type: '"default" | "compact" | "sidebar" / boolean', defaultValue: '"default" / false', description: "Ajusta o trigger e ativa tooltip quando recolhido." },
+      { name: "open / onOpenChange", type: "boolean / function", defaultValue: "não controlado", description: "Permite controlar o estado do menu." },
+    ],
+    examples: [{ title: "Conta na sidebar", description: "Dados de autenticação são adaptados pelo produto antes de chegar ao componente.", preview: <div className="docs-user-menu-stage"><div><span>Sidebar expandida</span><UserMenu variant="sidebar" user={{ id: "lucas-silva", name: "Lucas Silva", description: "Administrador" }} items={[{ id: "profile", label: "Meu perfil", icon: <ArcSynIcons.UserIcon aria-hidden size={15} /> }, { id: "settings", label: "Configurações", icon: <ArcSynIcons.SettingsIcon aria-hidden size={15} /> }, { type: "separator", id: "separator" }, { id: "logout", label: "Sair", tone: "danger" }]} /></div><div><span>Sidebar recolhida</span><UserMenu collapsed variant="sidebar" user={{ id: "lucas-silva", name: "Lucas Silva", description: "Administrador" }} items={[{ id: "profile", label: "Meu perfil" }]} /></div></div>, code: '<UserMenu user={user} items={[{ id: "profile", label: "Meu perfil" }, { id: "logout", label: "Sair", tone: "danger" }]} />' }],
+  },
+  {
+    id: "data-state",
+    title: "Data State",
+    summary: "Padroniza carregamento, ausência, filtro sem resultados, erro e falta de permissão.",
+    importCode: 'import { DataState, DataTable } from "@arcsyn/react";',
+    status: "React estável · React Native",
+    anatomy: ["Ícone ou Skeletons", "Título", "Descrição", "Ação primária", "Ação secundária"],
+    accessibility: "Loading usa status com rótulo acessível e error usa alert por padrão. Ícones são decorativos, ações não recebem foco automaticamente e os textos ficam sob controle do consumidor para internacionalização.",
+    properties: [
+      { name: "state", type: '"loading" | "empty" | "no-results" | "error" | "permission"', defaultValue: "obrigatório", description: "Distingue o motivo da ausência de conteúdo." },
+      { name: "size", type: '"compact" | "default" | "full"', defaultValue: '"default"', description: "Adapta o estado a tabela, card ou área independente." },
+      { name: "DataTable loading / emptyState / noResultsState / errorState", type: "boolean / ReactNode", defaultValue: "false / —", description: "Integra todo o ciclo sem desmontar filtros, seleção ou paginação." },
+    ],
+    examples: [{ title: "Ciclo de dados", description: "empty descreve uma coleção nova; no-results indica que filtros removeram todos os itens.", preview: <div className="docs-data-state-grid"><Card padding="none"><DataState state="loading" size="compact" /></Card><Card padding="none"><DataState state="empty" size="compact" title="Nenhuma aplicação" action={<Button size="sm">Nova aplicação</Button>} /></Card><Card padding="none"><DataState state="no-results" size="compact" description="Ajuste os filtros." action={<Button size="sm" variant="outline">Limpar filtros</Button>} /></Card><Card padding="none"><DataState state="error" size="compact" action={<Button size="sm" variant="outline">Tentar novamente</Button>} /></Card><Card padding="none"><DataState state="permission" size="compact" /></Card></div>, code: '<DataState state="empty" title="Nenhuma aplicação encontrada" action={<Button>Nova aplicação</Button>} />\n<DataTable loading={isLoading} emptyState={<DataState state="empty" />} errorState={<DataState state="error" />} />' }],
   },
 ];
 

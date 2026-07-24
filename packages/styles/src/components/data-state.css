@@ -1,0 +1,36 @@
+@layer components {
+  .arcsyn-data-state {
+    align-items: center;
+    color: var(--arcsyn-color-muted-foreground);
+    display: flex;
+    flex-direction: column;
+    gap: var(--arcsyn-spacing-3);
+    justify-content: center;
+    min-block-size: 14rem;
+    padding: var(--arcsyn-spacing-8);
+    text-align: center;
+  }
+  .arcsyn-data-state[data-size="compact"] { gap: var(--arcsyn-spacing-2); min-block-size: 8rem; padding: var(--arcsyn-spacing-4); }
+  .arcsyn-data-state[data-size="full"] { min-block-size: min(30rem, 65vh); }
+  .arcsyn-data-state__icon {
+    align-items: center;
+    border: 1px solid var(--arcsyn-color-border-strong);
+    border-radius: var(--arcsyn-radius-md);
+    color: var(--arcsyn-color-accent-solid);
+    display: flex;
+    justify-content: center;
+    min-block-size: 3rem;
+    min-inline-size: 3rem;
+    position: relative;
+  }
+  .arcsyn-data-state__icon::after { background: currentColor; block-size: 2px; content: ""; inline-size: 1rem; inset-block-end: -1px; position: absolute; }
+  .arcsyn-data-state[data-state="error"] .arcsyn-data-state__icon { background: var(--arcsyn-color-danger-background); border-color: var(--arcsyn-color-danger-border); color: var(--arcsyn-color-danger); }
+  .arcsyn-data-state[data-state="permission"] .arcsyn-data-state__icon { background: var(--arcsyn-color-warning-background); border-color: var(--arcsyn-color-warning-border); color: var(--arcsyn-color-warning); }
+  .arcsyn-data-state__copy { display: grid; gap: var(--arcsyn-spacing-2); max-inline-size: 32rem; }
+  .arcsyn-data-state__copy h3 { color: var(--arcsyn-color-foreground); font-size: var(--arcsyn-font-size-md); font-weight: 600; margin: 0; }
+  .arcsyn-data-state__copy p { font-size: var(--arcsyn-font-size-sm); line-height: 1.5; margin: 0; }
+  .arcsyn-data-state__actions { align-items: center; display: flex; flex-wrap: wrap; gap: var(--arcsyn-spacing-2); justify-content: center; margin-block-start: var(--arcsyn-spacing-1); }
+  .arcsyn-data-state__loading-heading { align-items: center; color: var(--arcsyn-color-foreground); display: flex; font-size: var(--arcsyn-font-size-sm); gap: var(--arcsyn-spacing-3); justify-content: center; }
+  .arcsyn-data-state__skeletons { border-block-start: 1px solid var(--arcsyn-color-border); display: grid; inline-size: min(38rem, 100%); }
+  .arcsyn-data-state__skeleton-row { align-items: center; border-block-end: 1px solid var(--arcsyn-color-border); display: grid; gap: var(--arcsyn-spacing-4); grid-template-columns: auto minmax(0, 1fr) minmax(3rem, .25fr); padding: var(--arcsyn-spacing-3); }
+}

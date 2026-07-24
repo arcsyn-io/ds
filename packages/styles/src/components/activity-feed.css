@@ -1,0 +1,39 @@
+@layer components {
+  .arcsyn-activity-feed { display: grid; list-style: none; margin: 0; padding: 0; }
+  .arcsyn-activity-feed__item {
+    align-items: center;
+    display: grid;
+    gap: var(--arcsyn-spacing-3);
+    grid-template-areas: "marker actor body timestamp actions";
+    grid-template-columns: 2rem auto minmax(0, 1fr) auto auto;
+    min-inline-size: 0;
+    padding-block: var(--arcsyn-spacing-4);
+    position: relative;
+  }
+  .arcsyn-activity-feed__item:not(:has(.arcsyn-activity-feed__actor)) { grid-template-areas: "marker body timestamp actions"; grid-template-columns: 2rem minmax(0, 1fr) auto auto; }
+  .arcsyn-activity-feed__item:not(:has(.arcsyn-activity-feed__icon)) { grid-template-areas: "actor body timestamp actions"; grid-template-columns: auto minmax(0, 1fr) auto auto; }
+  .arcsyn-activity-feed__item + .arcsyn-activity-feed__item { border-block-start: 1px solid var(--arcsyn-color-border); }
+  .arcsyn-activity-feed[data-mode="timeline"] .arcsyn-activity-feed__item + .arcsyn-activity-feed__item { border-block-start: 0; }
+  .arcsyn-activity-feed[data-mode="timeline"] .arcsyn-activity-feed__item::before { background: var(--arcsyn-color-border-strong); content: ""; inline-size: 1px; inset-block: 0; inset-inline-start: 1rem; position: absolute; z-index: 0; }
+  .arcsyn-activity-feed[data-mode="timeline"] .arcsyn-activity-feed__item:first-child::before { inset-block-start: 50%; }
+  .arcsyn-activity-feed[data-mode="timeline"] .arcsyn-activity-feed__item:last-child::before { inset-block-end: 50%; }
+  .arcsyn-activity-feed[data-compact] .arcsyn-activity-feed__item { gap: var(--arcsyn-spacing-2); padding-block: var(--arcsyn-spacing-3); }
+  .arcsyn-activity-feed__icon { align-items: center; background: var(--arcsyn-color-surface-raised); display: flex; grid-area: marker; justify-content: center; min-block-size: 2rem; min-inline-size: 2rem; position: relative; z-index: 1; }
+  .arcsyn-activity-feed__icon .arcsyn-status-indicator__dot { block-size: .625rem; box-shadow: 0 0 0 4px var(--arcsyn-color-surface-raised), 0 0 0 5px currentColor; inline-size: .625rem; }
+  .arcsyn-activity-feed__actor { grid-area: actor; }
+  .arcsyn-activity-feed__body { display: grid; gap: var(--arcsyn-spacing-1); grid-area: body; min-inline-size: 0; }
+  .arcsyn-activity-feed__title { color: var(--arcsyn-color-foreground); font-size: var(--arcsyn-font-size-sm); font-weight: 600; }
+  .arcsyn-activity-feed__description { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-sm); line-height: 1.4; }
+  .arcsyn-activity-feed__timestamp { color: var(--arcsyn-color-muted-foreground); font-family: var(--arcsyn-font-mono); font-size: var(--arcsyn-font-size-xs); grid-area: timestamp; white-space: nowrap; }
+  .arcsyn-activity-feed__actions { align-items: center; display: flex; gap: var(--arcsyn-spacing-1); grid-area: actions; }
+  .arcsyn-activity-feed__skeleton { align-items: center; display: grid; gap: var(--arcsyn-spacing-3); grid-template-columns: auto minmax(0, 1fr); padding-block: var(--arcsyn-spacing-4); }
+  .arcsyn-activity-feed__skeleton > div { display: grid; gap: var(--arcsyn-spacing-2); }
+  .arcsyn-activity-feed__empty { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-sm); padding: var(--arcsyn-spacing-8); text-align: center; }
+  .arcsyn-activity-feed__load-more { border-block-start: 1px solid var(--arcsyn-color-border); display: flex; justify-content: center; padding-block-start: var(--arcsyn-spacing-3); }
+  @media (max-width: 39.99rem) {
+    .arcsyn-activity-feed__item, .arcsyn-activity-feed__item:not(:has(.arcsyn-activity-feed__actor)) { align-items: start; grid-template-areas: "marker actor body actions" "marker actor timestamp actions"; grid-template-columns: 1.5rem auto minmax(0, 1fr) auto; }
+    .arcsyn-activity-feed__item:not(:has(.arcsyn-activity-feed__actor)) { grid-template-areas: "marker body actions" "marker timestamp actions"; grid-template-columns: 1.5rem minmax(0, 1fr) auto; }
+    .arcsyn-activity-feed__icon { min-block-size: 1.5rem; min-inline-size: 1.5rem; }
+    .arcsyn-activity-feed[data-mode="timeline"] .arcsyn-activity-feed__item::before { inset-inline-start: .75rem; }
+  }
+}

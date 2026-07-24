@@ -24,6 +24,38 @@
       "types": "./dist/components/data-table/index.d.ts",
       "import": "./dist/components/data-table/index.js"
     },
+    "./stat-card": {
+      "types": "./dist/components/stat-card/index.d.ts",
+      "import": "./dist/components/stat-card/index.js"
+    },
+    "./charts": {
+      "types": "./dist/components/charts/index.d.ts",
+      "import": "./dist/components/charts/index.js"
+    },
+    "./page-header": {
+      "types": "./dist/components/page-header/index.d.ts",
+      "import": "./dist/components/page-header/index.js"
+    },
+    "./search-input": {
+      "types": "./dist/components/search-input/index.d.ts",
+      "import": "./dist/components/search-input/index.js"
+    },
+    "./status-indicator": {
+      "types": "./dist/components/status-indicator/index.d.ts",
+      "import": "./dist/components/status-indicator/index.js"
+    },
+    "./activity-feed": {
+      "types": "./dist/components/activity-feed/index.d.ts",
+      "import": "./dist/components/activity-feed/index.js"
+    },
+    "./user-menu": {
+      "types": "./dist/components/user-menu/index.d.ts",
+      "import": "./dist/components/user-menu/index.js"
+    },
+    "./data-state": {
+      "types": "./dist/components/data-state/index.d.ts",
+      "import": "./dist/components/data-state/index.js"
+    },
     "./icons": {
       "types": "./dist/icons/index.d.ts",
       "import": "./dist/icons/index.js"
