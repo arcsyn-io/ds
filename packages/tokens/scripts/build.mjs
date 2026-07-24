@@ -30,7 +30,7 @@ function toKebabCase(path) {
     .toLowerCase();
 }
 
-function reference(value, tokens) {
+function reference(value) {
   return typeof value === "string" && /^\{.+\}$/.test(value)
     ? `var(--arcsyn-${toKebabCase(value.slice(1, -1))})`
     : value;
@@ -38,7 +38,7 @@ function reference(value, tokens) {
 
 function declarations(tokens) {
   return Object.entries(tokens)
-    .map(([name, value]) => `  --arcsyn-${toKebabCase(name)}: ${reference(value, tokens)};`)
+    .map(([name, value]) => `  --arcsyn-${toKebabCase(name)}: ${reference(value)};`)
     .join("\n");
 }
 
@@ -51,7 +51,7 @@ function tailwindDeclarations(tokens) {
       const suffix = rawName.startsWith("arcsyn.")
         ? toKebabCase(rawName.slice("arcsyn.".length))
         : toKebabCase(rawName);
-      return `  --${namespace}-arcsyn-${suffix}: ${reference(value, tokens)};`;
+      return `  --${namespace}-arcsyn-${suffix}: ${reference(value)};`;
     })
     .join("\n");
 }

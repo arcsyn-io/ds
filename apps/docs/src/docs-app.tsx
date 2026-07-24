@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, Tooltip, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
-import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleIcon, EllipsisIcon, MinusIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn/react/icons";
-import { ActivityFeed, BarChart, ChartLegend, Chat, DataState, LineChart, NotificationCenter, PageHeader, SearchInput, Sparkline, StatCard, StatusIndicator, UserMenu } from "@arcsyn/react";
+import { ArrowRightIcon, CheckIcon, CircleIcon, EllipsisIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn/react/icons";
+import { ActivityFeed, BarChart, Chat, DataState, LineChart, NotificationCenter, PageHeader, SearchInput, Sparkline, StatCard, StatusIndicator, UserMenu } from "@arcsyn/react";
 import * as ArcSynIcons from "@arcsyn/react/icons";
 
 type Property = {
@@ -32,7 +32,7 @@ type ComponentPage = {
 
 function ControlledCarouselDemo() {
   const [index, setIndex] = useState(0);
-  return <div className="docs-demo-stack"><Carousel index={index} onIndexChange={setIndex} label="Etapas do processo" items={[<div className="docs-carousel-slide"><strong>1. Solicitação</strong><span>Dados enviados para análise.</span></div>, <div className="docs-carousel-slide"><strong>2. Aprovação</strong><span>Revisão do responsável pela área.</span></div>, <div className="docs-carousel-slide"><strong>3. Execução</strong><span>Iniciada após a aprovação.</span></div>]} /><span className="docs-muted-copy">Índice controlado: {index}</span></div>;
+  return <div className="docs-demo-stack"><Carousel index={index} onIndexChange={setIndex} label="Etapas do processo" items={[<div key="request" className="docs-carousel-slide"><strong>1. Solicitação</strong><span>Dados enviados para análise.</span></div>, <div key="approval" className="docs-carousel-slide"><strong>2. Aprovação</strong><span>Revisão do responsável pela área.</span></div>, <div key="execution" className="docs-carousel-slide"><strong>3. Execução</strong><span>Iniciada após a aprovação.</span></div>]} /><span className="docs-muted-copy">Índice controlado: {index}</span></div>;
 }
 
 function ControlledCollapsibleDemo() {
@@ -418,7 +418,7 @@ function DocsPreferencesDialog() {
         </div>
         <div className="docs-settings-preview" aria-label="Prévia tipográfica">
           <span>Interface · ArcSyn Design System</span>
-          <code>const theme = "arcsyn";</code>
+          <code>{'const theme = "arcsyn";'}</code>
         </div>
         <Dialog.Footer>
           <Dialog.Close variant="primary">Concluir</Dialog.Close>
@@ -809,8 +809,8 @@ const componentPages: ComponentPage[] = [
       { name: "className", type: "string", defaultValue: "—", description: "Permite complementar dimensões e layout do carrossel." },
     ],
     examples: [
-      { title: "Sequência com limites", description: "Por padrão, os controles são desabilitados no primeiro e no último slide. Cada slide deve funcionar como uma unidade autônoma.", preview: <Carousel label="Indicadores do trimestre" items={[<div className="docs-carousel-slide"><Badge variant="success">Operacional</Badge><strong>Disponibilidade</strong><span>99,98% nos últimos 30 dias</span></div>, <div className="docs-carousel-slide"><Badge variant="warning">Atenção</Badge><strong>Fila de eventos</strong><span>12 itens aguardando revisão</span></div>, <div className="docs-carousel-slide"><Badge>Planejado</Badge><strong>Próxima manutenção</strong><span>28 de julho, às 22:00</span></div>]} />, code: '<Carousel\n  label="Indicadores do trimestre"\n  items={[<StatusCard />, <QueueCard />, <MaintenanceCard />]}\n/>' },
-      { title: "Navegação circular", description: "loop mantém os dois controles ativos e conecta o último slide ao primeiro. initialIndex escolhe o ponto inicial.", preview: <Carousel loop initialIndex={1} label="Ambientes disponíveis" items={[<div className="docs-carousel-slide"><Badge>Desenvolvimento</Badge><strong>dev-br-01</strong><span>Dados sintéticos · acesso amplo</span></div>, <div className="docs-carousel-slide"><Badge variant="warning">Homologação</Badge><strong>stg-br-01</strong><span>Dados mascarados · acesso restrito</span></div>, <div className="docs-carousel-slide"><Badge variant="success">Produção</Badge><strong>prd-br-01</strong><span>Operacional · acesso auditado</span></div>]} />, code: '<Carousel loop initialIndex={1} label="Ambientes disponíveis" items={environments} />' },
+      { title: "Sequência com limites", description: "Por padrão, os controles são desabilitados no primeiro e no último slide. Cada slide deve funcionar como uma unidade autônoma.", preview: <Carousel label="Indicadores do trimestre" items={[<div key="availability" className="docs-carousel-slide"><Badge variant="success">Operacional</Badge><strong>Disponibilidade</strong><span>99,98% nos últimos 30 dias</span></div>, <div key="queue" className="docs-carousel-slide"><Badge variant="warning">Atenção</Badge><strong>Fila de eventos</strong><span>12 itens aguardando revisão</span></div>, <div key="maintenance" className="docs-carousel-slide"><Badge>Planejado</Badge><strong>Próxima manutenção</strong><span>28 de julho, às 22:00</span></div>]} />, code: '<Carousel\n  label="Indicadores do trimestre"\n  items={[<StatusCard />, <QueueCard />, <MaintenanceCard />]}\n/>' },
+      { title: "Navegação circular", description: "loop mantém os dois controles ativos e conecta o último slide ao primeiro. initialIndex escolhe o ponto inicial.", preview: <Carousel loop initialIndex={1} label="Ambientes disponíveis" items={[<div key="development" className="docs-carousel-slide"><Badge>Desenvolvimento</Badge><strong>dev-br-01</strong><span>Dados sintéticos · acesso amplo</span></div>, <div key="staging" className="docs-carousel-slide"><Badge variant="warning">Homologação</Badge><strong>stg-br-01</strong><span>Dados mascarados · acesso restrito</span></div>, <div key="production" className="docs-carousel-slide"><Badge variant="success">Produção</Badge><strong>prd-br-01</strong><span>Operacional · acesso auditado</span></div>]} />, code: '<Carousel loop initialIndex={1} label="Ambientes disponíveis" items={environments} />' },
       { title: "Estado vazio", description: "Uma lista vazia mantém a região e apresenta 0 de 0 com ambos os controles indisponíveis. Prefira complementar o contexto com uma mensagem adjacente.", preview: <div className="docs-demo-stack"><Carousel label="Anexos recentes" items={[]} /><span className="docs-muted-copy">Nenhum anexo disponível para este registro.</span></div>, code: '<Carousel label="Anexos recentes" items={[]} />' },
       { title: "Uso controlado", description: "Use index e onIndexChange quando outra parte da interface precisar conhecer ou alterar o slide ativo.", preview: <ControlledCarouselDemo />, code: 'const [index, setIndex] = useState(0);\n\n<Carousel index={index} onIndexChange={setIndex} label="Etapas" items={steps} />' },
     ],
@@ -1261,7 +1261,7 @@ const componentPages: ComponentPage[] = [
                     <Field.Label htmlFor="drawer-environment-owner">Responsável</Field.Label>
                     <Input id="drawer-environment-owner" type="email" defaultValue="operacoes@arcsyn.io" />
                   </Field.Root>
-                  <div className="docs-theme-options"><label><Switch defaultChecked />Sincronização automática</label></div>
+                  <div className="docs-theme-options"><label htmlFor="drawer-environment-sync"><Switch id="drawer-environment-sync" defaultChecked />Sincronização automática</label></div>
                 </div>
               </Drawer.Body>
               <Drawer.Footer>
@@ -1288,9 +1288,9 @@ const componentPages: ComponentPage[] = [
               <Drawer.Body>
                 <div className="docs-demo-stack">
                   <strong>Ambiente</strong>
-                  <label><Checkbox defaultChecked /> Produção</label>
-                  <label><Checkbox /> Homologação</label>
-                  <label><Checkbox /> Desenvolvimento</label>
+                  <label htmlFor="drawer-filter-production"><Checkbox id="drawer-filter-production" defaultChecked /> Produção</label>
+                  <label htmlFor="drawer-filter-staging"><Checkbox id="drawer-filter-staging" /> Homologação</label>
+                  <label htmlFor="drawer-filter-development"><Checkbox id="drawer-filter-development" /> Desenvolvimento</label>
                 </div>
               </Drawer.Body>
               <Drawer.Footer>
@@ -1923,8 +1923,8 @@ function ThemePreview({ theme, onSelect }: { theme: ThemeComparison; onSelect: (
           <Input id={`theme-environment-${theme.id}`} defaultValue="Produção" />
         </label>
         <div className="docs-theme-options">
-          <label><Checkbox defaultChecked />Alertas críticos</label>
-          <label><Switch defaultChecked />Sincronização</label>
+          <label htmlFor={`theme-critical-alerts-${theme.id}`}><Checkbox id={`theme-critical-alerts-${theme.id}`} defaultChecked />Alertas críticos</label>
+          <label htmlFor={`theme-sync-${theme.id}`}><Switch id={`theme-sync-${theme.id}`} defaultChecked />Sincronização</label>
         </div>
         <div className="docs-demo-row">
           <Button size="sm">Publicar</Button>
@@ -2044,8 +2044,8 @@ function ThemeComponentShowcase({ theme }: { theme: ThemeComparison }) {
             <Textarea id={`${fieldId}-notes`} rows={3} placeholder="Contexto adicional para a equipe" />
           </Field.Root>
           <div className="docs-theme-options">
-            <label><Checkbox defaultChecked />Habilitar alertas críticos</label>
-            <label><Switch defaultChecked />Sincronização automática</label>
+            <label htmlFor={`${fieldId}-critical-alerts`}><Checkbox id={`${fieldId}-critical-alerts`} defaultChecked />Habilitar alertas críticos</label>
+            <label htmlFor={`${fieldId}-sync`}><Switch id={`${fieldId}-sync`} defaultChecked />Sincronização automática</label>
           </div>
           <div className="docs-demo-row">
             <Button>Criar ambiente</Button>

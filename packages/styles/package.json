@@ -2,6 +2,7 @@
   "name": "@arcsyn/styles",
   "version": "0.1.0",
   "description": "Framework-agnostic ArcSyn component styles.",
+  "type": "module",
   "files": [
     "src"
   ],

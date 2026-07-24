@@ -26,7 +26,6 @@ export interface ContextMenuProps {
 export function ContextMenu({ children, items, onItemSelect, disabled = false, accessibilityLabel, style }: ContextMenuProps) {
   const [open, setOpen] = useState(false);
   const { colors } = useArcSynTheme();
-  let lastGroup: string | undefined;
 
   return (
     <>
@@ -61,9 +60,8 @@ export function ContextMenu({ children, items, onItemSelect, disabled = false, a
             style={[styles.sheet, { backgroundColor: colors.surfaceRaised, borderColor: colors.borderStrong }]}
           >
             <ScrollView contentContainerStyle={styles.list} keyboardShouldPersistTaps="handled">
-              {items.map((item) => {
-                const group = item.group !== lastGroup ? item.group : undefined;
-                lastGroup = item.group;
+              {items.map((item, index) => {
+                const group = item.group !== items[index - 1]?.group ? item.group : undefined;
 
                 return (
                   <View key={item.id}>

@@ -15,8 +15,8 @@ export const PaginationItem = forwardRef<HTMLLIElement, LiHTMLAttributes<HTMLLIE
 });
 
 export interface PaginationLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> { active?: boolean; }
-export const PaginationLink = forwardRef<HTMLAnchorElement, PaginationLinkProps>(function PaginationLink({ className, active = false, ...props }, ref) {
-  return <a ref={ref} className={cx("arcsyn-pagination__link", className)} aria-current={active ? "page" : undefined} data-active={active || undefined} {...props} />;
+export const PaginationLink = forwardRef<HTMLAnchorElement, PaginationLinkProps>(function PaginationLink({ className, active = false, children, ...props }, ref) {
+  return <a ref={ref} className={cx("arcsyn-pagination__link", className)} aria-current={active ? "page" : undefined} data-active={active || undefined} {...props}>{children}</a>;
 });
 
 export const PaginationPrevious = forwardRef<HTMLAnchorElement, PaginationLinkProps>(function PaginationPrevious({ children = "Anterior", className, ...props }, ref) {
