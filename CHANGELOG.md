@@ -4,6 +4,7 @@
 
 ### Added
 
+- `@arcsyn/presentations` with an AI-ready brief schema, editorial layouts, narrative patterns, visual theme and editable PowerPoint, HTML slide and continuous technical-proposal templates.
 - `StatCard`, `LineChart`, `BarChart`, `Sparkline`, `ChartLegend` and `ChartTooltip`.
 - `PageHeader`, `SearchInput`, `StatusIndicator`, `ActivityFeed`, `UserMenu` and `DataState`.
 - Composed `Chat` with message delivery states, typing indicator and an accessible composer, plus a React Native adapter.

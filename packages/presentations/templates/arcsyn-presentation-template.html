@@ -1,0 +1,1081 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Template ArcSyn para apresentações de arquitetura, produto e ideias." />
+    <title>Proposta de arquitetura · ArcSyn</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --arcsyn-background: #161e28;
+        --arcsyn-foreground: #eff4f5;
+        --arcsyn-surface: #1d2936;
+        --arcsyn-surface-raised: #263545;
+        --arcsyn-muted-foreground: #91a7b8;
+        --arcsyn-primary: #90dddf;
+        --arcsyn-primary-foreground: #161e28;
+        --arcsyn-border: #2c3d4f;
+        --arcsyn-border-strong: #34495e;
+        --arcsyn-danger: #c56f78;
+        --arcsyn-warning: #d5aa52;
+        --arcsyn-success: #8eaa76;
+        --arcsyn-font-sans: "IBM Plex Sans", "Segoe UI", sans-serif;
+        --arcsyn-font-mono: "IBM Plex Mono", "Cascadia Mono", monospace;
+        --arcsyn-radius: 0.375rem;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        align-items: center;
+        background: #080d12;
+        color: var(--arcsyn-foreground);
+        display: flex;
+        font-family: var(--arcsyn-font-sans);
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .arcsyn-deck {
+        aspect-ratio: 16 / 9;
+        background: var(--arcsyn-background);
+        container-type: inline-size;
+        height: min(100vh, 56.25vw);
+        overflow: hidden;
+        position: relative;
+        width: min(100vw, 177.7778vh);
+      }
+
+      .arcsyn-slide {
+        background: var(--arcsyn-background);
+        display: grid;
+        inset: 0;
+        padding: 4.4cqw 5.625cqw 3.5cqw;
+        position: absolute;
+      }
+
+      .arcsyn-slide[hidden] {
+        display: none;
+      }
+
+      .arcsyn-slide::after {
+        background: var(--arcsyn-border);
+        bottom: 2.7cqw;
+        content: "";
+        height: 1px;
+        left: 12.5cqw;
+        position: absolute;
+        right: 5.625cqw;
+      }
+
+      .arcsyn-slide__meta {
+        align-items: center;
+        display: flex;
+        font-family: var(--arcsyn-font-mono);
+        font-size: clamp(0.55rem, 0.9cqw, 0.75rem);
+        font-weight: 600;
+        justify-content: space-between;
+        letter-spacing: 0.06em;
+        position: absolute;
+        left: 5.625cqw;
+        right: 5.625cqw;
+        top: 3cqw;
+        text-transform: uppercase;
+      }
+
+      .arcsyn-slide__meta span:first-child {
+        color: var(--arcsyn-primary);
+      }
+
+      .arcsyn-slide__meta span:last-child {
+        color: var(--arcsyn-muted-foreground);
+      }
+
+      .arcsyn-logo {
+        display: block;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .arcsyn-slide__footer-logo {
+        bottom: 0.8cqw;
+        left: 5.625cqw;
+        position: absolute;
+        width: 5.4cqw;
+        z-index: 1;
+      }
+
+      .arcsyn-slide h1,
+      .arcsyn-slide h2,
+      .arcsyn-slide h3,
+      .arcsyn-slide p {
+        margin: 0;
+      }
+
+      .arcsyn-slide h2 {
+        font-size: clamp(2rem, 3.3cqw, 2.65rem);
+        letter-spacing: -0.035em;
+        line-height: 1.08;
+        max-width: 80cqw;
+      }
+
+      .arcsyn-eyebrow {
+        color: var(--arcsyn-primary);
+        font-family: var(--arcsyn-font-mono);
+        font-size: clamp(0.6rem, 1cqw, 0.8rem);
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .arcsyn-muted {
+        color: var(--arcsyn-muted-foreground);
+      }
+
+      .arcsyn-rule {
+        background: var(--arcsyn-primary);
+        height: 0.24cqw;
+        width: 8.75cqw;
+      }
+
+      .arcsyn-slide--cover {
+        align-content: start;
+        gap: 2.6cqw;
+        padding-top: 6.4cqw;
+      }
+
+      .arcsyn-slide--cover::before {
+        background: var(--arcsyn-primary);
+        content: "";
+        height: 0.35cqw;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 26cqw;
+      }
+
+      .arcsyn-slide--cover .arcsyn-logo {
+        position: absolute;
+        right: 7cqw;
+        top: 4.1cqw;
+        width: 15cqw;
+      }
+
+      .arcsyn-slide--cover h1 {
+        font-size: clamp(2.8rem, 5cqw, 4rem);
+        letter-spacing: -0.045em;
+        line-height: 1.02;
+        margin-top: 7.2cqw;
+        max-width: 72cqw;
+      }
+
+      .arcsyn-slide--cover .arcsyn-lead {
+        color: var(--arcsyn-muted-foreground);
+        font-size: clamp(1rem, 1.9cqw, 1.5rem);
+        line-height: 1.45;
+        max-width: 58cqw;
+      }
+
+      .arcsyn-cover-details {
+        bottom: 5.3cqw;
+        color: var(--arcsyn-muted-foreground);
+        display: flex;
+        font-family: var(--arcsyn-font-mono);
+        font-size: clamp(0.6rem, 0.9cqw, 0.75rem);
+        justify-content: flex-end;
+        left: 5.625cqw;
+        position: absolute;
+        right: 5.625cqw;
+      }
+
+      .arcsyn-slide--section {
+        align-items: center;
+        grid-template-columns: 18cqw 1fr;
+      }
+
+      .arcsyn-section-number {
+        color: var(--arcsyn-primary);
+        font-family: var(--arcsyn-font-mono);
+        font-size: clamp(4rem, 7cqw, 5.6rem);
+        font-weight: 700;
+      }
+
+      .arcsyn-section-copy {
+        display: grid;
+        gap: 2.4cqw;
+        max-width: 62cqw;
+      }
+
+      .arcsyn-section-copy h2 {
+        font-size: clamp(2.6rem, 4cqw, 3.3rem);
+      }
+
+      .arcsyn-section-copy p {
+        color: var(--arcsyn-muted-foreground);
+        font-size: clamp(1rem, 1.9cqw, 1.5rem);
+        line-height: 1.45;
+      }
+
+      .arcsyn-slide--section > .arcsyn-logo {
+        bottom: 8cqw;
+        position: absolute;
+        right: 8cqw;
+        width: 14cqw;
+      }
+
+      .arcsyn-problem {
+        display: grid;
+        gap: 5.5cqw;
+        grid-template-columns: 0.82fr 1px 1.18fr;
+        margin-top: 5.5cqw;
+      }
+
+      .arcsyn-divider {
+        background: var(--arcsyn-border-strong);
+      }
+
+      .arcsyn-problem h3 {
+        font-size: clamp(1.4rem, 2.2cqw, 1.8rem);
+        line-height: 1.35;
+        margin-top: 2.2cqw;
+      }
+
+      .arcsyn-impact-list {
+        display: grid;
+      }
+
+      .arcsyn-impact {
+        display: grid;
+        gap: 1.8cqw;
+        grid-template-columns: 3cqw 1fr;
+        padding: 1.5cqw 0;
+      }
+
+      .arcsyn-impact + .arcsyn-impact {
+        border-top: 1px solid var(--arcsyn-border);
+      }
+
+      .arcsyn-impact strong {
+        color: var(--arcsyn-primary);
+        font-family: var(--arcsyn-font-mono);
+        font-size: 1cqw;
+      }
+
+      .arcsyn-impact p {
+        font-size: clamp(0.9rem, 1.45cqw, 1.15rem);
+        line-height: 1.4;
+      }
+
+      .arcsyn-slide--statement {
+        align-content: center;
+        gap: 4.2cqw;
+      }
+
+      .arcsyn-slide--statement h2 {
+        font-size: clamp(3rem, 4.3cqw, 3.5rem);
+        max-width: 86cqw;
+      }
+
+      .arcsyn-slide--statement p {
+        color: var(--arcsyn-muted-foreground);
+        font-size: clamp(1rem, 1.8cqw, 1.45rem);
+        line-height: 1.45;
+        max-width: 70cqw;
+      }
+
+      .arcsyn-architecture {
+        align-items: center;
+        display: grid;
+        gap: 2.8cqw;
+        grid-template-columns: 16cqw 19cqw 19cqw 19cqw;
+        justify-content: space-between;
+        margin-top: 4cqw;
+        position: relative;
+      }
+
+      .arcsyn-architecture::before {
+        background: var(--arcsyn-border-strong);
+        content: "";
+        height: 2px;
+        left: 8cqw;
+        position: absolute;
+        right: 8cqw;
+        top: 50%;
+      }
+
+      .arcsyn-node {
+        background: var(--arcsyn-surface);
+        border: 1px solid var(--arcsyn-border-strong);
+        border-radius: var(--arcsyn-radius);
+        min-height: 9.2cqw;
+        padding: 1.5cqw;
+        position: relative;
+        z-index: 1;
+      }
+
+      .arcsyn-node--primary {
+        background: var(--arcsyn-surface-raised);
+      }
+
+      .arcsyn-node h3 {
+        font-size: clamp(1rem, 1.5cqw, 1.2rem);
+        margin-bottom: 1cqw;
+      }
+
+      .arcsyn-node p {
+        color: var(--arcsyn-muted-foreground);
+        font-size: clamp(0.75rem, 1.1cqw, 0.9rem);
+        line-height: 1.4;
+      }
+
+      .arcsyn-flow {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        margin-top: 6cqw;
+        position: relative;
+      }
+
+      .arcsyn-flow::before {
+        background: var(--arcsyn-border-strong);
+        content: "";
+        height: 2px;
+        left: 2cqw;
+        position: absolute;
+        right: 10cqw;
+        top: 2cqw;
+      }
+
+      .arcsyn-flow-step {
+        display: grid;
+        gap: 1.5cqw;
+        padding-right: 1.4cqw;
+        position: relative;
+      }
+
+      .arcsyn-flow-step > span {
+        align-items: center;
+        background: var(--arcsyn-primary);
+        border-radius: var(--arcsyn-radius);
+        color: var(--arcsyn-primary-foreground);
+        display: flex;
+        font-family: var(--arcsyn-font-mono);
+        font-weight: 700;
+        height: 4cqw;
+        justify-content: center;
+        width: 4cqw;
+        z-index: 1;
+      }
+
+      .arcsyn-flow-step h3 {
+        font-size: clamp(1rem, 1.8cqw, 1.45rem);
+      }
+
+      .arcsyn-flow-step p {
+        color: var(--arcsyn-muted-foreground);
+        font-size: clamp(0.72rem, 1.05cqw, 0.85rem);
+      }
+
+      .arcsyn-comparison {
+        border: 1px solid var(--arcsyn-border);
+        border-collapse: collapse;
+        font-size: clamp(0.7rem, 1.1cqw, 0.9rem);
+        margin-top: 4.5cqw;
+        table-layout: fixed;
+        width: 100%;
+      }
+
+      .arcsyn-comparison th,
+      .arcsyn-comparison td {
+        border: 1px solid var(--arcsyn-border);
+        padding: 1.25cqw;
+        text-align: left;
+      }
+
+      .arcsyn-comparison th {
+        font-size: clamp(0.75rem, 1.2cqw, 1rem);
+      }
+
+      .arcsyn-comparison th:last-child,
+      .arcsyn-comparison td:last-child {
+        background: var(--arcsyn-surface);
+        font-weight: 600;
+      }
+
+      .arcsyn-comparison th:last-child {
+        border-color: var(--arcsyn-primary);
+        color: var(--arcsyn-primary);
+      }
+
+      .arcsyn-evidence {
+        display: grid;
+        margin-top: 4cqw;
+      }
+
+      .arcsyn-evidence-row {
+        align-items: center;
+        display: grid;
+        gap: 3cqw;
+        grid-template-columns: 4cqw 15cqw 1fr;
+        min-height: 8.5cqw;
+      }
+
+      .arcsyn-evidence-row + .arcsyn-evidence-row {
+        border-top: 1px solid var(--arcsyn-border-strong);
+      }
+
+      .arcsyn-evidence-row span {
+        color: var(--arcsyn-primary);
+        font-family: var(--arcsyn-font-mono);
+        font-weight: 700;
+      }
+
+      .arcsyn-evidence-row h3 {
+        font-size: clamp(1.15rem, 1.9cqw, 1.5rem);
+      }
+
+      .arcsyn-evidence-row p {
+        color: var(--arcsyn-muted-foreground);
+        font-size: clamp(0.8rem, 1.35cqw, 1.05rem);
+      }
+
+      .arcsyn-roadmap {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        margin-top: 6cqw;
+        position: relative;
+      }
+
+      .arcsyn-roadmap::before {
+        background: var(--arcsyn-border-strong);
+        content: "";
+        height: 2px;
+        left: 4cqw;
+        position: absolute;
+        right: 12cqw;
+        top: 5.8cqw;
+      }
+
+      .arcsyn-phase {
+        display: grid;
+        gap: 1.5cqw;
+        position: relative;
+      }
+
+      .arcsyn-phase::before {
+        background: var(--arcsyn-background);
+        border: 1px solid var(--arcsyn-border-strong);
+        border-radius: var(--arcsyn-radius);
+        content: "";
+        height: 3cqw;
+        margin-top: 2.2cqw;
+        width: 3cqw;
+        z-index: 1;
+      }
+
+      .arcsyn-phase:first-child::before {
+        background: var(--arcsyn-primary);
+        border-color: var(--arcsyn-primary);
+      }
+
+      .arcsyn-phase h3 {
+        font-size: clamp(1.3rem, 2.2cqw, 1.75rem);
+        margin-top: 1cqw;
+      }
+
+      .arcsyn-phase p {
+        color: var(--arcsyn-muted-foreground);
+        font-size: clamp(0.8rem, 1.2cqw, 1rem);
+        line-height: 1.45;
+      }
+
+      .arcsyn-slide--decision {
+        align-content: center;
+        gap: 3.2cqw;
+      }
+
+      .arcsyn-slide--decision h2 {
+        font-size: clamp(2.8rem, 4.2cqw, 3.4rem);
+        max-width: 78cqw;
+      }
+
+      .arcsyn-decision-grid {
+        border-top: 1px solid var(--arcsyn-border-strong);
+        display: grid;
+        gap: 6cqw;
+        grid-template-columns: 1fr 24cqw;
+        padding-top: 3.4cqw;
+      }
+
+      .arcsyn-decision-grid h3 {
+        font-size: clamp(1.2rem, 2cqw, 1.6rem);
+        line-height: 1.35;
+        margin-top: 1.4cqw;
+      }
+
+      .arcsyn-decision-callout {
+        background: var(--arcsyn-primary);
+        border-radius: var(--arcsyn-radius);
+        color: var(--arcsyn-primary-foreground);
+        display: grid;
+        gap: 1.2cqw;
+        padding: 2cqw;
+      }
+
+      .arcsyn-decision-callout span {
+        font-family: var(--arcsyn-font-mono);
+        font-size: 0.9cqw;
+        font-weight: 600;
+      }
+
+      .arcsyn-appendix {
+        display: grid;
+        gap: 4cqw;
+        grid-template-columns: repeat(2, 1fr);
+        margin-top: 5cqw;
+      }
+
+      .arcsyn-principle {
+        display: grid;
+        gap: 1.3cqw;
+        grid-template-columns: 3cqw 1fr;
+      }
+
+      .arcsyn-principle > span {
+        color: var(--arcsyn-primary);
+        font-family: var(--arcsyn-font-mono);
+        font-weight: 700;
+      }
+
+      .arcsyn-principle h3 {
+        font-size: clamp(1rem, 1.65cqw, 1.3rem);
+      }
+
+      .arcsyn-principle p {
+        color: var(--arcsyn-muted-foreground);
+        font-size: clamp(0.75rem, 1.15cqw, 0.9rem);
+        line-height: 1.45;
+        margin-top: 1cqw;
+      }
+
+      .arcsyn-slide--closing {
+        align-content: center;
+        gap: 4cqw;
+      }
+
+      .arcsyn-slide--closing h2 {
+        font-size: clamp(2.8rem, 4cqw, 3.3rem);
+        max-width: 86cqw;
+      }
+
+      .arcsyn-slide--closing > p {
+        color: var(--arcsyn-muted-foreground);
+        font-size: clamp(1.4rem, 2.5cqw, 2rem);
+        line-height: 1.45;
+        max-width: 78cqw;
+      }
+
+      .arcsyn-slide--closing .arcsyn-logo {
+        bottom: 5cqw;
+        position: absolute;
+        right: 6cqw;
+        width: 17cqw;
+      }
+
+      .arcsyn-next-step {
+        bottom: 5.3cqw;
+        display: grid;
+        gap: 0.9cqw;
+        left: 5.625cqw;
+        position: absolute;
+      }
+
+      .arcsyn-next-step strong {
+        font-size: clamp(1rem, 1.6cqw, 1.3rem);
+      }
+
+      .arcsyn-controls {
+        align-items: center;
+        background: rgb(8 13 18 / 0.88);
+        border: 1px solid var(--arcsyn-border);
+        border-radius: var(--arcsyn-radius);
+        bottom: 1rem;
+        display: flex;
+        gap: 0.5rem;
+        left: 50%;
+        padding: 0.4rem;
+        position: fixed;
+        transform: translateX(-50%);
+        z-index: 10;
+      }
+
+      .arcsyn-controls button {
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 0.25rem;
+        color: var(--arcsyn-foreground);
+        cursor: pointer;
+        min-height: 2.25rem;
+        min-width: 2.25rem;
+      }
+
+      .arcsyn-controls button:hover {
+        background: var(--arcsyn-surface);
+        border-color: var(--arcsyn-border-strong);
+      }
+
+      .arcsyn-controls button:focus-visible {
+        outline: 2px solid var(--arcsyn-primary);
+        outline-offset: 2px;
+      }
+
+      .arcsyn-controls button:disabled {
+        cursor: default;
+        opacity: 0.35;
+      }
+
+      .arcsyn-counter {
+        color: var(--arcsyn-muted-foreground);
+        font-family: var(--arcsyn-font-mono);
+        font-size: 0.75rem;
+        min-width: 4.5rem;
+        text-align: center;
+      }
+
+      .arcsyn-progress {
+        background: var(--arcsyn-primary);
+        height: 0.2rem;
+        left: 0;
+        position: fixed;
+        top: 0;
+        transform-origin: left center;
+        transition: transform 180ms ease;
+        width: 100%;
+        z-index: 12;
+      }
+
+      .arcsyn-sr-only {
+        clip: rect(0, 0, 0, 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .arcsyn-progress {
+          transition: none;
+        }
+      }
+
+      @media print {
+        @page {
+          margin: 0;
+          size: 13.333in 7.5in;
+        }
+
+        body {
+          background: transparent;
+          display: block;
+          overflow: visible;
+        }
+
+        .arcsyn-deck {
+          display: block;
+          height: auto;
+          overflow: visible;
+          width: auto;
+        }
+
+        .arcsyn-slide,
+        .arcsyn-slide[hidden] {
+          break-after: page;
+          display: grid;
+          height: 7.5in;
+          page-break-after: always;
+          position: relative;
+          width: 13.333in;
+        }
+
+        .arcsyn-controls,
+        .arcsyn-progress {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="arcsyn-deck" aria-label="Proposta de arquitetura ArcSyn">
+      <section class="arcsyn-slide arcsyn-slide--cover" data-layout="cover" id="slide-1" aria-labelledby="title-1">
+        <img class="arcsyn-logo" src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+        <p class="arcsyn-eyebrow">Proposta de arquitetura</p>
+        <h1 id="title-1">Uma plataforma previsível para evoluir integrações</h1>
+        <p class="arcsyn-lead">Limites claros, migração incremental e decisões sustentadas por evidência.</p>
+        <div class="arcsyn-cover-details">
+          <span>Comitê de arquitetura · Julho 2026</span>
+        </div>
+      </section>
+
+      <section class="arcsyn-slide arcsyn-slide--section" data-layout="section" id="slide-2" aria-labelledby="title-2" hidden>
+        <div class="arcsyn-slide__meta"><span>Contexto</span><span>02</span></div>
+        <strong class="arcsyn-section-number">01</strong>
+        <div class="arcsyn-section-copy">
+          <h2 id="title-2">Por que mudar agora</h2>
+          <div class="arcsyn-rule"></div>
+          <p>A complexidade já não está apenas nas integrações; ela está nas exceções entre elas.</p>
+        </div>
+        <img class="arcsyn-logo" src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+      </section>
+
+      <section class="arcsyn-slide" data-layout="problem" id="slide-3" aria-labelledby="title-3" hidden>
+        <div class="arcsyn-slide__meta"><span>Problema e impacto</span><span>03</span></div>
+        <h2 id="title-3">Cada exceção local aumenta o custo da próxima mudança</h2>
+        <div class="arcsyn-problem">
+          <div>
+            <p class="arcsyn-eyebrow arcsyn-muted">Situação atual</p>
+            <h3>Regras de integração vivem em serviços, filas e rotinas operacionais diferentes.</h3>
+          </div>
+          <div class="arcsyn-divider" aria-hidden="true"></div>
+          <div>
+            <p class="arcsyn-eyebrow" style="color: var(--arcsyn-danger)">Consequências</p>
+            <div class="arcsyn-impact-list">
+              <div class="arcsyn-impact">
+                <strong>01</strong>
+                <p>Mudanças simples exigem coordenação entre várias equipes.</p>
+              </div>
+              <div class="arcsyn-impact">
+                <strong>02</strong>
+                <p>Falhas são diagnosticadas pelo caminho percorrido, não pelo contrato.</p>
+              </div>
+              <div class="arcsyn-impact">
+                <strong>03</strong>
+                <p>A estratégia de migração se torna uma sequência de exceções.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <img class="arcsyn-logo arcsyn-slide__footer-logo" src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+      </section>
+
+      <section class="arcsyn-slide arcsyn-slide--statement" data-layout="statement" id="slide-4" aria-labelledby="title-4" hidden>
+        <div class="arcsyn-slide__meta"><span>Tese</span><span>04</span></div>
+        <div class="arcsyn-rule"></div>
+        <h2 id="title-4">A plataforma deve tornar o caminho padrão mais barato do que criar uma exceção.</h2>
+        <p>Isso exige contratos claros, observabilidade comum e migração por capacidades — não uma reescrita total.</p>
+        <img class="arcsyn-logo arcsyn-slide__footer-logo" src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+      </section>
+
+      <section class="arcsyn-slide" data-layout="architecture" id="slide-5" aria-labelledby="title-5" hidden>
+        <div class="arcsyn-slide__meta"><span>Arquitetura</span><span>05</span></div>
+        <h2 id="title-5">Contratos e observabilidade formam o núcleo compartilhado</h2>
+        <div class="arcsyn-architecture" aria-label="Arquitetura proposta">
+          <article class="arcsyn-node">
+            <h3>Produtos</h3>
+            <p>Aplicações e fluxos consumidores</p>
+          </article>
+          <article class="arcsyn-node arcsyn-node--primary">
+            <h3>Gateway de contratos</h3>
+            <p>Validação, versão e políticas</p>
+          </article>
+          <article class="arcsyn-node arcsyn-node--primary">
+            <h3>Orquestração</h3>
+            <p>Roteamento, retry e idempotência</p>
+          </article>
+          <article class="arcsyn-node">
+            <h3>Sistemas de registro</h3>
+            <p>Domínios e parceiros externos</p>
+          </article>
+        </div>
+        <img class="arcsyn-logo arcsyn-slide__footer-logo" src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+      </section>
+
+      <section class="arcsyn-slide" data-layout="flow" id="slide-6" aria-labelledby="title-6" hidden>
+        <div class="arcsyn-slide__meta"><span>Fluxo</span><span>06</span></div>
+        <h2 id="title-6">Uma requisição preserva contexto do produto ao sistema de registro</h2>
+        <div class="arcsyn-flow">
+          <article class="arcsyn-flow-step">
+            <span>1</span>
+            <h3>Receber</h3>
+            <p>Contrato e identidade</p>
+          </article>
+          <article class="arcsyn-flow-step">
+            <span>2</span>
+            <h3>Validar</h3>
+            <p>Versão e política</p>
+          </article>
+          <article class="arcsyn-flow-step">
+            <span>3</span>
+            <h3>Orquestrar</h3>
+            <p>Rota e idempotência</p>
+          </article>
+          <article class="arcsyn-flow-step">
+            <span>4</span>
+            <h3>Executar</h3>
+            <p>Adaptador de domínio</p>
+          </article>
+          <article class="arcsyn-flow-step">
+            <span>5</span>
+            <h3>Observar</h3>
+            <p>Resultado correlacionado</p>
+          </article>
+        </div>
+        <img class="arcsyn-logo arcsyn-slide__footer-logo" src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+      </section>
+
+      <section class="arcsyn-slide" data-layout="comparison" id="slide-7" aria-labelledby="title-7" hidden>
+        <div class="arcsyn-slide__meta"><span>Comparação</span><span>07</span></div>
+        <h2 id="title-7">A migração incremental equilibra risco, velocidade e aprendizado</h2>
+        <table class="arcsyn-comparison">
+          <thead>
+            <tr>
+              <th>Critério</th>
+              <th>Manter como está</th>
+              <th>Reescrever</th>
+              <th>Migrar por capacidade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Risco de entrega</td>
+              <td>Baixo agora</td>
+              <td>Alto</td>
+              <td>Controlado</td>
+            </tr>
+            <tr>
+              <td>Aprendizado</td>
+              <td>Lento</td>
+              <td>Tardio</td>
+              <td>Contínuo</td>
+            </tr>
+            <tr>
+              <td>Custo de transição</td>
+              <td>Crescente</td>
+              <td>Concentrado</td>
+              <td>Distribuído</td>
+            </tr>
+            <tr>
+              <td>Reversibilidade</td>
+              <td>Baixa</td>
+              <td>Baixa</td>
+              <td>Alta</td>
+            </tr>
+          </tbody>
+        </table>
+        <img class="arcsyn-logo arcsyn-slide__footer-logo" src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+      </section>
+
+      <section class="arcsyn-slide" data-layout="evidence" id="slide-8" aria-labelledby="title-8" hidden>
+        <div class="arcsyn-slide__meta"><span>Evidência</span><span>08</span></div>
+        <h2 id="title-8">Três sinais internos devem validar a prioridade antes do investimento</h2>
+        <div class="arcsyn-evidence">
+          <div class="arcsyn-evidence-row">
+            <span>01</span>
+            <h3>Mudança</h3>
+            <p>Tempo entre alteração de contrato e disponibilidade em produção.</p>
+          </div>
+          <div class="arcsyn-evidence-row">
+            <span>02</span>
+            <h3>Falha</h3>
+            <p>Percentual de incidentes sem correlação ponta a ponta.</p>
+          </div>
+          <div class="arcsyn-evidence-row">
+            <span>03</span>
+            <h3>Exceção</h3>
+            <p>Quantidade de rotas que desviam do fluxo operacional padrão.</p>
+          </div>
+        </div>
+        <img class="arcsyn-logo arcsyn-slide__footer-logo" src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+      </section>
+
+      <section class="arcsyn-slide" data-layout="roadmap" id="slide-9" aria-labelledby="title-9" hidden>
+        <div class="arcsyn-slide__meta"><span>Roadmap</span><span>09</span></div>
+        <h2 id="title-9">A adoção começa pelo contrato e cresce conforme o aprendizado</h2>
+        <div class="arcsyn-roadmap">
+          <article class="arcsyn-phase">
+            <p class="arcsyn-eyebrow">Agora</p>
+            <h3>Descobrir</h3>
+            <p>Medir o fluxo atual<br />Definir contratos alvo</p>
+          </article>
+          <article class="arcsyn-phase">
+            <p class="arcsyn-eyebrow arcsyn-muted">Próximo</p>
+            <h3>Provar</h3>
+            <p>Migrar uma capacidade<br />Validar telemetria</p>
+          </article>
+          <article class="arcsyn-phase">
+            <p class="arcsyn-eyebrow arcsyn-muted">Depois</p>
+            <h3>Expandir</h3>
+            <p>Adicionar adaptadores<br />Remover exceções</p>
+          </article>
+        </div>
+        <img class="arcsyn-logo arcsyn-slide__footer-logo" src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+      </section>
+
+      <section class="arcsyn-slide arcsyn-slide--decision" data-layout="decision" id="slide-10" aria-labelledby="title-10" hidden>
+        <div class="arcsyn-slide__meta"><span>Decisão</span><span>10</span></div>
+        <p class="arcsyn-eyebrow">Recomendação</p>
+        <h2 id="title-10">Iniciar uma descoberta de quatro semanas focada em uma capacidade piloto.</h2>
+        <div class="arcsyn-decision-grid">
+          <div>
+            <p class="arcsyn-eyebrow arcsyn-muted">Decisão solicitada</p>
+            <h3>Autorizar a fase de descoberta e nomear responsáveis de plataforma e domínio.</h3>
+          </div>
+          <aside class="arcsyn-decision-callout">
+            <span>Próximo fórum</span>
+            <strong>Revisão do piloto</strong>
+          </aside>
+        </div>
+        <img class="arcsyn-logo arcsyn-slide__footer-logo" src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+      </section>
+
+      <section class="arcsyn-slide" data-layout="appendix" id="slide-11" aria-labelledby="title-11" hidden>
+        <div class="arcsyn-slide__meta"><span>Apêndice</span><span>11</span></div>
+        <h2 id="title-11">Princípios técnicos preservam as opções durante a migração</h2>
+        <div class="arcsyn-appendix">
+          <article class="arcsyn-principle">
+            <span>01</span>
+            <div>
+              <h3>Contrato antes da implementação</h3>
+              <p>A fronteira pública é estável mesmo quando o adaptador muda.</p>
+            </div>
+          </article>
+          <article class="arcsyn-principle">
+            <span>02</span>
+            <div>
+              <h3>Observabilidade por padrão</h3>
+              <p>Correlação, métricas e logs fazem parte do caminho principal.</p>
+            </div>
+          </article>
+          <article class="arcsyn-principle">
+            <span>03</span>
+            <div>
+              <h3>Reversibilidade explícita</h3>
+              <p>Cada fase define como interromper, voltar ou conviver.</p>
+            </div>
+          </article>
+          <article class="arcsyn-principle">
+            <span>04</span>
+            <div>
+              <h3>Domínio mantém autonomia</h3>
+              <p>A plataforma oferece capacidades sem absorver regra de negócio.</p>
+            </div>
+          </article>
+        </div>
+        <img class="arcsyn-logo arcsyn-slide__footer-logo" src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+      </section>
+
+      <section class="arcsyn-slide arcsyn-slide--closing" data-layout="closing" id="slide-12" aria-labelledby="title-12" hidden>
+        <div class="arcsyn-rule"></div>
+        <h2 id="title-12">O objetivo não é centralizar toda integração.</h2>
+        <p>É tornar contratos, caminhos e decisões previsíveis o suficiente para que os domínios evoluam com autonomia.</p>
+        <div class="arcsyn-next-step">
+          <span class="arcsyn-eyebrow">Próximo passo</span>
+          <strong>Autorizar a descoberta</strong>
+        </div>
+        <img class="arcsyn-logo" src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+      </section>
+    </main>
+
+    <div class="arcsyn-progress" aria-hidden="true"></div>
+    <nav class="arcsyn-controls" aria-label="Navegação da apresentação">
+      <button type="button" data-action="previous" aria-label="Slide anterior">←</button>
+      <span class="arcsyn-counter" aria-hidden="true">01 / 12</span>
+      <button type="button" data-action="next" aria-label="Próximo slide">→</button>
+    </nav>
+    <p class="arcsyn-sr-only" aria-live="polite" data-announcer></p>
+
+    <script>
+      (() => {
+        const slides = [...document.querySelectorAll(".arcsyn-slide")];
+        const previousButton = document.querySelector('[data-action="previous"]');
+        const nextButton = document.querySelector('[data-action="next"]');
+        const counter = document.querySelector(".arcsyn-counter");
+        const progress = document.querySelector(".arcsyn-progress");
+        const announcer = document.querySelector("[data-announcer]");
+        let touchStartX = 0;
+
+        const numberFromHash = () => {
+          const match = window.location.hash.match(/^#slide-(\d+)$/);
+          return match ? Number(match[1]) - 1 : 0;
+        };
+
+        let current = Math.min(Math.max(numberFromHash(), 0), slides.length - 1);
+
+        const show = (next, updateHistory = true) => {
+          current = Math.min(Math.max(next, 0), slides.length - 1);
+          slides.forEach((slide, index) => {
+            slide.hidden = index !== current;
+            slide.setAttribute("aria-hidden", String(index !== current));
+          });
+
+          const displayCurrent = String(current + 1).padStart(2, "0");
+          const displayTotal = String(slides.length).padStart(2, "0");
+          counter.textContent = `${displayCurrent} / ${displayTotal}`;
+          progress.style.transform = `scaleX(${(current + 1) / slides.length})`;
+          previousButton.disabled = current === 0;
+          nextButton.disabled = current === slides.length - 1;
+
+          const title = slides[current].querySelector("h1, h2")?.textContent?.trim() ?? "";
+          announcer.textContent = `Slide ${current + 1} de ${slides.length}: ${title}`;
+
+          if (updateHistory) {
+            window.history.replaceState(null, "", `#slide-${current + 1}`);
+          }
+        };
+
+        previousButton.addEventListener("click", () => show(current - 1));
+        nextButton.addEventListener("click", () => show(current + 1));
+
+        window.addEventListener("keydown", (event) => {
+          if (["ArrowRight", "PageDown", " "].includes(event.key)) {
+            event.preventDefault();
+            show(current + 1);
+          } else if (["ArrowLeft", "PageUp"].includes(event.key)) {
+            event.preventDefault();
+            show(current - 1);
+          } else if (event.key === "Home") {
+            event.preventDefault();
+            show(0);
+          } else if (event.key === "End") {
+            event.preventDefault();
+            show(slides.length - 1);
+          }
+        });
+
+        window.addEventListener(
+          "touchstart",
+          (event) => {
+            touchStartX = event.changedTouches[0].clientX;
+          },
+          { passive: true },
+        );
+
+        window.addEventListener(
+          "touchend",
+          (event) => {
+            const delta = event.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(delta) < 50) return;
+            show(delta < 0 ? current + 1 : current - 1);
+          },
+          { passive: true },
+        );
+
+        window.addEventListener("hashchange", () => show(numberFromHash(), false));
+        show(current, false);
+      })();
+    </script>
+  </body>
+</html>

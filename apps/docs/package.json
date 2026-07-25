@@ -8,6 +8,7 @@
     "build": "tsc -p tsconfig.json --noEmit && vite build"
   },
   "dependencies": {
+    "@arcsyn/presentations": "workspace:*",
     "@arcsyn/react": "workspace:*",
     "@arcsyn/styles": "workspace:*",
     "@arcsyn/tokens": "workspace:*",

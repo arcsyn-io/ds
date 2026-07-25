@@ -1,0 +1,1517 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Template ArcSyn para propostas técnicas de arquitetura, trade-offs, riscos e custos." />
+    <title>Proposta técnica de arquitetura · ArcSyn</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --background: #161e28;
+        --foreground: #eff4f5;
+        --surface: #1d2936;
+        --surface-raised: #263545;
+        --muted: #91a7b8;
+        --primary: #90dddf;
+        --primary-foreground: #161e28;
+        --border: #2c3d4f;
+        --border-strong: #425a70;
+        --success: #8eaa76;
+        --warning: #d5aa52;
+        --danger: #c56f78;
+        --font-sans: "IBM Plex Sans", "Segoe UI", sans-serif;
+        --font-mono: "IBM Plex Mono", "Cascadia Mono", monospace;
+        --sidebar-width: 17rem;
+        --header-height: 4.5rem;
+        --radius: 0.375rem;
+      }
+
+      [data-theme="light"] {
+        color-scheme: light;
+        --background: #f4f7f8;
+        --foreground: #17212b;
+        --surface: #ffffff;
+        --surface-raised: #edf2f4;
+        --muted: #566b7c;
+        --primary: #0c6f73;
+        --primary-foreground: #ffffff;
+        --border: #ced9df;
+        --border-strong: #9eb1bc;
+        --success: #4f6d3c;
+        --warning: #8a671e;
+        --danger: #99434c;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: calc(var(--header-height) + 2rem);
+      }
+
+      body {
+        background: var(--background);
+        color: var(--foreground);
+        font-family: var(--font-sans);
+        line-height: 1.65;
+        margin: 0;
+      }
+
+      button,
+      input,
+      textarea {
+        font: inherit;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .skip-link {
+        background: var(--primary);
+        color: var(--primary-foreground);
+        left: 1rem;
+        padding: 0.65rem 0.85rem;
+        position: fixed;
+        top: -5rem;
+        z-index: 100;
+      }
+
+      .skip-link:focus {
+        top: 1rem;
+      }
+
+      .document-header {
+        align-items: center;
+        backdrop-filter: blur(14px);
+        background: color-mix(in srgb, var(--background) 92%, transparent);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        height: var(--header-height);
+        justify-content: space-between;
+        left: 0;
+        padding: 0 2rem;
+        position: fixed;
+        right: 0;
+        top: 0;
+        z-index: 20;
+      }
+
+      .document-header__brand {
+        align-items: center;
+        display: flex;
+        gap: 1rem;
+        min-width: 0;
+      }
+
+      .document-header__brand img {
+        display: block;
+        height: auto;
+        width: 6.5rem;
+      }
+
+      .document-header__type {
+        border-left: 1px solid var(--border-strong);
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        line-height: 1.2;
+        padding-left: 1rem;
+        text-transform: uppercase;
+      }
+
+      .document-header__actions {
+        align-items: center;
+        display: flex;
+        gap: 0.75rem;
+      }
+
+      .document-status {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .icon-button {
+        align-items: center;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--foreground);
+        cursor: pointer;
+        display: inline-flex;
+        height: 2.5rem;
+        justify-content: center;
+        padding: 0 0.8rem;
+      }
+
+      .icon-button:hover,
+      .icon-button:focus-visible {
+        border-color: var(--primary);
+        outline: none;
+      }
+
+      .reading-progress {
+        background: var(--primary);
+        height: 2px;
+        left: 0;
+        position: fixed;
+        top: calc(var(--header-height) - 2px);
+        transform: scaleX(0);
+        transform-origin: left;
+        width: 100%;
+        z-index: 30;
+      }
+
+      .document-shell {
+        display: grid;
+        grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+        min-height: 100vh;
+        padding-top: var(--header-height);
+      }
+
+      .document-nav {
+        border-right: 1px solid var(--border);
+        height: calc(100vh - var(--header-height));
+        overflow-y: auto;
+        padding: 2rem 1.5rem;
+        position: sticky;
+        top: var(--header-height);
+      }
+
+      .document-nav__label {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.09em;
+        margin: 0 0 1rem;
+        text-transform: uppercase;
+      }
+
+      .document-nav ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .document-nav a {
+        border-left: 2px solid var(--border);
+        color: var(--muted);
+        display: block;
+        font-size: 0.84rem;
+        line-height: 1.35;
+        padding: 0.6rem 0 0.6rem 0.9rem;
+        text-decoration: none;
+      }
+
+      .document-nav a:hover,
+      .document-nav a[aria-current="location"] {
+        border-left-color: var(--primary);
+        color: var(--foreground);
+      }
+
+      .document-nav a[aria-current="location"] {
+        background: color-mix(in srgb, var(--primary) 8%, transparent);
+      }
+
+      .document-nav__meta {
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        margin-top: 2rem;
+        padding-top: 1rem;
+      }
+
+      .technical-document {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .document-cover {
+        border-bottom: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: minmax(0, 1.7fr) minmax(18rem, 0.7fr);
+        min-height: min(47rem, calc(100vh - var(--header-height)));
+      }
+
+      .document-cover__main {
+        align-content: center;
+        display: grid;
+        padding: clamp(3rem, 7vw, 8rem);
+      }
+
+      .document-cover__aside {
+        background: var(--surface);
+        border-left: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: clamp(2rem, 4vw, 4rem);
+      }
+
+      .document-cover__aside img {
+        height: auto;
+        width: min(11rem, 100%);
+      }
+
+      .eyebrow {
+        color: var(--primary);
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        margin: 0 0 1.25rem;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(3rem, 6.5vw, 7rem);
+        letter-spacing: -0.055em;
+        line-height: 0.98;
+        margin-bottom: 2rem;
+        max-width: 12ch;
+      }
+
+      .document-cover__summary {
+        color: var(--muted);
+        font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+        max-width: 52rem;
+      }
+
+      .document-meta {
+        display: grid;
+        gap: 1.25rem;
+        margin: 0;
+      }
+
+      .document-meta div {
+        border-top: 1px solid var(--border);
+        padding-top: 0.75rem;
+      }
+
+      .document-meta dt {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.2rem;
+        text-transform: uppercase;
+      }
+
+      .document-meta dd {
+        margin: 0;
+      }
+
+      .document-section {
+        border-bottom: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: minmax(11rem, 0.28fr) minmax(0, 1fr);
+        padding: clamp(3rem, 6vw, 7rem) clamp(2rem, 6vw, 7rem);
+      }
+
+      .section-heading {
+        align-self: start;
+        padding-right: clamp(2rem, 5vw, 5rem);
+        position: sticky;
+        top: calc(var(--header-height) + 2rem);
+      }
+
+      .section-number {
+        color: var(--primary);
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.8rem;
+      }
+
+      .section-heading h2 {
+        font-size: clamp(1.65rem, 2.5vw, 2.7rem);
+        letter-spacing: -0.035em;
+        line-height: 1.08;
+        margin-bottom: 1rem;
+      }
+
+      .section-heading p {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .section-content {
+        min-width: 0;
+      }
+
+      .lead {
+        font-size: clamp(1.3rem, 2vw, 2rem);
+        letter-spacing: -0.02em;
+        line-height: 1.35;
+        max-width: 56rem;
+      }
+
+      .content-grid {
+        display: grid;
+        gap: 1px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 2rem;
+      }
+
+      .content-block {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        margin: -1px 0 0 -1px;
+        padding: clamp(1.4rem, 2.5vw, 2.5rem);
+      }
+
+      .content-block h3 {
+        font-size: 1rem;
+        margin-bottom: 0.65rem;
+      }
+
+      .content-block p:last-child {
+        margin-bottom: 0;
+      }
+
+      .content-block--emphasis {
+        border-top: 3px solid var(--primary);
+      }
+
+      .content-block__label {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .decision-banner {
+        background: var(--primary);
+        color: var(--primary-foreground);
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: 8rem minmax(0, 1fr);
+        margin-top: 2.5rem;
+        padding: clamp(1.5rem, 3vw, 3rem);
+      }
+
+      .decision-banner__label {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .decision-banner strong {
+        font-size: clamp(1.25rem, 2vw, 1.8rem);
+        line-height: 1.3;
+      }
+
+      .architecture {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(4, minmax(9rem, 1fr));
+        margin-top: 2.5rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+      }
+
+      .architecture__node {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        min-width: 9rem;
+        padding: 1.25rem;
+        position: relative;
+      }
+
+      .architecture__node:not(:last-child)::after {
+        color: var(--primary);
+        content: "→";
+        font-family: var(--font-mono);
+        position: absolute;
+        right: -0.85rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+      }
+
+      .architecture__node span {
+        color: var(--primary);
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        margin-bottom: 0.45rem;
+        text-transform: uppercase;
+      }
+
+      .architecture__node strong {
+        display: block;
+        line-height: 1.25;
+        margin-bottom: 0.5rem;
+      }
+
+      .architecture__node p {
+        color: var(--muted);
+        font-size: 0.8rem;
+        line-height: 1.45;
+        margin: 0;
+      }
+
+      .architecture__foundation {
+        background: color-mix(in srgb, var(--primary) 8%, var(--surface));
+        border: 1px solid var(--primary);
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        margin-top: 1rem;
+        padding: 1rem 1.25rem;
+        text-align: center;
+      }
+
+      .quality-grid {
+        counter-reset: quality;
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-top: 2rem;
+      }
+
+      .quality-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        counter-increment: quality;
+        min-height: 22rem;
+        padding: clamp(1.5rem, 2.5vw, 2.5rem);
+      }
+
+      .quality-card::before {
+        color: var(--primary);
+        content: "0" counter(quality);
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        margin-bottom: 4rem;
+      }
+
+      .quality-card h3 {
+        font-size: clamp(1.4rem, 2vw, 2rem);
+        letter-spacing: -0.025em;
+      }
+
+      .quality-card p {
+        color: var(--muted);
+      }
+
+      .quality-card dl {
+        border-top: 1px solid var(--border);
+        margin: 1.5rem 0 0;
+        padding-top: 1rem;
+      }
+
+      .quality-card dt {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+
+      .quality-card dd {
+        margin: 0.15rem 0 0.85rem;
+      }
+
+      .table-wrap {
+        border: 1px solid var(--border);
+        margin-top: 2rem;
+        overflow-x: auto;
+      }
+
+      table {
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        min-width: 48rem;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--border);
+        padding: 1rem 1.15rem;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: var(--surface-raised);
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      td strong {
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+
+      .tag {
+        border: 1px solid currentColor;
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.63rem;
+        letter-spacing: 0.06em;
+        padding: 0.2rem 0.45rem;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .tag--success {
+        color: var(--success);
+      }
+
+      .tag--warning {
+        color: var(--warning);
+      }
+
+      .tag--danger {
+        color: var(--danger);
+      }
+
+      .risk-matrix {
+        display: grid;
+        gap: 1px;
+        grid-template-columns: 8rem repeat(3, minmax(8rem, 1fr));
+        margin-top: 2rem;
+        overflow-x: auto;
+      }
+
+      .risk-matrix > div {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        margin: -1px 0 0 -1px;
+        min-height: 6rem;
+        padding: 1rem;
+      }
+
+      .risk-matrix__axis {
+        align-items: center;
+        color: var(--muted);
+        display: flex;
+        font-family: var(--font-mono);
+        font-size: 0.63rem;
+        justify-content: center;
+        letter-spacing: 0.06em;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .risk-item {
+        border-left: 3px solid var(--warning);
+        font-size: 0.8rem;
+        line-height: 1.35;
+        margin-bottom: 0.6rem;
+        padding-left: 0.6rem;
+      }
+
+      .risk-item--danger {
+        border-left-color: var(--danger);
+      }
+
+      .risk-item--success {
+        border-left-color: var(--success);
+      }
+
+      .cost-summary {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-top: 2rem;
+      }
+
+      .cost-metric {
+        border-top: 3px solid var(--border-strong);
+        padding: 1.5rem 0;
+      }
+
+      .cost-metric span {
+        color: var(--muted);
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .cost-metric strong {
+        display: block;
+        font-size: clamp(1.7rem, 3vw, 3rem);
+        letter-spacing: -0.04em;
+        margin: 0.25rem 0;
+      }
+
+      .cost-metric small {
+        color: var(--muted);
+      }
+
+      .timeline {
+        border-left: 1px solid var(--border-strong);
+        margin: 2rem 0 0 0.5rem;
+        padding-left: 2rem;
+      }
+
+      .timeline__item {
+        padding: 0 0 2.5rem;
+        position: relative;
+      }
+
+      .timeline__item:last-child {
+        padding-bottom: 0;
+      }
+
+      .timeline__item::before {
+        background: var(--background);
+        border: 2px solid var(--primary);
+        content: "";
+        height: 0.75rem;
+        left: -2.43rem;
+        position: absolute;
+        top: 0.3rem;
+        width: 0.75rem;
+      }
+
+      .timeline__item span {
+        color: var(--primary);
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .timeline__item h3 {
+        margin: 0.25rem 0 0.5rem;
+      }
+
+      .timeline__item p {
+        color: var(--muted);
+        margin-bottom: 0;
+        max-width: 56rem;
+      }
+
+      .callout {
+        border-left: 3px solid var(--primary);
+        margin-top: 2rem;
+        padding: 0.4rem 0 0.4rem 1.25rem;
+      }
+
+      .callout strong {
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+
+      .callout p {
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .document-footer {
+        align-items: flex-end;
+        display: flex;
+        justify-content: space-between;
+        min-height: 20rem;
+        padding: clamp(3rem, 6vw, 7rem);
+      }
+
+      .document-footer img {
+        height: auto;
+        width: 9rem;
+      }
+
+      .document-footer p {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        margin: 0;
+        text-align: right;
+      }
+
+      @media (max-width: 1100px) {
+        :root {
+          --sidebar-width: 14rem;
+        }
+
+        .document-cover,
+        .document-section {
+          grid-template-columns: 1fr;
+        }
+
+        .document-cover__aside {
+          border-left: 0;
+          border-top: 1px solid var(--border);
+          gap: 3rem;
+        }
+
+        .section-heading {
+          margin-bottom: 2rem;
+          position: static;
+        }
+
+        .quality-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .quality-card {
+          min-height: 0;
+        }
+
+        .quality-card::before {
+          margin-bottom: 2rem;
+        }
+      }
+
+      @media (max-width: 760px) {
+        :root {
+          --header-height: 4rem;
+        }
+
+        .document-header {
+          padding: 0 1rem;
+        }
+
+        .document-header__type,
+        .document-status {
+          display: none;
+        }
+
+        .document-shell {
+          display: block;
+        }
+
+        .document-nav {
+          display: none;
+        }
+
+        .document-cover__main,
+        .document-cover__aside,
+        .document-section,
+        .document-footer {
+          padding: 2rem 1.25rem;
+        }
+
+        h1 {
+          font-size: clamp(2.7rem, 15vw, 4.5rem);
+        }
+
+        .content-grid,
+        .cost-summary {
+          grid-template-columns: 1fr;
+        }
+
+        .decision-banner {
+          grid-template-columns: 1fr;
+        }
+
+        .document-footer {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 4rem;
+        }
+
+        .document-footer p {
+          text-align: left;
+        }
+      }
+
+      @media print {
+        :root {
+          color-scheme: light;
+          --background: #ffffff;
+          --foreground: #17212b;
+          --surface: #f4f7f8;
+          --surface-raised: #e9eff2;
+          --muted: #566b7c;
+          --primary: #0c6f73;
+          --primary-foreground: #ffffff;
+          --border: #ced9df;
+          --border-strong: #9eb1bc;
+        }
+
+        @page {
+          margin: 18mm;
+          size: A4;
+        }
+
+        html {
+          font-size: 9pt;
+        }
+
+        body {
+          background: #ffffff;
+        }
+
+        .document-header,
+        .document-nav,
+        .reading-progress,
+        .skip-link {
+          display: none;
+        }
+
+        .document-shell {
+          display: block;
+          padding-top: 0;
+        }
+
+        .document-cover {
+          min-height: 250mm;
+          page-break-after: always;
+        }
+
+        .document-section {
+          display: block;
+          padding: 16mm 0;
+        }
+
+        .section-heading {
+          margin-bottom: 8mm;
+          position: static;
+        }
+
+        .content-block,
+        .quality-card,
+        .architecture__node,
+        .decision-banner,
+        table,
+        tr {
+          break-inside: avoid;
+        }
+
+        a {
+          text-decoration: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+    <header class="document-header">
+      <div class="document-header__brand">
+        <img src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+        <span class="document-header__type">Technical proposal</span>
+      </div>
+      <div class="document-header__actions">
+        <span class="document-status">Draft · v0.1</span>
+        <button class="icon-button" id="theme-toggle" type="button" aria-label="Alternar tema">
+          <span aria-hidden="true">◐</span>
+        </button>
+        <button class="icon-button" id="print-document" type="button">Exportar PDF</button>
+      </div>
+    </header>
+    <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+
+    <div class="document-shell">
+      <nav class="document-nav" aria-label="Sumário da proposta">
+        <p class="document-nav__label">Neste documento</p>
+        <ol>
+          <li><a href="#resumo">01 · Resumo executivo</a></li>
+          <li><a href="#contexto">02 · Contexto e decisão</a></li>
+          <li><a href="#arquitetura">03 · Arquitetura proposta</a></li>
+          <li><a href="#qualidades">04 · Atributos de qualidade</a></li>
+          <li><a href="#trade-offs">05 · Trade-offs</a></li>
+          <li><a href="#riscos">06 · Riscos e mitigações</a></li>
+          <li><a href="#custos">07 · Custos e capacidade</a></li>
+          <li><a href="#execucao">08 · Plano de execução</a></li>
+          <li><a href="#decisao">09 · Decisão solicitada</a></li>
+          <li><a href="#apendice">10 · Apêndice</a></li>
+        </ol>
+        <div class="document-nav__meta">
+          Proprietário: [time ou pessoa]<br />
+          Revisão: [AAAA-MM-DD]<br />
+          Status: em discussão
+        </div>
+      </nav>
+
+      <main class="technical-document" id="conteudo">
+        <section class="document-cover" aria-labelledby="document-title">
+          <div class="document-cover__main">
+            <p class="eyebrow">Proposta de arquitetura · ADR ampliado</p>
+            <h1 id="document-title">[Título orientado à decisão]</h1>
+            <p class="document-cover__summary">
+              [Explique em duas ou três frases o problema, a direção proposta e o resultado esperado. Este texto deve permitir que uma liderança compreenda a
+              proposta sem ler o documento inteiro.]
+            </p>
+          </div>
+          <aside class="document-cover__aside" aria-label="Metadados da proposta">
+            <img src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+            <dl class="document-meta">
+              <div>
+                <dt>Status</dt>
+                <dd>Em discussão</dd>
+              </div>
+              <div>
+                <dt>Responsável</dt>
+                <dd>[Nome / time]</dd>
+              </div>
+              <div>
+                <dt>Decisores</dt>
+                <dd>[Fórum / responsáveis]</dd>
+              </div>
+              <div>
+                <dt>Última atualização</dt>
+                <dd>[DD MMM AAAA]</dd>
+              </div>
+              <div>
+                <dt>Classificação</dt>
+                <dd>[Interno / confidencial]</dd>
+              </div>
+            </dl>
+          </aside>
+        </section>
+
+        <section class="document-section" id="resumo" aria-labelledby="resumo-title">
+          <div class="section-heading">
+            <span class="section-number">01</span>
+            <h2 id="resumo-title">Resumo executivo</h2>
+            <p>O suficiente para decidir se vale aprofundar a análise.</p>
+          </div>
+          <div class="section-content">
+            <p class="lead">Recomendamos [direção] para alcançar [resultado] sem comprometer [restrição relevante].</p>
+            <div class="content-grid">
+              <article class="content-block content-block--emphasis">
+                <span class="content-block__label">Problema</span>
+                <h3>O estado atual limita [capacidade]</h3>
+                <p>[Descreva o problema observável, quem é afetado e o impacto. Evite tratar uma solução desejada como se fosse o problema.]</p>
+              </article>
+              <article class="content-block content-block--emphasis">
+                <span class="content-block__label">Proposta</span>
+                <h3>Adotar [abordagem] de forma incremental</h3>
+                <p>[Resuma a arquitetura, o recorte inicial e como a mudança reduz o problema.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Impacto esperado</span>
+                <h3>[Resultado mensurável]</h3>
+                <p>[Inclua métricas, sinais de sucesso e horizonte de observação.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Investimento</span>
+                <h3>[Faixa de custo e prazo]</h3>
+                <p>[Informe pessoas, serviços, licenças e principais dependências.]</p>
+              </article>
+            </div>
+            <div class="decision-banner">
+              <span class="decision-banner__label">Decisão solicitada</span>
+              <strong> Aprovar [escopo] por [período] para validar [hipótese] antes da expansão. </strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="document-section" id="contexto" aria-labelledby="contexto-title">
+          <div class="section-heading">
+            <span class="section-number">02</span>
+            <h2 id="contexto-title">Contexto e decisão</h2>
+            <p>Por que esta decisão precisa ser tomada agora.</p>
+          </div>
+          <div class="section-content">
+            <p class="lead">[Apresente fatos, restrições e eventos que tornam a situação atual insuficiente.]</p>
+            <div class="content-grid">
+              <article class="content-block">
+                <span class="content-block__label">Estado atual</span>
+                <h3>[Como o sistema funciona hoje]</h3>
+                <p>[Fluxos, dependências, volumes, responsabilidades e limitações conhecidas.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Gatilho</span>
+                <h3>[O que mudou]</h3>
+                <p>[Crescimento, regulação, produto, confiabilidade, custo ou obsolescência.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Dentro do escopo</span>
+                <h3>[Capacidades contempladas]</h3>
+                <p>[Liste fronteiras explícitas e resultados que esta proposta assume.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Fora do escopo</span>
+                <h3>[O que não será resolvido]</h3>
+                <p>[Proteja a decisão contra expectativas que pertencem a outra iniciativa.]</p>
+              </article>
+            </div>
+            <div class="callout">
+              <strong>Restrição dominante</strong>
+              <p>[Declare a restrição que mais influencia a solução: prazo, legado, equipe, compliance, disponibilidade ou orçamento.]</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="document-section" id="arquitetura" aria-labelledby="arquitetura-title">
+          <div class="section-heading">
+            <span class="section-number">03</span>
+            <h2 id="arquitetura-title">Arquitetura proposta</h2>
+            <p>Responsabilidades, limites e fluxo principal.</p>
+          </div>
+          <div class="section-content">
+            <p class="lead">[Explique o princípio estrutural da solução antes de apresentar seus componentes.]</p>
+            <div class="architecture" role="img" aria-label="Fluxo de referência da arquitetura proposta">
+              <div class="architecture__node">
+                <span>Entrada</span>
+                <strong>Produtos e canais</strong>
+                <p>[Clientes, aplicações e integrações que iniciam o fluxo.]</p>
+              </div>
+              <div class="architecture__node">
+                <span>Contrato</span>
+                <strong>Gateway / API</strong>
+                <p>[Autenticação, validação, quotas e compatibilidade.]</p>
+              </div>
+              <div class="architecture__node">
+                <span>Domínio</span>
+                <strong>Serviços de negócio</strong>
+                <p>[Regras, orquestração, idempotência e eventos.]</p>
+              </div>
+              <div class="architecture__node">
+                <span>Registro</span>
+                <strong>Dados e integrações</strong>
+                <p>[Persistência, sistemas externos e trilha de auditoria.]</p>
+              </div>
+            </div>
+            <div class="architecture__foundation">Observabilidade · Identidade · Políticas · Entrega · Governança</div>
+            <div class="content-grid">
+              <article class="content-block">
+                <span class="content-block__label">Princípio 01</span>
+                <h3>Contratos antes de implementações</h3>
+                <p>[Explique como interfaces estáveis reduzem acoplamento e risco de migração.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Princípio 02</span>
+                <h3>Mudança reversível por padrão</h3>
+                <p>[Descreva flags, rollout gradual, compatibilidade e estratégia de retorno.]</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="document-section" id="qualidades" aria-labelledby="qualidades-title">
+          <div class="section-heading">
+            <span class="section-number">04</span>
+            <h2 id="qualidades-title">Atributos de qualidade</h2>
+            <p>As três características que orientam as escolhas.</p>
+          </div>
+          <div class="section-content">
+            <p class="lead">Escolha exatamente três atributos prioritários. Cada um deve ter cenário, resposta esperada e forma de medição.</p>
+            <div class="quality-grid">
+              <article class="quality-card">
+                <h3>Segurança</h3>
+                <p>[Defina a propriedade: confidencialidade, integridade, identidade, auditoria ou isolamento.]</p>
+                <dl>
+                  <dt>Cenário</dt>
+                  <dd>[Quando / sob qual ameaça]</dd>
+                  <dt>Resposta</dt>
+                  <dd>[Como o sistema deve reagir]</dd>
+                  <dt>Métrica</dt>
+                  <dd>[SLO, cobertura ou evidência]</dd>
+                </dl>
+              </article>
+              <article class="quality-card">
+                <h3>Escalabilidade</h3>
+                <p>[Defina volume, taxa de crescimento, distribuição de carga e limites conhecidos.]</p>
+                <dl>
+                  <dt>Cenário</dt>
+                  <dd>[Pico ou crescimento esperado]</dd>
+                  <dt>Resposta</dt>
+                  <dd>[Elasticidade e degradação]</dd>
+                  <dt>Métrica</dt>
+                  <dd>[Throughput, latência ou custo]</dd>
+                </dl>
+              </article>
+              <article class="quality-card">
+                <h3>Operabilidade</h3>
+                <p>[Defina como detectar, diagnosticar e recuperar falhas em produção.]</p>
+                <dl>
+                  <dt>Cenário</dt>
+                  <dd>[Incidente ou mudança]</dd>
+                  <dt>Resposta</dt>
+                  <dd>[Detecção, contenção e retorno]</dd>
+                  <dt>Métrica</dt>
+                  <dd>[MTTD, MTTR ou taxa de falha]</dd>
+                </dl>
+              </article>
+            </div>
+            <div class="callout">
+              <strong>Outras opções</strong>
+              <p>
+                Substitua os atributos por confiabilidade, disponibilidade, desempenho, manutenibilidade, portabilidade, privacidade ou testabilidade quando
+                forem mais relevantes para a decisão.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="document-section" id="trade-offs" aria-labelledby="trade-offs-title">
+          <div class="section-heading">
+            <span class="section-number">05</span>
+            <h2 id="trade-offs-title">Trade-offs</h2>
+            <p>O que ganhamos, o que cedemos e por quê.</p>
+          </div>
+          <div class="section-content">
+            <p class="lead">Uma decisão técnica forte torna explícito o custo da alternativa escolhida.</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Decisão</th>
+                    <th>Benefício</th>
+                    <th>Custo / perda</th>
+                    <th>Alternativa rejeitada</th>
+                    <th>Condição de revisão</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>[Decisão 01]</strong>[Escolha concreta]</td>
+                    <td>[Capacidade que melhora]</td>
+                    <td>[Complexidade, custo ou limitação]</td>
+                    <td>[Opção e motivo da rejeição]</td>
+                    <td>[Sinal que reabre a decisão]</td>
+                  </tr>
+                  <tr>
+                    <td><strong>[Decisão 02]</strong>[Escolha concreta]</td>
+                    <td>[Capacidade que melhora]</td>
+                    <td>[Complexidade, custo ou limitação]</td>
+                    <td>[Opção e motivo da rejeição]</td>
+                    <td>[Sinal que reabre a decisão]</td>
+                  </tr>
+                  <tr>
+                    <td><strong>[Decisão 03]</strong>[Escolha concreta]</td>
+                    <td>[Capacidade que melhora]</td>
+                    <td>[Complexidade, custo ou limitação]</td>
+                    <td>[Opção e motivo da rejeição]</td>
+                    <td>[Sinal que reabre a decisão]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="document-section" id="riscos" aria-labelledby="riscos-title">
+          <div class="section-heading">
+            <span class="section-number">06</span>
+            <h2 id="riscos-title">Riscos e mitigações</h2>
+            <p>Probabilidade, impacto, resposta e responsável.</p>
+          </div>
+          <div class="section-content">
+            <p class="lead">Priorize riscos que podem mudar a decisão, o escopo ou a ordem de execução.</p>
+            <div class="risk-matrix" aria-label="Matriz de probabilidade e impacto">
+              <div class="risk-matrix__axis">Probabilidade<br />× impacto</div>
+              <div class="risk-matrix__axis">Baixo</div>
+              <div class="risk-matrix__axis">Médio</div>
+              <div class="risk-matrix__axis">Alto</div>
+              <div class="risk-matrix__axis">Alta</div>
+              <div><div class="risk-item risk-item--success">R4 · [Risco menor]</div></div>
+              <div><div class="risk-item">R2 · [Risco relevante]</div></div>
+              <div><div class="risk-item risk-item--danger">R1 · [Risco crítico]</div></div>
+              <div class="risk-matrix__axis">Média</div>
+              <div></div>
+              <div><div class="risk-item">R3 · [Risco relevante]</div></div>
+              <div></div>
+              <div class="risk-matrix__axis">Baixa</div>
+              <div></div>
+              <div></div>
+              <div><div class="risk-item">R5 · [Risco monitorado]</div></div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Risco</th>
+                    <th>Exposição</th>
+                    <th>Mitigação / contingência</th>
+                    <th>Responsável</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>R1</td>
+                    <td>[Evento incerto e consequência]</td>
+                    <td><span class="tag tag--danger">Alta</span></td>
+                    <td>[Como reduzir probabilidade e como reagir se ocorrer]</td>
+                    <td>[Nome / time]</td>
+                  </tr>
+                  <tr>
+                    <td>R2</td>
+                    <td>[Evento incerto e consequência]</td>
+                    <td><span class="tag tag--warning">Média</span></td>
+                    <td>[Mitigação e indicador antecipado]</td>
+                    <td>[Nome / time]</td>
+                  </tr>
+                  <tr>
+                    <td>R3</td>
+                    <td>[Evento incerto e consequência]</td>
+                    <td><span class="tag tag--success">Baixa</span></td>
+                    <td>[Ação de monitoramento]</td>
+                    <td>[Nome / time]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="document-section" id="custos" aria-labelledby="custos-title">
+          <div class="section-heading">
+            <span class="section-number">07</span>
+            <h2 id="custos-title">Custos e capacidade</h2>
+            <p>Investimento inicial, recorrência e custo de oportunidade.</p>
+          </div>
+          <div class="section-content">
+            <p class="lead">Apresente faixas e premissas. Precisão falsa é menos útil que incerteza explícita.</p>
+            <div class="cost-summary">
+              <div class="cost-metric">
+                <span>Construção</span>
+                <strong>[X–Y]</strong>
+                <small>pessoa-mês · confiança [baixa/média/alta]</small>
+              </div>
+              <div class="cost-metric">
+                <span>Operação</span>
+                <strong>[R$ X–Y]</strong>
+                <small>por mês · infraestrutura e licenças</small>
+              </div>
+              <div class="cost-metric">
+                <span>Horizonte</span>
+                <strong>[N meses]</strong>
+                <small>para validar o resultado esperado</small>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Categoria</th>
+                    <th>Premissa</th>
+                    <th>Inicial</th>
+                    <th>Recorrente</th>
+                    <th>Confiança</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Pessoas</td>
+                    <td>[Papéis, dedicação e duração]</td>
+                    <td>[Faixa]</td>
+                    <td>[Faixa]</td>
+                    <td><span class="tag tag--warning">Média</span></td>
+                  </tr>
+                  <tr>
+                    <td>Infraestrutura</td>
+                    <td>[Volume e modelo de consumo]</td>
+                    <td>[Faixa]</td>
+                    <td>[Faixa]</td>
+                    <td><span class="tag tag--success">Alta</span></td>
+                  </tr>
+                  <tr>
+                    <td>Licenças / serviços</td>
+                    <td>[Fornecedor e unidade de cobrança]</td>
+                    <td>[Faixa]</td>
+                    <td>[Faixa]</td>
+                    <td><span class="tag tag--warning">Média</span></td>
+                  </tr>
+                  <tr>
+                    <td>Custo de oportunidade</td>
+                    <td>[Iniciativas adiadas ou capacidade deslocada]</td>
+                    <td colspan="2">[Impacto qualitativo ou faixa]</td>
+                    <td><span class="tag tag--danger">Baixa</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="document-section" id="execucao" aria-labelledby="execucao-title">
+          <div class="section-heading">
+            <span class="section-number">08</span>
+            <h2 id="execucao-title">Plano de execução</h2>
+            <p>Entregas reversíveis com critérios de avanço.</p>
+          </div>
+          <div class="section-content">
+            <p class="lead">A ordem reduz incerteza cedo e preserva a possibilidade de interromper o investimento.</p>
+            <div class="timeline">
+              <article class="timeline__item">
+                <span>Fase 0 · [1–2 semanas]</span>
+                <h3>Descoberta e linha de base</h3>
+                <p>[Validar premissas, medir o estado atual e fechar contratos.] Critério de avanço: [evidência mínima].</p>
+              </article>
+              <article class="timeline__item">
+                <span>Fase 1 · [2–4 semanas]</span>
+                <h3>Primeiro fluxo em produção</h3>
+                <p>[Entregar um recorte representativo com observabilidade e rollback.] Critério de avanço: [SLO ou resultado].</p>
+              </article>
+              <article class="timeline__item">
+                <span>Fase 2 · [4–8 semanas]</span>
+                <h3>Expansão controlada</h3>
+                <p>[Migrar novos fluxos e reduzir dependências antigas.] Critério de avanço: [adoção, custo ou confiabilidade].</p>
+              </article>
+              <article class="timeline__item">
+                <span>Fase 3 · contínua</span>
+                <h3>Otimização e retirada do legado</h3>
+                <p>[Ajustar capacidade, consolidar operação e remover o caminho anterior somente após evidência.]</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="document-section" id="decisao" aria-labelledby="decisao-title">
+          <div class="section-heading">
+            <span class="section-number">09</span>
+            <h2 id="decisao-title">Decisão solicitada</h2>
+            <p>O pedido deve ser claro, limitado e verificável.</p>
+          </div>
+          <div class="section-content">
+            <p class="lead">Aprovar [escopo], [capacidade] e [limite de investimento] para executar a fase [número] até [data].</p>
+            <div class="content-grid">
+              <article class="content-block content-block--emphasis">
+                <span class="content-block__label">Aprovar</span>
+                <h3>[Decisão principal]</h3>
+                <p>[Valor, equipe, prazo, fornecedor ou mudança de responsabilidade.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Condicionar</span>
+                <h3>[Guardrails]</h3>
+                <p>[Critérios que limitam ou interrompem a execução.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Delegar</span>
+                <h3>[Autoridade operacional]</h3>
+                <p>[Quem decide detalhes sem retornar ao fórum.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Revisar</span>
+                <h3>[Data e evidência]</h3>
+                <p>[Quando a decisão volta à pauta e quais dados serão apresentados.]</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="document-section" id="apendice" aria-labelledby="apendice-title">
+          <div class="section-heading">
+            <span class="section-number">10</span>
+            <h2 id="apendice-title">Apêndice</h2>
+            <p>Evidências e detalhes que sustentam a análise.</p>
+          </div>
+          <div class="section-content">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Referência</th>
+                    <th>Descrição</th>
+                    <th>Fonte / proprietário</th>
+                    <th>Atualização</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>REF-01</td>
+                    <td>[Métrica, incidente, pesquisa ou documento relacionado]</td>
+                    <td>[URL ou sistema de registro]</td>
+                    <td>[Data]</td>
+                  </tr>
+                  <tr>
+                    <td>ADR-000</td>
+                    <td>[Decisão anterior que restringe esta proposta]</td>
+                    <td>[Repositório / proprietário]</td>
+                    <td>[Data]</td>
+                  </tr>
+                  <tr>
+                    <td>DATA-01</td>
+                    <td>[Conjunto de dados utilizado na estimativa]</td>
+                    <td>[Sistema / consulta]</td>
+                    <td>[Data]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="callout">
+              <strong>Regra de evidência</strong>
+              <p>Não invente métricas. Identifique claramente estimativas, fatos observados, hipóteses e decisões já tomadas.</p>
+            </div>
+          </div>
+        </section>
+
+        <footer class="document-footer">
+          <img src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+          <p>
+            Proposta técnica · [identificador]<br />
+            [classificação] · [AAAA]
+          </p>
+        </footer>
+      </main>
+    </div>
+
+    <script>
+      (() => {
+        const root = document.documentElement;
+        const progress = document.querySelector("#reading-progress");
+        const sections = [...document.querySelectorAll(".document-section[id]")];
+        const links = [...document.querySelectorAll(".document-nav a")];
+        const savedTheme = localStorage.getItem("arcsyn-document-theme");
+
+        if (savedTheme === "light" || savedTheme === "dark") {
+          root.dataset.theme = savedTheme;
+        }
+
+        document.querySelector("#theme-toggle").addEventListener("click", () => {
+          root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+          localStorage.setItem("arcsyn-document-theme", root.dataset.theme);
+        });
+
+        document.querySelector("#print-document").addEventListener("click", () => window.print());
+
+        const updateProgress = () => {
+          const available = document.documentElement.scrollHeight - window.innerHeight;
+          const ratio = available > 0 ? window.scrollY / available : 0;
+          progress.style.transform = `scaleX(${Math.min(1, Math.max(0, ratio))})`;
+        };
+
+        const updateNavigation = () => {
+          let current = sections[0]?.id;
+          for (const section of sections) {
+            if (section.getBoundingClientRect().top <= window.innerHeight * 0.35) {
+              current = section.id;
+            }
+          }
+
+          for (const link of links) {
+            const active = link.getAttribute("href") === `#${current}`;
+            if (active) link.setAttribute("aria-current", "location");
+            else link.removeAttribute("aria-current");
+          }
+        };
+
+        const onScroll = () => {
+          updateProgress();
+          updateNavigation();
+        };
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", onScroll);
+        onScroll();
+      })();
+    </script>
+  </body>
+</html>

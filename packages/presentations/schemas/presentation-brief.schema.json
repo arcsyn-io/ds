@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://arcsyn.dev/schemas/presentation-brief.schema.json",
+  "title": "ArcSyn Presentation Brief",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title", "audience", "outcome", "proposalType"],
+  "properties": {
+    "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "audience": { "type": "string", "minLength": 1 },
+    "outcome": { "type": "string", "minLength": 1 },
+    "proposalType": { "enum": ["architecture", "product", "idea"] },
+    "context": { "type": "string" },
+    "recommendation": { "type": "string" },
+    "constraints": { "type": "array", "items": { "type": "string" } },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim"],
+        "properties": {
+          "claim": { "type": "string", "minLength": 1 },
+          "source": { "type": "string" }
+        }
+      }
+    },
+    "requestedDecision": { "type": "string" },
+    "theme": { "enum": ["dark", "light"], "default": "dark" },
+    "language": { "type": "string", "default": "pt-BR" }
+  }
+}

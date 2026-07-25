@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { createPresentationTheme, narrativePatterns, presentationLayouts } from "@arcsyn/presentations";
 import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, Tooltip, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
 import { ArrowRightIcon, CheckIcon, CircleIcon, EllipsisIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn/react/icons";
 import { ActivityFeed, BarChart, Chat, DataState, LineChart, NotificationCenter, PageHeader, SearchInput, Sparkline, StatCard, StatusIndicator, UserMenu } from "@arcsyn/react";
@@ -2284,6 +2285,66 @@ function HomePage() {
   );
 }
 
+function PresentationsPage() {
+  const presentationTheme = createPresentationTheme("dark");
+
+  return (
+    <article className="docs-page">
+      <header className="docs-page-header">
+        <p className="docs-eyebrow">Comunicação</p>
+        <h1>Apresentações e propostas</h1>
+        <p className="docs-home-summary">Uma linguagem editorial derivada dos tokens ArcSyn para propostas de arquitetura, produto e ideias — pronta para código, PowerPoint e geração por IA.</p>
+      </header>
+      <section className="docs-section" aria-labelledby="presentations-principles">
+        <div className="docs-section-heading"><p className="docs-eyebrow">Princípios</p><h2 id="presentations-principles">A mesma identidade, adaptada ao meio</h2></div>
+        <div className="docs-principles">
+          <Card><strong>Tokens como origem</strong><p>Cor, contraste e ritmo partem das APIs públicas de @arcsyn/tokens.</p></Card>
+          <Card><strong>Densidade editorial</strong><p>Fontes maiores, menos elementos e uma ideia principal por slide.</p></Card>
+          <Card><strong>Decisão explícita</strong><p>A narrativa termina em uma conclusão, recomendação ou próximo passo verificável.</p></Card>
+        </div>
+      </section>
+      <section className="docs-section" aria-labelledby="presentations-preview">
+        <div className="docs-section-heading"><p className="docs-eyebrow">Referência visual</p><h2 id="presentations-preview">Tema dark é o ponto de partida</h2></div>
+        <div className="docs-presentation-preview" style={{ background: presentationTheme.color.background, color: presentationTheme.color.foreground }}>
+          <div className="docs-presentation-rule" style={{ background: presentationTheme.color.primary }} />
+          <img className="docs-presentation-logo" src="/arcsyn-logo.svg" alt="ArcSyn" />
+          <span style={{ color: presentationTheme.color.primary }}>PROPOSTA DE ARQUITETURA · 01</span>
+          <strong>Uma plataforma previsível para evoluir integrações</strong>
+          <p style={{ color: presentationTheme.color.mutedForeground }}>Limites claros, migração incremental e decisões sustentadas por evidência.</p>
+          <small style={{ color: presentationTheme.color.mutedForeground }}>ArcSyn · Comitê de arquitetura</small>
+        </div>
+      </section>
+      <section className="docs-section" aria-labelledby="presentations-narratives">
+        <div className="docs-section-heading"><p className="docs-eyebrow">Narrativa</p><h2 id="presentations-narratives">Padrões orientam, não engessam</h2></div>
+        <div className="docs-presentation-patterns">
+          {Object.entries(narrativePatterns).map(([name, pattern]) => (
+            <div key={name}>
+              <strong>{name === "architecture" ? "Arquitetura" : name === "product" ? "Produto" : "Ideia"}</strong>
+              <code>{pattern.join(" → ")}</code>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="docs-section" aria-labelledby="presentations-layouts">
+        <div className="docs-section-heading"><p className="docs-eyebrow">Biblioteca</p><h2 id="presentations-layouts">{presentationLayouts.length} funções de slide</h2></div>
+        <div className="docs-catalog">
+          {presentationLayouts.map((layout) => <div className="docs-catalog-card" key={layout.id}><span className="docs-status">{layout.id}</span><h3>{layout.name}</h3><p>{layout.purpose}</p></div>)}
+        </div>
+      </section>
+      <section className="docs-section" aria-labelledby="presentations-ai">
+        <div className="docs-section-heading"><p className="docs-eyebrow">Geração por IA</p><h2 id="presentations-ai">Passe um brief, não apenas um tema</h2></div>
+        <p>Combine o schema, o prompt canônico e os templates editáveis publicados pelo pacote. O brief informa audiência, resultado esperado, tipo de proposta, evidências, restrições e decisão solicitada. Use PowerPoint para edição tradicional, HTML para apresentação no navegador ou a proposta técnica contínua para análises detalhadas e exportação em PDF.</p>
+        <pre className="docs-code"><code>{`import "@arcsyn/presentations/prompt";
+import schema from "@arcsyn/presentations/brief.schema.json";
+
+// PowerPoint: @arcsyn/presentations/template.pptx
+// Slides no navegador: @arcsyn/presentations/template.html
+// Documento técnico/PDF: @arcsyn/presentations/technical-proposal.html`}</code></pre>
+      </section>
+    </article>
+  );
+}
+
 export function DocsApp() {
   const [theme, setTheme] = useState<ThemeSwitcherTheme>(currentDocsTheme);
   const [font, setFont] = useState<DocsFont>(currentDocsFont);
@@ -2292,8 +2353,9 @@ export function DocsApp() {
   const page = componentPages.find((item) => route === `/components/${item.id}`);
   const isTheming = route === "/theming" || route.startsWith("/theming/");
   const isTypography = route === "/typography";
+  const isPresentations = route === "/presentations";
   const themePage = themeComparisons.find((item) => route === `/theming/${item.id}`);
-  const currentPageTitle = themePage?.name ?? (isTheming ? "Theming" : isTypography ? "Tipografia" : page?.title ?? "Visão geral");
+  const currentPageTitle = themePage?.name ?? (isTheming ? "Theming" : isTypography ? "Tipografia" : isPresentations ? "Apresentações" : page?.title ?? "Visão geral");
 
   useEffect(() => {
     document.documentElement.dataset.arcsynTheme = theme;
@@ -2327,8 +2389,8 @@ export function DocsApp() {
   }, [monoFont]);
 
   useEffect(() => {
-    document.title = themePage ? `${themePage.name} · ArcSyn DS` : isTheming ? "Theming · ArcSyn DS" : isTypography ? "Tipografia · ArcSyn DS" : page ? `${page.title} · ArcSyn DS` : "ArcSyn Design System";
-  }, [isTheming, isTypography, page, themePage]);
+    document.title = themePage ? `${themePage.name} · ArcSyn DS` : isTheming ? "Theming · ArcSyn DS" : isTypography ? "Tipografia · ArcSyn DS" : isPresentations ? "Apresentações · ArcSyn DS" : page ? `${page.title} · ArcSyn DS` : "ArcSyn Design System";
+  }, [isPresentations, isTheming, isTypography, page, themePage]);
 
   return (
     <DocsThemeContext.Provider value={{ theme, setTheme, font, setFont, monoFont, setMonoFont }}>
@@ -2348,6 +2410,7 @@ export function DocsApp() {
                     <DocsSidebarLink active={route === "/"} href="#/" icon={<CircleIcon aria-hidden size={15} />}>Visão geral</DocsSidebarLink>
                     <DocsSidebarLink active={isTheming} href="#/theming" icon={<CheckIcon aria-hidden size={15} />}>Theming</DocsSidebarLink>
                     <DocsSidebarLink active={isTypography} href="#/typography">Tipografia</DocsSidebarLink>
+                    <DocsSidebarLink active={isPresentations} href="#/presentations">Apresentações</DocsSidebarLink>
                   </SidebarMenu>
                 </SidebarGroupContent>
               </SidebarGroup>
@@ -2372,7 +2435,7 @@ export function DocsApp() {
               <span className="docs-topbar-title">{currentPageTitle}</span>
               <Kbd className="docs-sidebar-shortcut">Ctrl B</Kbd>
             </header>
-            <div className="docs-main">{themePage ? <ThemeDetailPage theme={themePage} /> : isTheming ? <ThemingPage /> : isTypography ? <TypographyPage /> : page ? <ComponentDocumentation page={page} /> : <HomePage />}</div>
+            <div className="docs-main">{themePage ? <ThemeDetailPage theme={themePage} /> : isTheming ? <ThemingPage /> : isTypography ? <TypographyPage /> : isPresentations ? <PresentationsPage /> : page ? <ComponentDocumentation page={page} /> : <HomePage />}</div>
           </SidebarInset>
         </SidebarProvider>
         <Toaster />
