@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
+  <title id="title">Placeholder de diagrama arquitetural</title>
+  <desc id="description">Fluxo genérico entre produtores, núcleo da alternativa, integração e destino.</desc>
+  <rect width="1600" height="900" fill="#161e28"/>
+  <g font-family="IBM Plex Sans, Segoe UI, sans-serif">
+    <text x="64" y="78" fill="#eff4f5" font-size="34" font-weight="600">[Nome da alternativa]</text>
+    <text x="64" y="116" fill="#91a7b8" font-size="19">Substitua este arquivo pelo desenho arquitetural da alternativa.</text>
+  </g>
+  <g stroke="#425a70" stroke-width="2" fill="#1d2936">
+    <rect x="90" y="310" width="280" height="180"/>
+    <rect x="520" y="310" width="280" height="180"/>
+    <rect x="950" y="310" width="280" height="180"/>
+    <rect x="1320" y="310" width="190" height="180"/>
+  </g>
+  <g font-family="IBM Plex Sans, Segoe UI, sans-serif" text-anchor="middle">
+    <text x="230" y="385" fill="#90dddf" font-size="16" font-weight="600">ORIGEM</text>
+    <text x="230" y="425" fill="#eff4f5" font-size="26" font-weight="600">Produtores</text>
+    <text x="660" y="385" fill="#90dddf" font-size="16" font-weight="600">PROCESSAMENTO</text>
+    <text x="660" y="425" fill="#eff4f5" font-size="26" font-weight="600">Núcleo da opção</text>
+    <text x="1090" y="385" fill="#90dddf" font-size="16" font-weight="600">INTEGRAÇÃO</text>
+    <text x="1090" y="425" fill="#eff4f5" font-size="26" font-weight="600">Adaptador / ACL</text>
+    <text x="1415" y="385" fill="#90dddf" font-size="16" font-weight="600">DESTINO</text>
+    <text x="1415" y="425" fill="#eff4f5" font-size="26" font-weight="600">Sistema alvo</text>
+  </g>
+  <g stroke="#90dddf" stroke-width="3" fill="none">
+    <path d="M370 400H500"/>
+    <path d="M800 400H930"/>
+    <path d="M1230 400H1300"/>
+  </g>
+  <g fill="#90dddf">
+    <path d="M500 400l-14-8v16z"/>
+    <path d="M930 400l-14-8v16z"/>
+    <path d="M1300 400l-14-8v16z"/>
+  </g>
+  <g font-family="IBM Plex Mono, Consolas, monospace" font-size="17" fill="#91a7b8" text-anchor="middle">
+    <text x="435" y="376">[contrato]</text>
+    <text x="865" y="376">[transporte]</text>
+    <text x="1265" y="376">[protocolo]</text>
+  </g>
+  <rect x="90" y="660" width="1420" height="110" fill="#263545" stroke="#425a70" stroke-width="2"/>
+  <text x="800" y="708" fill="#90dddf" font-family="IBM Plex Mono, Consolas, monospace" font-size="17" text-anchor="middle">
+    GUARDRAILS · GOVERNANÇA · OBSERVABILIDADE · RESPONSABILIDADES
+  </text>
+  <text x="800" y="744" fill="#eff4f5" font-family="IBM Plex Sans, Segoe UI, sans-serif" font-size="21" text-anchor="middle">
+    [Descreva os elementos compartilhados que tornam esta alternativa operável]
+  </text>
+</svg>

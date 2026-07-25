@@ -11,6 +11,7 @@
     "templates/arcsyn-presentation-template-branded.pptx",
     "templates/arcsyn-presentation-template.html",
     "templates/arcsyn-technical-proposal-template.html",
+    "templates/arcsyn-architecture-decision-template.html",
     "README.md"
   ],
   "exports": {
@@ -23,6 +24,7 @@
     "./logo.png": "./assets/arcsyn-logo.png",
     "./template.html": "./templates/arcsyn-presentation-template.html",
     "./technical-proposal.html": "./templates/arcsyn-technical-proposal-template.html",
+    "./architecture-decision.html": "./templates/arcsyn-architecture-decision-template.html",
     "./template.pptx": "./templates/arcsyn-presentation-template-branded.pptx",
     "./readme": "./README.md"
   },
