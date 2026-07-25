@@ -83,6 +83,9 @@ importers:
 
   apps/docs:
     dependencies:
+      '@arcsyn/presentations':
+        specifier: workspace:*
+        version: link:../../packages/presentations
       '@arcsyn/react':
         specifier: workspace:*
         version: link:../../packages/react
@@ -100,6 +103,12 @@ importers:
         version: 19.2.7(react@19.2.7)
 
   packages/icons: {}
+
+  packages/presentations:
+    dependencies:
+      '@arcsyn/tokens':
+        specifier: workspace:*
+        version: link:../tokens
 
   packages/react:
     dependencies:

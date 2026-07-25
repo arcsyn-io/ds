@@ -1,0 +1,36 @@
+{
+  "name": "@arcsyn/presentations",
+  "version": "0.1.0",
+  "description": "ArcSyn communication system for AI-generated presentations and proposals.",
+  "type": "module",
+  "files": [
+    "dist",
+    "assets",
+    "prompts",
+    "schemas",
+    "templates/arcsyn-presentation-template-branded.pptx",
+    "templates/arcsyn-presentation-template.html",
+    "templates/arcsyn-technical-proposal-template.html",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./prompt": "./prompts/generate-presentation.md",
+    "./brief.schema.json": "./schemas/presentation-brief.schema.json",
+    "./logo.png": "./assets/arcsyn-logo.png",
+    "./template.html": "./templates/arcsyn-presentation-template.html",
+    "./technical-proposal.html": "./templates/arcsyn-technical-proposal-template.html",
+    "./template.pptx": "./templates/arcsyn-presentation-template-branded.pptx",
+    "./readme": "./README.md"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && node scripts/validate-html-template.mjs",
+    "check": "tsc -p tsconfig.build.json --noEmit && node scripts/validate-html-template.mjs"
+  },
+  "dependencies": {
+    "@arcsyn/tokens": "workspace:*"
+  }
+}

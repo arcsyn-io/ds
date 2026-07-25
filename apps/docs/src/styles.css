@@ -164,6 +164,17 @@
 .docs-catalog-card:hover { background: var(--arcsyn-color-surface); border-color: var(--arcsyn-color-border-strong); }
 .docs-catalog-card h3 { font-size: 1rem; margin: 0; }
 .docs-catalog-card p { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-sm); line-height: 1.5; margin: 0; }
+.docs-presentation-preview { aspect-ratio: 16 / 9; border: 1px solid var(--arcsyn-color-border); box-shadow: var(--arcsyn-shadow-sm); display: grid; grid-template-rows: auto auto 1fr auto auto; max-width: 52rem; padding: clamp(2rem, 6vw, 4.5rem); position: relative; }
+.docs-presentation-preview > span { font-family: var(--arcsyn-font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; }
+.docs-presentation-preview > strong { align-self: end; font-size: clamp(1.8rem, 4vw, 3.7rem); line-height: 1.04; max-width: 42rem; }
+.docs-presentation-preview > p { font-size: clamp(0.9rem, 1.5vw, 1.2rem); line-height: 1.5; max-width: 36rem; }
+.docs-presentation-preview > small { font-family: var(--arcsyn-font-mono); }
+.docs-presentation-logo { height: auto; max-width: 8rem; width: 24%; }
+.docs-presentation-rule { height: 0.2rem; position: absolute; right: 0; top: 0; width: 24%; }
+.docs-presentation-patterns { border: 1px solid var(--arcsyn-color-border); display: grid; }
+.docs-presentation-patterns > div { align-items: baseline; display: grid; gap: var(--arcsyn-spacing-4); grid-template-columns: 8rem 1fr; padding: var(--arcsyn-spacing-4); }
+.docs-presentation-patterns > div + div { border-top: 1px solid var(--arcsyn-color-border); }
+.docs-presentation-patterns code { color: var(--arcsyn-color-muted-foreground); font-family: var(--arcsyn-font-mono); font-size: var(--arcsyn-font-size-xs); line-height: 1.6; }
 .docs-link { color: var(--arcsyn-color-primary); font-size: var(--arcsyn-font-size-sm); font-weight: 600; }
 .docs-theming-page { max-width: none; }
 .docs-theme-comparison { align-items: start; display: grid; gap: var(--arcsyn-spacing-4); grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -267,6 +278,7 @@
   .docs-page { gap: var(--arcsyn-spacing-8); }
   .docs-page-title-row { display: grid; }
   .docs-overview-grid, .docs-principles, .docs-catalog { grid-template-columns: 1fr; }
+  .docs-presentation-patterns > div { grid-template-columns: 1fr; }
   .docs-chart-grid, .docs-data-state-grid { grid-template-columns: 1fr; }
   .docs-user-menu-stage { align-items: start; flex-direction: column; }
   .docs-type-families, .docs-type-weights, .docs-type-guidance { grid-template-columns: 1fr; }
