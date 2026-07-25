@@ -31,8 +31,9 @@ Para geração por IA, forneça ao agente:
 3. o template editável em `@arcsyn/presentations/template.pptx`;
 4. o template navegável em `@arcsyn/presentations/template.html`, quando a saída for web ou PDF;
 5. o documento técnico contínuo em `@arcsyn/presentations/technical-proposal.html`, para análises detalhadas;
-6. a marca oficial em `@arcsyn/presentations/logo.png`;
-7. as fontes e evidências que podem ser utilizadas.
+6. o guia comparativo em `@arcsyn/presentations/architecture-decision.html`, quando a decisão ainda depende da comparação entre alternativas;
+7. a marca oficial em `@arcsyn/presentations/logo.png`;
+8. as fontes e evidências que podem ser utilizadas.
 
 O template é uma biblioteca visual, não uma sequência obrigatória. A IA deve selecionar apenas os layouts que sustentam o raciocínio da proposta.
 
@@ -52,3 +53,11 @@ Espaço         avançar
 O arquivo `technical-proposal.html` é uma documentação contínua e responsiva, pensada para ocupar a largura disponível no navegador. Ele inclui sumário lateral, progresso de leitura, temas dark e light e estilos A4 para exportação em PDF.
 
 Sua estrutura cobre resumo executivo, contexto, arquitetura, três atributos de qualidade prioritários, trade-offs, matriz de riscos, custos, execução, decisão solicitada e apêndice de evidências.
+
+## Template de decisão arquitetural
+
+O arquivo `architecture-decision.html` é um guia contínuo e neutro para comparar alternativas antes de registrar uma decisão. Ele não pressupõe uma opção vencedora e separa a análise factual da avaliação qualitativa do autor.
+
+Sua estrutura cobre visão geral, premissas e critérios, três alternativas descritas pelo mesmo contrato editorial, diagramas ampliáveis, trade-offs comparados, riscos por opção, governança, operação, custos, guia de escolha e evidências necessárias.
+
+Os diagramas aceitam imagens PNG ou SVG e oferecem zoom, ajuste automático e navegação por arraste. A exportação para PDF aguarda o carregamento das imagens, preserva as cores do tema e usa cabeçalho de impressão próprio, sem rodapé.
