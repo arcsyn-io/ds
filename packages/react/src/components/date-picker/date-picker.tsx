@@ -10,7 +10,13 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from "react";
-import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon, XIcon } from "../../icons/index.js";
+import {
+  CalendarIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  SelectorIcon,
+  XIcon,
+} from "../../icons/index.js";
 import { cx } from "../../utilities/cx.js";
 
 export type DatePickerSize = "sm" | "md" | "lg";
@@ -144,6 +150,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
   const [open, setOpen] = useState(false);
   const [viewDate, setViewDate] = useState(() => startOfMonth(selectedDate ?? today));
   const [activeDate, setActiveDate] = useState(() => selectedDate ?? today);
+  const fieldRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
   const activeDayRef = useRef<HTMLButtonElement>(null);
@@ -303,7 +310,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
           setOpen(nextOpen);
         }}
       >
-        <div className="arcsyn-date-picker__field">
+        <div ref={fieldRef} className="arcsyn-date-picker__field">
           <input
             ref={inputRef}
             id={inputId}
@@ -367,8 +374,10 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
         <BasePopover.Portal>
           <BasePopover.Positioner
             className="arcsyn-date-picker__positioner"
+            anchor={() => fieldRef.current}
             align="start"
             sideOffset={6}
+            collisionAvoidance={{ side: "flip", align: "shift", fallbackAxisSide: "none" }}
           >
             <BasePopover.Popup
               className="arcsyn-date-picker__popup"
@@ -388,41 +397,55 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
                   <ChevronLeftIcon aria-hidden size={16} />
                 </button>
                 <div className="arcsyn-date-picker__period" aria-live="polite">
-                  <select
-                    aria-label="Mês"
-                    value={viewDate.getMonth()}
-                    onChange={(event) =>
-                      setViewDate(
-                        new Date(viewDate.getFullYear(), Number(event.target.value), 1),
-                      )
-                    }
-                  >
-                    {monthOptions.map(({ month, label: optionLabel }) => {
-                      const monthStart = new Date(viewDate.getFullYear(), month, 1);
-                      const monthEnd = new Date(viewDate.getFullYear(), month + 1, 0);
-                      const monthDisabled = Boolean(
-                        (minDate && monthEnd < minDate) || (maxDate && monthStart > maxDate),
-                      );
-                      return (
-                        <option value={month} key={month} disabled={monthDisabled}>
-                          {optionLabel}
+                  <span className="arcsyn-date-picker__period-control">
+                    <select
+                      aria-label="Mês"
+                      value={viewDate.getMonth()}
+                      onChange={(event) =>
+                        setViewDate(
+                          new Date(viewDate.getFullYear(), Number(event.target.value), 1),
+                        )
+                      }
+                    >
+                      {monthOptions.map(({ month, label: optionLabel }) => {
+                        const monthStart = new Date(viewDate.getFullYear(), month, 1);
+                        const monthEnd = new Date(viewDate.getFullYear(), month + 1, 0);
+                        const monthDisabled = Boolean(
+                          (minDate && monthEnd < minDate) || (maxDate && monthStart > maxDate),
+                        );
+                        return (
+                          <option value={month} key={month} disabled={monthDisabled}>
+                            {optionLabel}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    <SelectorIcon
+                      aria-hidden
+                      className="arcsyn-date-picker__period-icon"
+                      size={14}
+                    />
+                  </span>
+                  <span className="arcsyn-date-picker__period-control">
+                    <select
+                      aria-label="Ano"
+                      value={viewDate.getFullYear()}
+                      onChange={(event) =>
+                        setViewDate(new Date(Number(event.target.value), viewDate.getMonth(), 1))
+                      }
+                    >
+                      {yearOptions.map((year) => (
+                        <option value={year} key={year}>
+                          {year}
                         </option>
-                      );
-                    })}
-                  </select>
-                  <select
-                    aria-label="Ano"
-                    value={viewDate.getFullYear()}
-                    onChange={(event) =>
-                      setViewDate(new Date(Number(event.target.value), viewDate.getMonth(), 1))
-                    }
-                  >
-                    {yearOptions.map((year) => (
-                      <option value={year} key={year}>
-                        {year}
-                      </option>
-                    ))}
-                  </select>
+                      ))}
+                    </select>
+                    <SelectorIcon
+                      aria-hidden
+                      className="arcsyn-date-picker__period-icon"
+                      size={14}
+                    />
+                  </span>
                   <span className="arcsyn-date-picker__period-label">{monthLabel}</span>
                 </div>
                 <button

@@ -15,6 +15,7 @@
 - Composed `Card` anatomy while preserving the existing root API.
 - Data state support in `DataTable`.
 - Dashboard, application, deployment, monitoring, account, notification, filtering and action icons in both adapters.
+- `SelectorIcon` for compact controls that expose bidirectional option navigation.
 
 ### Icon policy
 
