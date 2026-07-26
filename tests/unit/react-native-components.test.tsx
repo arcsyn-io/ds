@@ -4,6 +4,7 @@ import { Button } from "../../packages/react-native/src/components/button";
 import { Command } from "../../packages/react-native/src/components/command";
 import { DatePicker } from "../../packages/react-native/src/components/date-picker";
 import { Slider } from "../../packages/react-native/src/components/slider";
+import { Time } from "../../packages/react-native/src/components/time";
 import { ArcSynProvider } from "../../packages/react-native/src/theme";
 
 vi.mock("../../packages/react-native/src/icons/index", () => ({
@@ -109,5 +110,22 @@ describe("contratos dos componentes React Native", () => {
     expect(onValueChange).toHaveBeenLastCalledWith("2026-08-15T10:30");
     fireEvent.click(screen.getByRole("button", { name: "Aumentar minuto" }));
     expect(onValueChange).toHaveBeenLastCalledWith("2026-08-15T10:35");
+  });
+
+  it("altera hora, minuto e segundo no Time nativo", () => {
+    const onValueChange = vi.fn();
+    render(
+      <ArcSynProvider theme="dark">
+        <Time label="Horário da execução" defaultValue="09:30:00" onValueChange={onValueChange} minuteStep={5} secondStep={15} />
+      </ArcSynProvider>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Aumentar hora" }));
+    expect(onValueChange).toHaveBeenLastCalledWith("10:30:00");
+    fireEvent.click(screen.getByRole("button", { name: "Aumentar minuto" }));
+    expect(onValueChange).toHaveBeenLastCalledWith("10:35:00");
+    fireEvent.click(screen.getByRole("button", { name: "Aumentar segundo" }));
+    expect(onValueChange).toHaveBeenLastCalledWith("10:35:15");
+    expect(getComputedStyle(screen.getByRole("button", { name: "Aumentar segundo" })).height).toBe("44px");
   });
 });

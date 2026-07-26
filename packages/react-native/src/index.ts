@@ -37,6 +37,7 @@ export * from "./components/search-input.js";
 export * from "./components/command.js";
 export * from "./components/data-state.js";
 export * from "./components/date-picker.js";
+export * from "./components/time.js";
 export * from "./components/page-header.js";
 export * from "./components/activity-feed.js";
 export * from "./components/chat.js";

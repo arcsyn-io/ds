@@ -29,6 +29,10 @@
       "types": "./dist/components/date-picker/index.d.ts",
       "import": "./dist/components/date-picker/index.js"
     },
+    "./time": {
+      "types": "./dist/components/time/index.d.ts",
+      "import": "./dist/components/time/index.js"
+    },
     "./data-table": {
       "types": "./dist/components/data-table/index.d.ts",
       "import": "./dist/components/data-table/index.js"

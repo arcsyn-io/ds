@@ -8,6 +8,7 @@ import { Input } from "../../packages/react/src/components/input/input";
 import { Command } from "../../packages/react/src/components/command/command";
 import { DatePicker } from "../../packages/react/src/components/date-picker/date-picker";
 import { Slider } from "../../packages/react/src/components/slider/slider";
+import { Time } from "../../packages/react/src/components/time/time";
 import { cx } from "../../packages/react/src/utilities/cx";
 
 describe("contratos dos componentes React", () => {
@@ -167,6 +168,35 @@ describe("contratos dos componentes React", () => {
     expect(screen.getByRole("dialog", { name: "Escolher data para Início da implantação" })).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Aplicar" }));
     expect(screen.queryByRole("dialog", { name: "Escolher data para Início da implantação" })).toBeNull();
+  });
+
+  it("seleciona hora, minuto e segundo no Time com controles nativos", async () => {
+    const onValueChange = vi.fn();
+    const user = userEvent.setup();
+    const { container } = render(
+      <Time
+        label="Horário da execução"
+        defaultValue="09:30:00"
+        onValueChange={onValueChange}
+        minuteStep={5}
+        secondStep={15}
+        name="execution-time"
+        description="Horário local."
+      />,
+    );
+
+    const hour = screen.getByRole("combobox", { name: "Hora" });
+    const minute = screen.getByRole("combobox", { name: "Minuto" });
+    const second = screen.getByRole("combobox", { name: "Segundo" });
+    expect(hour.tagName).toBe("SELECT");
+    expect(minute.tagName).toBe("SELECT");
+    expect(second.tagName).toBe("SELECT");
+    await user.selectOptions(hour, "14");
+    await user.selectOptions(minute, "45");
+    await user.selectOptions(second, "30");
+    expect(onValueChange).toHaveBeenLastCalledWith("14:45:30");
+    expect(container.querySelector('input[name="execution-time"]')).toHaveValue("14:45:30");
+    expect((await axe(container)).violations).toEqual([]);
   });
 
   it("altera o Slider pelo teclado e respeita step", async () => {
