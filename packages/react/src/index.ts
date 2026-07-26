@@ -48,5 +48,6 @@ export * from "./components/status-indicator/index.js";
 export * from "./components/activity-feed/index.js";
 export * from "./components/user-menu/index.js";
 export * from "./components/data-state/index.js";
+export * from "./components/date-picker/index.js";
 export * from "./components/chat/index.js";
 export * from "./components/notification-center/index.js";

@@ -25,6 +25,10 @@
       "types": "./dist/components/slider/index.d.ts",
       "import": "./dist/components/slider/index.js"
     },
+    "./date-picker": {
+      "types": "./dist/components/date-picker/index.d.ts",
+      "import": "./dist/components/date-picker/index.js"
+    },
     "./data-table": {
       "types": "./dist/components/data-table/index.d.ts",
       "import": "./dist/components/data-table/index.js"

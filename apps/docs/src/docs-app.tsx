@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type CSSProperties, typ
 import { createPresentationTheme, narrativePatterns, presentationLayouts } from "@arcsyn/presentations";
 import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, Tooltip, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
 import { ArrowRightIcon, CheckIcon, CircleIcon, EllipsisIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn/react/icons";
-import { ActivityFeed, BarChart, Chat, Command, DataState, LineChart, NotificationCenter, PageHeader, SearchInput, Slider, Sparkline, StatCard, StatusIndicator, UserMenu } from "@arcsyn/react";
+import { ActivityFeed, BarChart, Chat, Command, DataState, DatePicker, LineChart, NotificationCenter, PageHeader, SearchInput, Slider, Sparkline, StatCard, StatusIndicator, UserMenu } from "@arcsyn/react";
 import * as ArcSynIcons from "@arcsyn/react/icons";
 
 type Property = {
@@ -130,6 +130,29 @@ function SliderDemo() {
           <Slider.Thumb index={1} label="Máximo de utilização" />
         </Slider.Control>
       </Slider.Root>
+    </div>
+  );
+}
+
+function DatePickerDemo() {
+  const [date, setDate] = useState<string | null>("2026-08-14");
+  return (
+    <div className="docs-demo-stack">
+      <DatePicker
+        label="Data de implantação"
+        description="Escolha uma data dentro da janela aprovada."
+        value={date}
+        onValueChange={setDate}
+        min="2026-08-10"
+        max="2026-09-30"
+        isDateUnavailable={(value) => {
+          const day = new Date(`${value}T12:00:00`).getDay();
+          return day === 0 || day === 6;
+        }}
+      />
+      <span className="docs-muted-copy" role="status">
+        Valor ISO: {date ?? "nenhuma data selecionada"}
+      </span>
     </div>
   );
 }
@@ -1228,6 +1251,40 @@ const componentPages: ComponentPage[] = [
       { name: "...inputProps", type: "InputHTMLAttributes<HTMLInputElement>", defaultValue: "—", description: "Inclui onChange, name e atributos nativos." },
     ],
     examples: [{ title: "Preferência imediata", description: "A mudança é aplicada assim que o controle é alternado.", preview: <div className="docs-demo-row"><Switch id="notifications" defaultChecked /><Field.Label htmlFor="notifications">Receber alertas operacionais</Field.Label><Switch id="locked-switch" disabled /><Field.Label htmlFor="locked-switch">Bloqueado</Field.Label></div>, code: '<Switch id="notifications" defaultChecked />\n<Field.Label htmlFor="notifications">Receber alertas operacionais</Field.Label>' }],
+  },
+  {
+    id: "date-picker",
+    title: "Date Picker",
+    summary: "Seleciona uma data em calendário com valor ISO estável, limites, datas indisponíveis e validação acessível.",
+    importCode: 'import { DatePicker } from "@arcsyn/react";',
+    status: "React estável · Base UI · React Native",
+    anatomy: ["Label", "Trigger com valor formatado", "Popover ou modal", "Cabeçalho de navegação", "Grade de dias", "Descrição e erro opcionais"],
+    accessibility: "O trigger é nomeado pelo label e referencia descrição e erro. No calendário web, setas percorrem dias, Home e End percorrem a semana, Page Up e Page Down mudam o mês e Shift muda o ano. A versão React Native usa um Modal nativo, botões de 44px e fechamento explícito.",
+    properties: [
+      { name: "value / defaultValue", type: "string | null", defaultValue: "null", description: "Data controlada ou inicial no formato ISO YYYY-MM-DD." },
+      { name: "onValueChange", type: "(value: string | null) => void", defaultValue: "—", description: "Recebe a data ISO selecionada ou null quando o campo é limpo." },
+      { name: "label", type: "ReactNode", defaultValue: "—", description: "Nome acessível e visível do campo." },
+      { name: "min / max", type: "string", defaultValue: "—", description: "Limites inclusivos no formato ISO." },
+      { name: "isDateUnavailable", type: "(value: string) => boolean", defaultValue: "—", description: "Desabilita datas por regra de negócio, como fins de semana ou bloqueios." },
+      { name: "locale", type: "string", defaultValue: '"pt-BR"', description: "Controla nomes de mês, semana e apresentação do valor." },
+      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Ajusta o tamanho do trigger sem reduzir alvos de toque no mobile." },
+      { name: "disabled / readOnly / invalid", type: "boolean", defaultValue: "false", description: "Representa indisponibilidade, valor somente leitura ou erro de validação." },
+      { name: "description / error", type: "ReactNode", defaultValue: "—", description: "Texto de apoio e mensagem de erro ligados ao campo." },
+    ],
+    examples: [
+      {
+        title: "Janela de implantação",
+        description: "Limites e regras de indisponibilidade impedem a escolha de datas inválidas sem alterar o valor ISO.",
+        preview: <DatePickerDemo />,
+        code: 'const [date, setDate] = useState("2026-08-14");\n\n<DatePicker\n  label="Data de implantação"\n  description="Escolha uma data dentro da janela aprovada."\n  value={date}\n  onValueChange={setDate}\n  min="2026-08-10"\n  max="2026-09-30"\n  isDateUnavailable={(value) => {\n    const day = new Date(`${value}T12:00:00`).getDay();\n    return day === 0 || day === 6;\n  }}\n/>',
+      },
+      {
+        title: "Estados e validação",
+        description: "Erro, somente leitura e desabilitado mantêm significado consistente entre os adaptadores.",
+        preview: <div className="docs-demo-stack"><DatePicker label="Início da vigência" error="A data precisa ser informada." invalid /><DatePicker label="Auditoria anterior" defaultValue="2026-07-10" readOnly /><DatePicker label="Encerramento automático" defaultValue="2026-12-31" disabled /></div>,
+        code: '<DatePicker label="Início da vigência" error="A data precisa ser informada." invalid />\n<DatePicker label="Auditoria anterior" defaultValue="2026-07-10" readOnly />\n<DatePicker label="Encerramento automático" defaultValue="2026-12-31" disabled />',
+      },
+    ],
   },
   {
     id: "slider",

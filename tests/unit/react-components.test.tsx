@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { describe, expect, it, vi } from "vitest";
@@ -6,6 +6,7 @@ import { Button } from "../../packages/react/src/components/button/button";
 import { Field } from "../../packages/react/src/components/field/field";
 import { Input } from "../../packages/react/src/components/input/input";
 import { Command } from "../../packages/react/src/components/command/command";
+import { DatePicker } from "../../packages/react/src/components/date-picker/date-picker";
 import { Slider } from "../../packages/react/src/components/slider/slider";
 import { cx } from "../../packages/react/src/utilities/cx";
 
@@ -92,6 +93,36 @@ describe("contratos dos componentes React", () => {
       </Command.Root>,
     );
     expect((await axe(container)).violations).toEqual([]);
+  });
+
+  it("seleciona uma data no calendário e mantém o campo acessível", async () => {
+    const onValueChange = vi.fn();
+    const user = userEvent.setup();
+    const { container } = render(
+      <DatePicker label="Data de implantação" description="Use a data prevista para produção." defaultValue="2026-08-15" onValueChange={onValueChange} />,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Data de implantação" });
+    expect(trigger).toHaveTextContent("15/08/2026");
+    expect((await axe(container)).violations).toEqual([]);
+
+    await user.click(trigger);
+    const target = document.querySelector<HTMLButtonElement>('[data-date="2026-08-20"]');
+    expect(target).not.toBeNull();
+    await user.click(target!);
+    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-20");
+  });
+
+  it("respeita limites e navegação por teclado no Date Picker", async () => {
+    const onValueChange = vi.fn();
+    const user = userEvent.setup();
+    render(<DatePicker label="Janela de mudança" defaultValue="2026-08-15" min="2026-08-10" max="2026-08-20" onValueChange={onValueChange} />);
+
+    await user.click(screen.getByRole("button", { name: "Janela de mudança" }));
+    expect(document.querySelector<HTMLButtonElement>('[data-date="2026-08-09"]')).toBeDisabled();
+    await waitFor(() => expect(document.querySelector<HTMLButtonElement>('[data-date="2026-08-15"]')).toHaveFocus());
+    await user.keyboard("{ArrowRight}{Enter}");
+    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-16");
   });
 
   it("altera o Slider pelo teclado e respeita step", async () => {

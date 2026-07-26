@@ -1,11 +1,18 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Button } from "../../packages/react-native/src/components/button";
 import { Command } from "../../packages/react-native/src/components/command";
+import { DatePicker } from "../../packages/react-native/src/components/date-picker";
 import { Slider } from "../../packages/react-native/src/components/slider";
 import { ArcSynProvider } from "../../packages/react-native/src/theme";
 
-vi.mock("../../packages/react-native/src/icons/index", () => ({ SearchIcon: () => null }));
+vi.mock("../../packages/react-native/src/icons/index", () => ({
+  CalendarIcon: () => null,
+  ChevronLeftIcon: () => null,
+  ChevronRightIcon: () => null,
+  SearchIcon: () => null,
+  XIcon: () => null,
+}));
 
 describe("contratos dos componentes React Native", () => {
   it("mantém alvo de toque padrão e estado acessível de carregamento", () => {
@@ -69,5 +76,18 @@ describe("contratos dos componentes React Native", () => {
     const slider = screen.getByRole("slider", { name: "Volume" });
     expect(screen.getByText("35")).toBeInTheDocument();
     expect(getComputedStyle(slider).height).toBe("44px");
+  });
+
+  it("abre o calendário nativo e expõe fechamento explícito", () => {
+    render(
+      <ArcSynProvider theme="dark">
+        <DatePicker label="Data de implantação" defaultValue="2026-08-15" />
+      </ArcSynProvider>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Data de implantação" });
+    expect(getComputedStyle(trigger).minHeight).toBe("44px");
+    fireEvent.click(trigger);
+    expect(screen.getByRole("button", { name: "Fechar" })).toBeInTheDocument();
   });
 });
