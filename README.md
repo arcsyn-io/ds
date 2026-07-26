@@ -6,6 +6,7 @@ React é o primeiro adaptador de componentes.
 ## Pacotes
 
 - `@arcsyn/tokens`: fonte DTCG e artefatos CSS, JavaScript e Tailwind.
+- `@arcsyn/presentations`: linguagem editorial, layouts, brief e template para propostas geradas por IA.
 - `@arcsyn/styles`: reset, temas e contratos CSS dos componentes.
 - `@arcsyn/react`: API React, acessibilidade e catálogo em `@arcsyn/react/icons`.
 - `@arcsyn/react-native`: componentes nativos, temas e catálogo em `@arcsyn/react-native/icons`.
@@ -19,12 +20,57 @@ pnpm build
 pnpm dev:docs
 ```
 
+## Qualidade e segurança
+
+O gate local completo é:
+
+```bash
+pnpm validate
+pnpm security:audit
+pnpm test:e2e
+```
+
+`pnpm validate` executa lint de TypeScript/React/CSS, verificação de formatação, schema e contraste dos tokens, TypeScript em modo estrito, testes unitários com cobertura, build, validação dos pacotes publicados e política de licenças.
+
+Comandos úteis durante o desenvolvimento:
+
+```bash
+pnpm lint
+pnpm format
+pnpm tokens:validate
+pnpm test:unit
+pnpm packages:check
+pnpm licenses:check
+```
+
+O build usa TypeScript 7. Como `typescript-eslint` ainda depende da API do TypeScript 6, o pacote privado `@arcsyn/tooling` mantém uma instalação isolada do TypeScript 6 exclusivamente para parsing do lint. A validação de tipos continua sendo feita pelo TypeScript 7 configurado na raiz.
+
+No GitHub, os workflows executam o gate completo, acessibilidade WCAG em Chromium, CodeQL com regras estendidas e revisão de novas dependências. Consulte [SECURITY.md](./SECURITY.md) para o processo de relato e os controles que devem permanecer habilitados no repositório.
+
 ## Direção de dependências
 
 ```text
 tokens → styles → react
        └────────→ react-native
+       └────────→ presentations
                   docs (consome APIs públicas)
+```
+
+## Apresentações e propostas
+
+`@arcsyn/presentations` leva a linguagem do produto para apresentações sem reproduzir a densidade da interface. O pacote expõe tema derivado dos tokens, layouts editoriais, padrões narrativos para arquitetura, produto e ideias, um schema de brief, um prompt canônico para IA e um template PowerPoint editável.
+
+```ts
+import { createPresentationBrief, narrativePatterns } from "@arcsyn/presentations";
+
+const brief = createPresentationBrief({
+  title: "Evolução da plataforma",
+  audience: "Comitê de arquitetura",
+  outcome: "Aprovar a descoberta",
+  proposalType: "architecture",
+});
+
+const sequence = narrativePatterns[brief.proposalType];
 ```
 
 ## Temas
