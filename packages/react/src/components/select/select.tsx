@@ -14,15 +14,9 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(f
 export type SelectValueProps = ComponentPropsWithoutRef<typeof BaseSelect.Value>;
 export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(function SelectValue({ className, ...props }, ref) { return <BaseSelect.Value ref={ref} className={(state) => cx("arcsyn-select__value", typeof className === "function" ? className(state) : className)} {...props} />; });
 
-export type SelectContentProps = ComponentPropsWithoutRef<typeof BaseSelect.Popup> & {
-  positionerClassName?: string;
-  positionerProps?: Omit<
-    ComponentPropsWithoutRef<typeof BaseSelect.Positioner>,
-    "className"
-  >;
-};
-export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(function SelectContent({ className, children, positionerClassName, positionerProps, ...props }, ref) {
-  return <BaseSelect.Portal><BaseSelect.Backdrop className="arcsyn-select__backdrop" /><BaseSelect.Positioner sideOffset={4} {...positionerProps} className={cx("arcsyn-select__positioner", positionerClassName)}><BaseSelect.Popup ref={ref} className={(state) => cx("arcsyn-select__popup", typeof className === "function" ? className(state) : className)} {...props}><BaseSelect.List>{children}</BaseSelect.List></BaseSelect.Popup></BaseSelect.Positioner></BaseSelect.Portal>;
+export type SelectContentProps = ComponentPropsWithoutRef<typeof BaseSelect.Popup>;
+export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(function SelectContent({ className, children, ...props }, ref) {
+  return <BaseSelect.Portal><BaseSelect.Backdrop className="arcsyn-select__backdrop" /><BaseSelect.Positioner className="arcsyn-select__positioner" sideOffset={4}><BaseSelect.Popup ref={ref} className={(state) => cx("arcsyn-select__popup", typeof className === "function" ? className(state) : className)} {...props}><BaseSelect.List>{children}</BaseSelect.List></BaseSelect.Popup></BaseSelect.Positioner></BaseSelect.Portal>;
 });
 
 export type SelectItemProps = ComponentPropsWithoutRef<typeof BaseSelect.Item>;

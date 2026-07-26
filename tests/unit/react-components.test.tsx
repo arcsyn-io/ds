@@ -125,7 +125,7 @@ describe("contratos dos componentes React", () => {
     expect(onValueChange).toHaveBeenLastCalledWith("2026-08-16");
   });
 
-  it("aceita digitação manual, Select de mês e navegação incremental por ano", async () => {
+  it("aceita digitação manual, select nativo de mês e navegação incremental por ano", async () => {
     const onValueChange = vi.fn();
     const user = userEvent.setup();
     render(<DatePicker label="Data de corte" defaultValue="2026-08-14" onValueChange={onValueChange} />);
@@ -140,13 +140,9 @@ describe("contratos dos componentes React", () => {
     expect(input).toHaveValue("20/09/2026");
     expect(input).toHaveFocus();
 
-    const monthControls = screen.getAllByRole("combobox", { name: "Mês" });
-    const monthSelect = monthControls.find((control) => control.tagName === "BUTTON");
-    expect(monthSelect).toBeDefined();
-    expect(monthControls.some((control) => control.tagName === "SELECT")).toBe(true);
-    await user.click(monthSelect!);
-    const monthListbox = await screen.findByRole("listbox");
-    await user.click(within(monthListbox).getByRole("option", { name: "novembro" }));
+    const monthSelect = screen.getByRole("combobox", { name: "Mês" });
+    expect(monthSelect.tagName).toBe("SELECT");
+    await user.selectOptions(monthSelect, "10");
     expect(screen.getByRole("grid", { name: "novembro de 2026" })).toBeInTheDocument();
 
     const yearControl = screen.getByRole("group", { name: "Ano" });

@@ -16,8 +16,7 @@
 - Data state support in `DataTable`.
 - Dashboard, application, deployment, monitoring, account, notification, filtering and action icons in both adapters.
 - `ChevronUpIcon` for compact incremental controls.
-- `Select.Content.positionerClassName` and `positionerProps` for nested overlay composition.
-- Responsive Date Picker month control with ArcSyn Select on desktop and native select on mobile web.
+- Native Date Picker month select across desktop and mobile web.
 
 ### Icon policy
 
