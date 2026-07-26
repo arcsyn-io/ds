@@ -125,7 +125,7 @@ describe("contratos dos componentes React", () => {
     expect(onValueChange).toHaveBeenLastCalledWith("2026-08-16");
   });
 
-  it("aceita digitação manual e navegação incremental por mês e ano", async () => {
+  it("aceita digitação manual, Select de mês e navegação incremental por ano", async () => {
     const onValueChange = vi.fn();
     const user = userEvent.setup();
     render(<DatePicker label="Data de corte" defaultValue="2026-08-14" onValueChange={onValueChange} />);
@@ -140,14 +140,15 @@ describe("contratos dos componentes React", () => {
     expect(input).toHaveValue("20/09/2026");
     expect(input).toHaveFocus();
 
-    const monthControl = screen.getByRole("group", { name: "Mês" });
-    expect(within(monthControl).queryByRole("combobox")).not.toBeInTheDocument();
-    await user.click(within(monthControl).getByRole("button", { name: "Próximo mês" }));
-    expect(screen.getByRole("grid", { name: "outubro de 2026" })).toBeInTheDocument();
+    const monthSelect = screen.getByRole("combobox", { name: "Mês" });
+    expect(monthSelect.tagName).toBe("BUTTON");
+    await user.click(monthSelect);
+    await user.click(await screen.findByRole("option", { name: "novembro" }));
+    expect(screen.getByRole("grid", { name: "novembro de 2026" })).toBeInTheDocument();
 
     const yearControl = screen.getByRole("group", { name: "Ano" });
     await user.click(within(yearControl).getByRole("button", { name: "Próximo ano" }));
-    expect(screen.getByRole("grid", { name: "outubro de 2027" })).toBeInTheDocument();
+    expect(screen.getByRole("grid", { name: "novembro de 2027" })).toBeInTheDocument();
   });
 
   it("altera o Slider pelo teclado e respeita step", async () => {

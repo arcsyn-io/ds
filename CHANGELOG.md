@@ -16,6 +16,7 @@
 - Data state support in `DataTable`.
 - Dashboard, application, deployment, monitoring, account, notification, filtering and action icons in both adapters.
 - `ChevronUpIcon` for compact incremental controls.
+- `Select.Content.positionerClassName` for nested overlay composition.
 
 ### Icon policy
 
