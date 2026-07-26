@@ -95,6 +95,13 @@
 .docs-demo-stack { display: grid; gap: var(--arcsyn-spacing-3); max-width: 32rem; }
 .docs-command-demo { max-width: 38rem; width: 100%; }
 .docs-command-stage { border: 1px solid var(--arcsyn-color-border-strong); border-radius: var(--arcsyn-radius-lg); max-width: 38rem; overflow: hidden; }
+.docs-slider-stack { display: grid; gap: var(--arcsyn-spacing-6); max-width: 38rem; padding-bottom: var(--arcsyn-spacing-4); width: 100%; }
+.docs-slider-vertical { align-items: start; display: flex; gap: var(--arcsyn-spacing-8); min-height: 18rem; }
+.docs-slider-mix-segment { block-size: 100%; border-radius: inherit; inset-block-start: 0; pointer-events: none; position: absolute; }
+.docs-slider-mix-segment[data-tone="primary"] { background: var(--arcsyn-color-primary); inset-inline-start: 0; }
+.docs-slider-mix-segment[data-tone="danger"] { background: var(--arcsyn-color-danger); }
+.docs-slider-mix-status { color: var(--arcsyn-color-muted-foreground); font-size: var(--arcsyn-font-size-xs); margin-top: var(--arcsyn-spacing-2); }
+.docs-slider-mix-status[data-exceeded] { color: var(--arcsyn-color-danger); }
 .docs-chart-card { inline-size: 100%; max-inline-size: 52rem; }
 .docs-chart-total { font-family: var(--arcsyn-font-mono); font-size: var(--arcsyn-font-size-lg); font-variant-numeric: tabular-nums; font-weight: 500; }
 .docs-chart-grid { align-items: start; display: grid; gap: var(--arcsyn-spacing-3); grid-template-columns: minmax(0, 2fr) minmax(12rem, 1fr); }
