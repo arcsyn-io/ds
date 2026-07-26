@@ -150,6 +150,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
     selectedValue ? formatValue(selectedValue, locale) : "",
   );
   const [open, setOpen] = useState(false);
+  const [monthSelectOpen, setMonthSelectOpen] = useState(false);
   const [viewDate, setViewDate] = useState(() => startOfMonth(selectedDate ?? today));
   const [activeDate, setActiveDate] = useState(() => selectedDate ?? today);
   const fieldRef = useRef<HTMLDivElement>(null);
@@ -174,7 +175,10 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
   }, [formatValue, locale, selectedValue]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      setMonthSelectOpen(false);
+      return;
+    }
     const next = selectedDate ?? today;
     setViewDate(startOfMonth(next));
     setActiveDate(next);
@@ -404,39 +408,80 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
                   <ChevronLeftIcon aria-hidden size={16} />
                 </button>
                 <div className="arcsyn-date-picker__period" aria-live="polite">
-                  <Select.Root
-                    modal={false}
-                    value={String(viewDate.getMonth())}
-                    onValueChange={(nextMonthValue) => {
-                      if (nextMonthValue === null) return;
-                      setViewDate(
-                        new Date(viewDate.getFullYear(), Number(nextMonthValue), 1),
-                      );
-                    }}
-                  >
-                    <Select.Trigger
+                  <div className="arcsyn-date-picker__month-control">
+                    <div className="arcsyn-date-picker__month-desktop">
+                      <Select.Root
+                        modal={false}
+                        open={monthSelectOpen}
+                        onOpenChange={(nextOpen, eventDetails) => {
+                          if (!nextOpen && eventDetails.reason === "cancel-open") return;
+                          setMonthSelectOpen(nextOpen);
+                        }}
+                        value={String(viewDate.getMonth())}
+                        onValueChange={(nextMonthValue) => {
+                          if (nextMonthValue === null) return;
+                          setViewDate(
+                            new Date(viewDate.getFullYear(), Number(nextMonthValue), 1),
+                          );
+                        }}
+                      >
+                        <Select.Trigger
+                          aria-label="Mês"
+                          className="arcsyn-date-picker__month-trigger"
+                        >
+                          <Select.Value>{visibleMonth}</Select.Value>
+                        </Select.Trigger>
+                        <Select.Content
+                          className="arcsyn-date-picker__month-content"
+                          positionerClassName="arcsyn-date-picker__month-positioner"
+                          positionerProps={{
+                            align: "start",
+                            alignItemWithTrigger: false,
+                            collisionAvoidance: {
+                              side: "none",
+                              align: "shift",
+                              fallbackAxisSide: "none",
+                            },
+                            side: "bottom",
+                          }}
+                        >
+                          {monthOptions.map(({ month, label: optionLabel }) => (
+                            <Select.Item
+                              key={month}
+                              value={String(month)}
+                              disabled={
+                                !canShowMonth(new Date(viewDate.getFullYear(), month, 1))
+                              }
+                            >
+                              {optionLabel}
+                            </Select.Item>
+                          ))}
+                        </Select.Content>
+                      </Select.Root>
+                    </div>
+                    <select
                       aria-label="Mês"
-                      className="arcsyn-date-picker__month-trigger"
-                    >
-                      <Select.Value>{visibleMonth}</Select.Value>
-                    </Select.Trigger>
-                    <Select.Content
-                      className="arcsyn-date-picker__month-content"
-                      positionerClassName="arcsyn-date-picker__month-positioner"
+                      className="arcsyn-date-picker__month-native"
+                      value={viewDate.getMonth()}
+                      onChange={(event) =>
+                        setViewDate(
+                          new Date(viewDate.getFullYear(), Number(event.target.value), 1),
+                        )
+                      }
                     >
                       {monthOptions.map(({ month, label: optionLabel }) => (
-                        <Select.Item
+                        <option
                           key={month}
-                          value={String(month)}
+                          value={month}
                           disabled={
                             !canShowMonth(new Date(viewDate.getFullYear(), month, 1))
                           }
                         >
                           {optionLabel}
-                        </Select.Item>
+                        </option>
                       ))}
-                    </Select.Content>
-                  </Select.Root>
+                    </select>
+                  </div>
                   <span
                     className="arcsyn-date-picker__period-control"
                     role="group"

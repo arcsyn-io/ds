@@ -140,10 +140,13 @@ describe("contratos dos componentes React", () => {
     expect(input).toHaveValue("20/09/2026");
     expect(input).toHaveFocus();
 
-    const monthSelect = screen.getByRole("combobox", { name: "Mês" });
-    expect(monthSelect.tagName).toBe("BUTTON");
-    await user.click(monthSelect);
-    await user.click(await screen.findByRole("option", { name: "novembro" }));
+    const monthControls = screen.getAllByRole("combobox", { name: "Mês" });
+    const monthSelect = monthControls.find((control) => control.tagName === "BUTTON");
+    expect(monthSelect).toBeDefined();
+    expect(monthControls.some((control) => control.tagName === "SELECT")).toBe(true);
+    await user.click(monthSelect!);
+    const monthListbox = await screen.findByRole("listbox");
+    await user.click(within(monthListbox).getByRole("option", { name: "novembro" }));
     expect(screen.getByRole("grid", { name: "novembro de 2026" })).toBeInTheDocument();
 
     const yearControl = screen.getByRole("group", { name: "Ano" });

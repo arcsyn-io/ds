@@ -16,9 +16,13 @@ export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(functio
 
 export type SelectContentProps = ComponentPropsWithoutRef<typeof BaseSelect.Popup> & {
   positionerClassName?: string;
+  positionerProps?: Omit<
+    ComponentPropsWithoutRef<typeof BaseSelect.Positioner>,
+    "className"
+  >;
 };
-export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(function SelectContent({ className, children, positionerClassName, ...props }, ref) {
-  return <BaseSelect.Portal><BaseSelect.Backdrop className="arcsyn-select__backdrop" /><BaseSelect.Positioner className={cx("arcsyn-select__positioner", positionerClassName)} sideOffset={4}><BaseSelect.Popup ref={ref} className={(state) => cx("arcsyn-select__popup", typeof className === "function" ? className(state) : className)} {...props}><BaseSelect.List>{children}</BaseSelect.List></BaseSelect.Popup></BaseSelect.Positioner></BaseSelect.Portal>;
+export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(function SelectContent({ className, children, positionerClassName, positionerProps, ...props }, ref) {
+  return <BaseSelect.Portal><BaseSelect.Backdrop className="arcsyn-select__backdrop" /><BaseSelect.Positioner sideOffset={4} {...positionerProps} className={cx("arcsyn-select__positioner", positionerClassName)}><BaseSelect.Popup ref={ref} className={(state) => cx("arcsyn-select__popup", typeof className === "function" ? className(state) : className)} {...props}><BaseSelect.List>{children}</BaseSelect.List></BaseSelect.Popup></BaseSelect.Positioner></BaseSelect.Portal>;
 });
 
 export type SelectItemProps = ComponentPropsWithoutRef<typeof BaseSelect.Item>;
