@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { describe, expect, it, vi } from "vitest";
@@ -125,7 +125,7 @@ describe("contratos dos componentes React", () => {
     expect(onValueChange).toHaveBeenLastCalledWith("2026-08-16");
   });
 
-  it("aceita digitação manual e navegação direta por mês", async () => {
+  it("aceita digitação manual e navegação incremental por mês e ano", async () => {
     const onValueChange = vi.fn();
     const user = userEvent.setup();
     render(<DatePicker label="Data de corte" defaultValue="2026-08-14" onValueChange={onValueChange} />);
@@ -140,8 +140,14 @@ describe("contratos dos componentes React", () => {
     expect(input).toHaveValue("20/09/2026");
     expect(input).toHaveFocus();
 
-    await user.selectOptions(screen.getByRole("combobox", { name: "Mês" }), "10");
-    expect(screen.getByRole("grid", { name: "novembro de 2026" })).toBeInTheDocument();
+    const monthControl = screen.getByRole("group", { name: "Mês" });
+    expect(within(monthControl).queryByRole("combobox")).not.toBeInTheDocument();
+    await user.click(within(monthControl).getByRole("button", { name: "Próximo mês" }));
+    expect(screen.getByRole("grid", { name: "outubro de 2026" })).toBeInTheDocument();
+
+    const yearControl = screen.getByRole("group", { name: "Ano" });
+    await user.click(within(yearControl).getByRole("button", { name: "Próximo ano" }));
+    expect(screen.getByRole("grid", { name: "outubro de 2027" })).toBeInTheDocument();
   });
 
   it("altera o Slider pelo teclado e respeita step", async () => {

@@ -134,37 +134,67 @@
     grid-template-columns: minmax(0, 1fr) 4.5rem;
   }
 
-  .arcsyn-date-picker__period-control { min-inline-size: 0; position: relative; }
-
-  .arcsyn-date-picker__period-control select {
-    appearance: none;
+  .arcsyn-date-picker__period-control {
+    align-items: stretch;
     background: var(--arcsyn-color-surface);
     border: 1px solid var(--arcsyn-color-border);
     border-radius: var(--arcsyn-radius-sm);
     color: var(--arcsyn-color-foreground);
-    cursor: pointer;
-    font: inherit;
+    display: grid;
     font-size: var(--arcsyn-font-size-xs);
     font-weight: 600;
+    grid-template-columns: minmax(0, 1fr) 1.25rem;
     min-block-size: 2.25rem;
     min-inline-size: 0;
-    padding-inline: var(--arcsyn-spacing-2) 1.75rem;
+    overflow: hidden;
+  }
+
+  .arcsyn-date-picker__period-value {
+    align-items: center;
+    display: flex;
+    min-inline-size: 0;
+    overflow: hidden;
+    padding-inline: var(--arcsyn-spacing-2);
+    text-overflow: ellipsis;
     text-transform: capitalize;
-    width: 100%;
+    white-space: nowrap;
   }
 
-  .arcsyn-date-picker__period-control select:focus-visible {
-    outline: 2px solid var(--arcsyn-color-focus-ring);
-    outline-offset: 1px;
+  .arcsyn-date-picker__period-actions {
+    border-inline-start: 1px solid var(--arcsyn-color-border);
+    display: grid;
+    grid-template-rows: 1fr 1fr;
   }
 
-  .arcsyn-date-picker__period-icon {
+  .arcsyn-date-picker__period-actions button {
+    align-items: center;
+    background: transparent;
+    border: 0;
     color: var(--arcsyn-color-muted-foreground);
-    inset-block-start: 50%;
-    inset-inline-end: var(--arcsyn-spacing-2);
-    pointer-events: none;
-    position: absolute;
-    transform: translateY(-50%);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    min-block-size: 0;
+    padding: 0;
+  }
+
+  .arcsyn-date-picker__period-actions button + button {
+    border-block-start: 1px solid var(--arcsyn-color-border);
+  }
+
+  .arcsyn-date-picker__period-actions button:hover:not(:disabled) {
+    background: var(--arcsyn-color-surface-hover);
+    color: var(--arcsyn-color-foreground);
+  }
+
+  .arcsyn-date-picker__period-actions button:focus-visible {
+    outline: 2px solid var(--arcsyn-color-focus-ring);
+    outline-offset: -2px;
+  }
+
+  .arcsyn-date-picker__period-actions button:disabled {
+    cursor: not-allowed;
+    opacity: 0.35;
   }
 
   .arcsyn-date-picker__period-label {
@@ -191,7 +221,7 @@
   }
 
   .arcsyn-date-picker__nav { block-size: 2.25rem; inline-size: 2.25rem; }
-  .arcsyn-date-picker__nav:hover,
+  .arcsyn-date-picker__nav:hover:not(:disabled),
   .arcsyn-date-picker__day:hover,
   .arcsyn-date-picker__today:hover,
   .arcsyn-date-picker__close:hover { background: var(--arcsyn-color-muted); }
@@ -230,6 +260,7 @@
   }
 
   .arcsyn-date-picker__day:disabled,
+  .arcsyn-date-picker__nav:disabled,
   .arcsyn-date-picker__today:disabled { cursor: not-allowed; opacity: 0.35; text-decoration: line-through; }
 
   .arcsyn-date-picker__footer {

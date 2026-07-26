@@ -12,9 +12,10 @@ import {
 } from "react";
 import {
   CalendarIcon,
+  ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  SelectorIcon,
+  ChevronUpIcon,
   XIcon,
 } from "../../icons/index.js";
 import { cx } from "../../utilities/cx.js";
@@ -204,22 +205,16 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
     month: "long",
     year: "numeric",
   }).format(viewDate);
-  const monthOptions = useMemo(
-    () =>
-      Array.from({ length: 12 }, (_, month) => ({
-        month,
-        label: new Intl.DateTimeFormat(locale, { month: "long" }).format(
-          new Date(2024, month, 1),
-        ),
-      })),
-    [locale],
-  );
-  const firstYear = minDate?.getFullYear() ?? viewDate.getFullYear() - 100;
-  const lastYear = maxDate?.getFullYear() ?? viewDate.getFullYear() + 100;
-  const yearOptions = Array.from(
-    { length: lastYear - firstYear + 1 },
-    (_, index) => firstYear + index,
-  );
+  const visibleMonth = new Intl.DateTimeFormat(locale, { month: "long" }).format(viewDate);
+  const previousMonth = addMonths(viewDate, -1);
+  const nextMonth = addMonths(viewDate, 1);
+  const previousYear = new Date(viewDate.getFullYear() - 1, viewDate.getMonth(), 1);
+  const nextYear = new Date(viewDate.getFullYear() + 1, viewDate.getMonth(), 1);
+  const canShowMonth = (date: Date) => {
+    const monthStart = startOfMonth(date);
+    const monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    return !((minDate && monthEnd < minDate) || (maxDate && monthStart > maxDate));
+  };
   const fullDateFormatter = new Intl.DateTimeFormat(locale, {
     weekday: "long",
     day: "numeric",
@@ -392,59 +387,63 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
                   type="button"
                   className="arcsyn-date-picker__nav"
                   aria-label="Mês anterior"
+                  disabled={!canShowMonth(previousMonth)}
                   onClick={() => setViewDate((current) => addMonths(current, -1))}
                 >
                   <ChevronLeftIcon aria-hidden size={16} />
                 </button>
                 <div className="arcsyn-date-picker__period" aria-live="polite">
-                  <span className="arcsyn-date-picker__period-control">
-                    <select
-                      aria-label="Mês"
-                      value={viewDate.getMonth()}
-                      onChange={(event) =>
-                        setViewDate(
-                          new Date(viewDate.getFullYear(), Number(event.target.value), 1),
-                        )
-                      }
-                    >
-                      {monthOptions.map(({ month, label: optionLabel }) => {
-                        const monthStart = new Date(viewDate.getFullYear(), month, 1);
-                        const monthEnd = new Date(viewDate.getFullYear(), month + 1, 0);
-                        const monthDisabled = Boolean(
-                          (minDate && monthEnd < minDate) || (maxDate && monthStart > maxDate),
-                        );
-                        return (
-                          <option value={month} key={month} disabled={monthDisabled}>
-                            {optionLabel}
-                          </option>
-                        );
-                      })}
-                    </select>
-                    <SelectorIcon
-                      aria-hidden
-                      className="arcsyn-date-picker__period-icon"
-                      size={14}
-                    />
+                  <span
+                    className="arcsyn-date-picker__period-control"
+                    role="group"
+                    aria-label="Mês"
+                  >
+                    <span className="arcsyn-date-picker__period-value">{visibleMonth}</span>
+                    <span className="arcsyn-date-picker__period-actions">
+                      <button
+                        type="button"
+                        aria-label="Próximo mês"
+                        disabled={!canShowMonth(nextMonth)}
+                        onClick={() => setViewDate(nextMonth)}
+                      >
+                        <ChevronUpIcon aria-hidden size={12} />
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Mês anterior"
+                        disabled={!canShowMonth(previousMonth)}
+                        onClick={() => setViewDate(previousMonth)}
+                      >
+                        <ChevronDownIcon aria-hidden size={12} />
+                      </button>
+                    </span>
                   </span>
-                  <span className="arcsyn-date-picker__period-control">
-                    <select
-                      aria-label="Ano"
-                      value={viewDate.getFullYear()}
-                      onChange={(event) =>
-                        setViewDate(new Date(Number(event.target.value), viewDate.getMonth(), 1))
-                      }
-                    >
-                      {yearOptions.map((year) => (
-                        <option value={year} key={year}>
-                          {year}
-                        </option>
-                      ))}
-                    </select>
-                    <SelectorIcon
-                      aria-hidden
-                      className="arcsyn-date-picker__period-icon"
-                      size={14}
-                    />
+                  <span
+                    className="arcsyn-date-picker__period-control"
+                    role="group"
+                    aria-label="Ano"
+                  >
+                    <span className="arcsyn-date-picker__period-value">
+                      {viewDate.getFullYear()}
+                    </span>
+                    <span className="arcsyn-date-picker__period-actions">
+                      <button
+                        type="button"
+                        aria-label="Próximo ano"
+                        disabled={!canShowMonth(nextYear)}
+                        onClick={() => setViewDate(nextYear)}
+                      >
+                        <ChevronUpIcon aria-hidden size={12} />
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Ano anterior"
+                        disabled={!canShowMonth(previousYear)}
+                        onClick={() => setViewDate(previousYear)}
+                      >
+                        <ChevronDownIcon aria-hidden size={12} />
+                      </button>
+                    </span>
                   </span>
                   <span className="arcsyn-date-picker__period-label">{monthLabel}</span>
                 </div>
@@ -452,6 +451,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
                   type="button"
                   className="arcsyn-date-picker__nav"
                   aria-label="Próximo mês"
+                  disabled={!canShowMonth(nextMonth)}
                   onClick={() => setViewDate((current) => addMonths(current, 1))}
                 >
                   <ChevronRightIcon aria-hidden size={16} />

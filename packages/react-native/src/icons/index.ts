@@ -15,7 +15,7 @@ export {
   ChevronDown as ChevronDownIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
-  ChevronsUpDown as SelectorIcon,
+  ChevronUp as ChevronUpIcon,
   Circle as CircleIcon,
   CircleUserRound as AccountIcon,
   Copy as CopyIcon,

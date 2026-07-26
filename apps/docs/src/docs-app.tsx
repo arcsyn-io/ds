@@ -1258,8 +1258,8 @@ const componentPages: ComponentPage[] = [
     summary: "Seleciona ou permite digitar uma data com valor ISO estável, navegação por mês e validação acessível.",
     importCode: 'import { DatePicker } from "@arcsyn/react";',
     status: "React estável · Base UI · React Native",
-    anatomy: ["Label", "Campo para digitação", "Botão do calendário", "Seletores de mês e ano", "Grade de dias", "Descrição e erro opcionais"],
-    accessibility: "O campo é nomeado pelo label e referencia descrição e erro. No web, o calendário abre ao focar o input sem mover o cursor; Alt + seta para baixo transfere o foco para a grade. Na grade, setas percorrem dias, Home e End percorrem a semana, Page Up e Page Down mudam o mês e Shift muda o ano. No React Native, o input mantém o teclado e o cursor, enquanto o botão abre o Modal nativo com meses selecionáveis, alvos de 44px e fechamento explícito.",
+    anatomy: ["Label", "Campo para digitação", "Botão do calendário", "Controles incrementais de mês e ano", "Grade de dias", "Descrição e erro opcionais"],
+    accessibility: "O campo é nomeado pelo label e referencia descrição e erro. No web, o calendário abre ao focar o input sem mover o cursor; Alt + seta para baixo transfere o foco para a grade. Mês e ano usam grupos de botões nomeados para avançar e retroceder sem abrir um select. Na grade, setas percorrem dias, Home e End percorrem a semana, Page Up e Page Down mudam o mês e Shift muda o ano. No React Native, o input mantém o teclado e o cursor, enquanto o botão abre o Modal nativo com meses selecionáveis, alvos de 44px e fechamento explícito.",
     properties: [
       { name: "value / defaultValue", type: "string | null", defaultValue: "null", description: "Data controlada ou inicial no formato ISO YYYY-MM-DD." },
       { name: "onValueChange", type: "(value: string | null) => void", defaultValue: "—", description: "Recebe a data ISO selecionada ou null quando o campo é limpo." },
