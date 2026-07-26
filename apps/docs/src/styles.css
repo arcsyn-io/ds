@@ -93,6 +93,8 @@
 .docs-example .docs-code { border: 0; border-radius: 0; border-top: 1px solid var(--arcsyn-color-border); }
 .docs-demo-row { align-items: center; display: flex; flex-wrap: wrap; gap: var(--arcsyn-spacing-3); }
 .docs-demo-stack { display: grid; gap: var(--arcsyn-spacing-3); max-width: 32rem; }
+.docs-command-demo { max-width: 38rem; width: 100%; }
+.docs-command-stage { border: 1px solid var(--arcsyn-color-border-strong); border-radius: var(--arcsyn-radius-lg); max-width: 38rem; overflow: hidden; }
 .docs-chart-card { inline-size: 100%; max-inline-size: 52rem; }
 .docs-chart-total { font-family: var(--arcsyn-font-mono); font-size: var(--arcsyn-font-size-lg); font-variant-numeric: tabular-nums; font-weight: 500; }
 .docs-chart-grid { align-items: start; display: grid; gap: var(--arcsyn-spacing-3); grid-template-columns: minmax(0, 2fr) minmax(12rem, 1fr); }

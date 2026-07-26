@@ -1,0 +1,160 @@
+@layer components {
+  .arcsyn-command {
+    background: var(--arcsyn-color-surface-raised);
+    color: var(--arcsyn-color-foreground);
+    display: flex;
+    flex-direction: column;
+    inline-size: 100%;
+    min-inline-size: 0;
+    overflow: hidden;
+  }
+
+  .arcsyn-command__visually-hidden {
+    block-size: 1px;
+    clip-path: inset(50%);
+    inline-size: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  }
+
+  .arcsyn-command__input-wrapper {
+    align-items: center;
+    border-block-end: 1px solid var(--arcsyn-color-border);
+    display: flex;
+    flex: none;
+    gap: var(--arcsyn-spacing-3);
+    min-block-size: 3rem;
+    padding-inline: var(--arcsyn-spacing-4);
+  }
+
+  .arcsyn-command__search-icon {
+    color: var(--arcsyn-color-muted-foreground);
+    flex: none;
+  }
+
+  .arcsyn-command__input {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: var(--arcsyn-color-foreground);
+    flex: 1;
+    font: inherit;
+    font-size: var(--arcsyn-font-size-sm);
+    min-inline-size: 0;
+    outline: 0;
+    padding: 0;
+  }
+
+  .arcsyn-command__input::placeholder { color: var(--arcsyn-color-muted-foreground); }
+
+  .arcsyn-command__list {
+    max-block-size: min(22rem, 50vh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--arcsyn-spacing-2);
+    scroll-padding-block: var(--arcsyn-spacing-2);
+  }
+
+  .arcsyn-command__group:not(:has(.arcsyn-command__item:not([hidden]))) { display: none; }
+
+  .arcsyn-command__group-heading {
+    color: var(--arcsyn-color-muted-foreground);
+    font-size: var(--arcsyn-font-size-xs);
+    font-weight: var(--arcsyn-font-weight-semibold);
+    letter-spacing: 0.04em;
+    padding: var(--arcsyn-spacing-3) var(--arcsyn-spacing-2) var(--arcsyn-spacing-1);
+    text-transform: uppercase;
+  }
+
+  .arcsyn-command__item {
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: var(--arcsyn-radius-sm);
+    color: var(--arcsyn-color-foreground);
+    cursor: pointer;
+    display: flex;
+    font-size: var(--arcsyn-font-size-sm);
+    gap: var(--arcsyn-spacing-3);
+    min-block-size: 2.25rem;
+    padding: var(--arcsyn-spacing-2);
+    user-select: none;
+  }
+
+  .arcsyn-command__item[hidden] { display: none; }
+  .arcsyn-command__item[data-active] {
+    background: var(--arcsyn-color-muted);
+    border-color: var(--arcsyn-color-border);
+  }
+  .arcsyn-command__item[aria-disabled="true"] { cursor: not-allowed; opacity: 0.45; }
+  .arcsyn-command__item > svg { color: var(--arcsyn-color-muted-foreground); flex: none; }
+  .arcsyn-command__item[data-active] > svg { color: var(--arcsyn-color-primary); }
+
+  .arcsyn-command__shortcut {
+    color: var(--arcsyn-color-muted-foreground);
+    font-family: var(--arcsyn-font-family-mono);
+    font-size: var(--arcsyn-font-size-xs);
+    margin-inline-start: auto;
+  }
+
+  .arcsyn-command__separator {
+    background: var(--arcsyn-color-border);
+    block-size: 1px;
+    margin: var(--arcsyn-spacing-1) calc(var(--arcsyn-spacing-2) * -1);
+  }
+
+  .arcsyn-command__empty,
+  .arcsyn-command__loading {
+    align-items: center;
+    color: var(--arcsyn-color-muted-foreground);
+    display: flex;
+    font-size: var(--arcsyn-font-size-sm);
+    gap: var(--arcsyn-spacing-2);
+    justify-content: center;
+    min-block-size: 5rem;
+    padding: var(--arcsyn-spacing-4);
+    text-align: center;
+  }
+
+  .arcsyn-command-dialog__backdrop {
+    animation: arcsyn-dialog-fade-in var(--arcsyn-duration-normal) ease-out;
+    background: rgb(8 9 16 / 0.72);
+    inset: 0;
+    position: fixed;
+    z-index: 1000;
+  }
+
+  .arcsyn-command-dialog__viewport {
+    align-items: start;
+    display: grid;
+    inset: 0;
+    justify-items: center;
+    overflow: auto;
+    padding: min(16vh, 8rem) var(--arcsyn-spacing-4) var(--arcsyn-spacing-4);
+    pointer-events: none;
+    position: fixed;
+    z-index: 1001;
+  }
+
+  .arcsyn-command-dialog {
+    animation: arcsyn-dialog-enter var(--arcsyn-duration-normal) ease-out;
+    background: var(--arcsyn-color-surface-raised);
+    border: 1px solid var(--arcsyn-color-border-strong);
+    border-radius: var(--arcsyn-radius-lg);
+    box-shadow: var(--arcsyn-shadow-md);
+    max-inline-size: 38rem;
+    overflow: hidden;
+    pointer-events: auto;
+    width: 100%;
+  }
+
+  @media (max-width: 39.99rem) {
+    .arcsyn-command__item { min-block-size: 2.75rem; }
+    .arcsyn-command-dialog__viewport { padding-block-start: var(--arcsyn-spacing-4); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arcsyn-command-dialog,
+    .arcsyn-command-dialog__backdrop { animation: none; }
+  }
+}

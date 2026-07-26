@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 import { Button } from "../../packages/react/src/components/button/button";
 import { Field } from "../../packages/react/src/components/field/field";
 import { Input } from "../../packages/react/src/components/input/input";
+import { Command } from "../../packages/react/src/components/command/command";
 import { cx } from "../../packages/react/src/utilities/cx";
 
 describe("contratos dos componentes React", () => {
@@ -49,6 +50,46 @@ describe("contratos dos componentes React", () => {
 
     expect(screen.getByLabelText("Projeto")).toHaveAttribute("aria-invalid", "true");
     expect(screen.getByRole("alert")).toHaveTextContent("Campo obrigatório.");
+    expect((await axe(container)).violations).toEqual([]);
+  });
+
+  it("filtra e executa comandos pelo teclado", async () => {
+    const onSelect = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <Command.Root>
+        <Command.Input />
+        <Command.List>
+          <Command.Empty>Nenhum comando encontrado.</Command.Empty>
+          <Command.Group heading="Navegação">
+            <Command.Item value="dashboard" keywords={["visão geral"]} onSelect={onSelect}>
+              Dashboard
+            </Command.Item>
+            <Command.Item value="settings" onSelect={onSelect}>
+              Configurações
+            </Command.Item>
+          </Command.Group>
+        </Command.List>
+      </Command.Root>,
+    );
+
+    const input = screen.getByRole("combobox", { name: "Buscar comandos" });
+    await user.type(input, "visao");
+    expect(screen.getByRole("option", { name: "Dashboard" })).toBeVisible();
+    expect(screen.queryByRole("option", { name: "Configurações" })).toBeNull();
+    await user.keyboard("{ArrowDown}{Enter}");
+    expect(onSelect).toHaveBeenCalledWith("dashboard");
+  });
+
+  it("expõe a estrutura acessível do Command sem violações Axe", async () => {
+    const { container } = render(
+      <Command.Root>
+        <Command.Input />
+        <Command.List>
+          <Command.Item value="projects">Projetos</Command.Item>
+        </Command.List>
+      </Command.Root>,
+    );
     expect((await axe(container)).violations).toEqual([]);
   });
 });
