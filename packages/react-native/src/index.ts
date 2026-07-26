@@ -26,6 +26,7 @@ export * from "./components/separator.js";
 export * from "./components/textarea.js";
 export * from "./components/checkbox.js";
 export * from "./components/switch.js";
+export * from "./components/slider.js";
 export * from "./components/tabs.js";
 export * from "./components/tooltip.js";
 export * from "./components/select.js";

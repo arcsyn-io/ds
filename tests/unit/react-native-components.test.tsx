@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Button } from "../../packages/react-native/src/components/button";
 import { Command } from "../../packages/react-native/src/components/command";
+import { Slider } from "../../packages/react-native/src/components/slider";
 import { ArcSynProvider } from "../../packages/react-native/src/theme";
 
 vi.mock("../../packages/react-native/src/icons/index", () => ({ SearchIcon: () => null }));
@@ -48,5 +49,23 @@ describe("contratos dos componentes React Native", () => {
     const item = screen.getByRole("menuitem", { name: "Configurações" });
     expect(item).toBeInTheDocument();
     expect(getComputedStyle(item).minHeight).toBe("44px");
+  });
+
+  it("mantém valor e alvo acessível no Slider nativo", () => {
+    render(
+      <ArcSynProvider theme="dark">
+        <Slider.Root defaultValue={35}>
+          <Slider.Label>Volume</Slider.Label>
+          <Slider.Control>
+            <Slider.Track><Slider.Indicator /></Slider.Track>
+            <Slider.Thumb label="Volume" />
+          </Slider.Control>
+          <Slider.Value />
+        </Slider.Root>
+      </ArcSynProvider>,
+    );
+    const slider = screen.getByRole("slider", { name: "Volume" });
+    expect(screen.getByText("35")).toBeInTheDocument();
+    expect(getComputedStyle(slider).height).toBe("44px");
   });
 });

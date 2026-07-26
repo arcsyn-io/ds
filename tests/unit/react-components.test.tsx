@@ -6,6 +6,7 @@ import { Button } from "../../packages/react/src/components/button/button";
 import { Field } from "../../packages/react/src/components/field/field";
 import { Input } from "../../packages/react/src/components/input/input";
 import { Command } from "../../packages/react/src/components/command/command";
+import { Slider } from "../../packages/react/src/components/slider/slider";
 import { cx } from "../../packages/react/src/utilities/cx";
 
 describe("contratos dos componentes React", () => {
@@ -90,6 +91,40 @@ describe("contratos dos componentes React", () => {
         </Command.List>
       </Command.Root>,
     );
+    expect((await axe(container)).violations).toEqual([]);
+  });
+
+  it("altera o Slider pelo teclado e respeita step", async () => {
+    const onValueChange = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <Slider.Root defaultValue={40} step={5} onValueChange={onValueChange}>
+        <Slider.Label>Volume</Slider.Label>
+        <Slider.Control>
+          <Slider.Track><Slider.Indicator /></Slider.Track>
+          <Slider.Thumb />
+        </Slider.Control>
+      </Slider.Root>,
+    );
+    const slider = screen.getByRole("slider", { name: "Volume" });
+    slider.focus();
+    await user.keyboard("{ArrowRight}");
+    expect(onValueChange).toHaveBeenLastCalledWith(45, expect.anything());
+  });
+
+  it("nomeia os thumbs de intervalo e expõe somente leitura", async () => {
+    const { container } = render(
+      <Slider.Root defaultValue={[20, 80]} readOnly>
+        <Slider.Label>Faixa permitida</Slider.Label>
+        <Slider.Control>
+          <Slider.Track><Slider.Indicator /></Slider.Track>
+          <Slider.Thumb index={0} label="Mínimo" />
+          <Slider.Thumb index={1} label="Máximo" />
+        </Slider.Control>
+      </Slider.Root>,
+    );
+    expect(screen.getByRole("slider", { name: "Mínimo" })).toHaveAttribute("aria-readonly", "true");
+    expect(screen.getByRole("slider", { name: "Máximo" })).toHaveAttribute("aria-valuenow", "80");
     expect((await axe(container)).violations).toEqual([]);
   });
 });

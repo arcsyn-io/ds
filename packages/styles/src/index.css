@@ -38,6 +38,7 @@
 @import "./components/textarea.css";
 @import "./components/checkbox.css";
 @import "./components/switch.css";
+@import "./components/slider.css";
 @import "./components/tabs.css";
 @import "./components/tooltip.css";
 @import "./components/theme-switcher.css";

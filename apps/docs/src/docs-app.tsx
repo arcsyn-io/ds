@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type CSSProperties, typ
 import { createPresentationTheme, narrativePatterns, presentationLayouts } from "@arcsyn/presentations";
 import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, Tooltip, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
 import { ArrowRightIcon, CheckIcon, CircleIcon, EllipsisIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn/react/icons";
-import { ActivityFeed, BarChart, Chat, Command, DataState, LineChart, NotificationCenter, PageHeader, SearchInput, Sparkline, StatCard, StatusIndicator, UserMenu } from "@arcsyn/react";
+import { ActivityFeed, BarChart, Chat, Command, DataState, LineChart, NotificationCenter, PageHeader, SearchInput, Slider, Sparkline, StatCard, StatusIndicator, UserMenu } from "@arcsyn/react";
 import * as ArcSynIcons from "@arcsyn/react/icons";
 
 type Property = {
@@ -104,6 +104,57 @@ function CommandDemo() {
       <div className="docs-command-stage"><Command.Root><CommandItems onSelect={setSelected} /></Command.Root></div>
       <span className="docs-muted-copy" role="status">Última ação: {selected}</span>
       <Command.Dialog open={open} onOpenChange={setOpen}><CommandItems onSelect={setSelected} /></Command.Dialog>
+    </div>
+  );
+}
+
+function SliderDemo() {
+  const [volume, setVolume] = useState(48);
+  const [range, setRange] = useState<readonly number[]>([20, 75]);
+  return (
+    <div className="docs-slider-stack">
+      <Slider.Root value={volume} onValueChange={(next) => setVolume(Number(next))} step={5}>
+        <Slider.Label>Volume de alertas</Slider.Label>
+        <Slider.Value>{(_, values) => `${values[0]}%`}</Slider.Value>
+        <Slider.Control>
+          <Slider.Track><Slider.Indicator /></Slider.Track>
+          <Slider.Thumb />
+        </Slider.Control>
+      </Slider.Root>
+      <Slider.Root value={range} onValueChange={(next) => setRange(Array.isArray(next) ? next : [next])} minStepsBetweenValues={5}>
+        <Slider.Label>Faixa de utilização</Slider.Label>
+        <Slider.Value>{(_, values) => `${values[0]}% – ${values[1]}%`}</Slider.Value>
+        <Slider.Control>
+          <Slider.Track><Slider.Indicator /></Slider.Track>
+          <Slider.Thumb index={0} label="Mínimo de utilização" />
+          <Slider.Thumb index={1} label="Máximo de utilização" />
+        </Slider.Control>
+      </Slider.Root>
+    </div>
+  );
+}
+
+function SliderMixDemo() {
+  const [boost, setBoost] = useState(125);
+  const primaryWidth = Math.min(boost, 100) / 150 * 100;
+  const dangerWidth = Math.max(0, boost - 100) / 150 * 100;
+  return (
+    <div className="docs-slider-stack">
+      <Slider.Root min={0} max={150} step={5} value={boost} invalid={boost > 100} onValueChange={(next) => setBoost(Number(next))}>
+        <Slider.Label>Potência de processamento</Slider.Label>
+        <Slider.Value>{(_, values) => `${values[0]}%`}</Slider.Value>
+        <Slider.Control>
+          <Slider.Track>
+            <span className="docs-slider-mix-segment" data-tone="primary" style={{ width: `${primaryWidth}%` }} />
+            <span className="docs-slider-mix-segment" data-tone="danger" style={{ left: `${100 / 150 * 100}%`, width: `${dangerWidth}%` }} />
+          </Slider.Track>
+          <Slider.Marks marks={[{ value: 0, label: "0%" }, { value: 100, label: "100%" }, { value: 150, label: "150%" }]} />
+          <Slider.Thumb getAriaValueText={(_, value) => value <= 100 ? `${value}% dentro da capacidade nominal` : `${value}%, ${value - 100}% acima da capacidade nominal`} />
+        </Slider.Control>
+      </Slider.Root>
+      <span className="docs-slider-mix-status" data-exceeded={boost > 100 || undefined}>
+        {boost > 100 ? `${boost - 100}% de capacidade adicional em uso` : "Dentro da capacidade nominal"}
+      </span>
     </div>
   );
 }
@@ -1177,6 +1228,51 @@ const componentPages: ComponentPage[] = [
       { name: "...inputProps", type: "InputHTMLAttributes<HTMLInputElement>", defaultValue: "—", description: "Inclui onChange, name e atributos nativos." },
     ],
     examples: [{ title: "Preferência imediata", description: "A mudança é aplicada assim que o controle é alternado.", preview: <div className="docs-demo-row"><Switch id="notifications" defaultChecked /><Field.Label htmlFor="notifications">Receber alertas operacionais</Field.Label><Switch id="locked-switch" disabled /><Field.Label htmlFor="locked-switch">Bloqueado</Field.Label></div>, code: '<Switch id="notifications" defaultChecked />\n<Field.Label htmlFor="notifications">Receber alertas operacionais</Field.Label>' }],
+  },
+  {
+    id: "slider",
+    title: "Slider",
+    summary: "Seleciona um valor ou intervalo dentro de limites conhecidos, com interação por ponteiro, toque e teclado.",
+    importCode: 'import { Slider } from "@arcsyn/react";',
+    status: "React estável · Base UI · React Native",
+    anatomy: ["Root", "Label e Value", "Control", "Track e Indicator", "Thumb único ou múltiplos", "Marks opcionais"],
+    accessibility: "Slider.Label nomeia automaticamente o controle. Cada Thumb expõe role=slider, limites e valor; em intervalos, forneça labels distintos. Setas alteram por step, Page Up/Down ou Shift+seta usam largeStep, e Home/End alcançam os limites. A versão React Native usa role=adjustable e alvos de toque de 44px.",
+    properties: [
+      { name: "value / defaultValue", type: "number | readonly number[]", defaultValue: "—", description: "Um número cria valor único; um array cria um intervalo com múltiplos thumbs." },
+      { name: "min / max / step", type: "number", defaultValue: "0 / 100 / 1", description: "Define limites e granularidade dos valores válidos." },
+      { name: "largeStep", type: "number", defaultValue: "10", description: "Incremento usado por Page Up/Down e Shift combinado com setas." },
+      { name: "minStepsBetweenValues", type: "number", defaultValue: "0", description: "Mantém distância mínima entre thumbs de um intervalo." },
+      { name: "orientation", type: '"horizontal" | "vertical"', defaultValue: '"horizontal"', description: "Muda o eixo visual e a interpretação das setas." },
+      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Ajusta track e thumb sem reduzir o alvo interativo." },
+      { name: "disabled / readOnly / invalid", type: "boolean", defaultValue: "false", description: "Representa indisponibilidade, valor bloqueado ou erro de validação." },
+      { name: "onValueChange / onValueCommitted", type: "function", defaultValue: "—", description: "Separa atualizações contínuas da confirmação final da interação." },
+    ],
+    examples: [
+      {
+        title: "Valor e intervalo controlados",
+        description: "O mesmo contrato aceita um número ou um array. Use labels distintos nos thumbs do intervalo.",
+        preview: <SliderDemo />,
+        code: '<Slider.Root value={volume} onValueChange={setVolume} step={5}>\n  <Slider.Label>Volume de alertas</Slider.Label>\n  <Slider.Value />\n  <Slider.Control>\n    <Slider.Track><Slider.Indicator /></Slider.Track>\n    <Slider.Thumb />\n  </Slider.Control>\n</Slider.Root>\n\n<Slider.Root value={[20, 75]}>\n  <Slider.Control>\n    <Slider.Track><Slider.Indicator /></Slider.Track>\n    <Slider.Thumb index={0} label="Mínimo" />\n    <Slider.Thumb index={1} label="Máximo" />\n  </Slider.Control>\n</Slider.Root>',
+      },
+      {
+        title: "Marcas e estados",
+        description: "Marcas apoiam escalas discretas. ReadOnly mantém o valor focável para leitura; invalid comunica erro sem depender apenas da cor.",
+        preview: <div className="docs-slider-stack"><Slider.Root defaultValue={50} step={25}><Slider.Label>Capacidade reservada</Slider.Label><Slider.Value>{(_, values) => `${values[0]}%`}</Slider.Value><Slider.Control><Slider.Track><Slider.Indicator /></Slider.Track><Slider.Marks marks={[{ value: 0, label: "0" }, { value: 25, label: "25" }, { value: 50, label: "50" }, { value: 75, label: "75" }, { value: 100, label: "100" }]} /><Slider.Thumb /></Slider.Control></Slider.Root><Slider.Root defaultValue={65} readOnly><Slider.Label>Limite definido pela política</Slider.Label><Slider.Value /><Slider.Control><Slider.Track><Slider.Indicator /></Slider.Track><Slider.Thumb /></Slider.Control></Slider.Root><Slider.Root defaultValue={92} invalid><Slider.Label>Uso acima do permitido</Slider.Label><Slider.Value /><Slider.Control><Slider.Track><Slider.Indicator /></Slider.Track><Slider.Thumb /></Slider.Control></Slider.Root></div>,
+        code: '<Slider.Root defaultValue={50} step={25}>\n  <Slider.Control>\n    <Slider.Track><Slider.Indicator /></Slider.Track>\n    <Slider.Marks marks={[0, 25, 50, 75, 100]} />\n    <Slider.Thumb />\n  </Slider.Control>\n</Slider.Root>\n<Slider.Root defaultValue={65} readOnly>…</Slider.Root>\n<Slider.Root defaultValue={92} invalid>…</Slider.Root>',
+      },
+      {
+        title: "Faixa semântica mista",
+        description: "Até 100%, o ciano representa a capacidade nominal. O excedente até 150% usa danger para comunicar sobrecarga, sem recolorir a parte saudável da escala.",
+        preview: <SliderMixDemo />,
+        code: 'const [boost, setBoost] = useState(125);\nconst primaryWidth = Math.min(boost, 100) / 150 * 100;\nconst dangerWidth = Math.max(0, boost - 100) / 150 * 100;\n\n<Slider.Root min={0} max={150} value={boost} onValueChange={setBoost}>\n  <Slider.Label>Potência de processamento</Slider.Label>\n  <Slider.Value>{(_, values) => `${values[0]}%`}</Slider.Value>\n  <Slider.Control>\n    <Slider.Track>\n      <span data-tone="primary" style={{ width: `${primaryWidth}%` }} />\n      <span data-tone="danger" style={{ left: "66.67%", width: `${dangerWidth}%` }} />\n    </Slider.Track>\n    <Slider.Marks marks={[0, 100, 150]} />\n    <Slider.Thumb />\n  </Slider.Control>\n</Slider.Root>',
+      },
+      {
+        title: "Orientação vertical",
+        description: "Use vertical quando o eixo tiver relação direta com o layout, como volume ou zoom.",
+        preview: <div className="docs-slider-vertical"><Slider.Root defaultValue={35} orientation="vertical" size="lg"><Slider.Label>Zoom</Slider.Label><Slider.Control><Slider.Track><Slider.Indicator /></Slider.Track><Slider.Thumb /></Slider.Control><Slider.Value /></Slider.Root><Slider.Root defaultValue={70} orientation="vertical"><Slider.Label>Volume</Slider.Label><Slider.Control><Slider.Track><Slider.Indicator /></Slider.Track><Slider.Thumb /></Slider.Control><Slider.Value /></Slider.Root></div>,
+        code: '<Slider.Root defaultValue={35} orientation="vertical">\n  <Slider.Label>Zoom</Slider.Label>\n  <Slider.Control>\n    <Slider.Track><Slider.Indicator /></Slider.Track>\n    <Slider.Thumb />\n  </Slider.Control>\n  <Slider.Value />\n</Slider.Root>',
+      },
+    ],
   },
   {
     id: "card",
