@@ -170,7 +170,7 @@ describe("contratos dos componentes React", () => {
     expect(screen.queryByRole("dialog", { name: "Escolher data para Início da implantação" })).toBeNull();
   });
 
-  it("seleciona hora, minuto e segundo no Time com controles nativos", async () => {
+  it("digita hora, minuto e segundo no Time com inputs numéricos", async () => {
     const onValueChange = vi.fn();
     const user = userEvent.setup();
     const { container } = render(
@@ -185,15 +185,21 @@ describe("contratos dos componentes React", () => {
       />,
     );
 
-    const hour = screen.getByRole("combobox", { name: "Hora" });
-    const minute = screen.getByRole("combobox", { name: "Minuto" });
-    const second = screen.getByRole("combobox", { name: "Segundo" });
-    expect(hour.tagName).toBe("SELECT");
-    expect(minute.tagName).toBe("SELECT");
-    expect(second.tagName).toBe("SELECT");
-    await user.selectOptions(hour, "14");
-    await user.selectOptions(minute, "45");
-    await user.selectOptions(second, "30");
+    const hour = screen.getByRole("spinbutton", { name: "Hora" });
+    const minute = screen.getByRole("spinbutton", { name: "Minuto" });
+    const second = screen.getByRole("spinbutton", { name: "Segundo" });
+    expect(hour.tagName).toBe("INPUT");
+    expect(minute.tagName).toBe("INPUT");
+    expect(second.tagName).toBe("INPUT");
+    await user.clear(hour);
+    await user.type(hour, "14");
+    await user.tab();
+    await user.clear(minute);
+    await user.type(minute, "45");
+    await user.tab();
+    await user.clear(second);
+    await user.type(second, "30");
+    await user.tab();
     expect(onValueChange).toHaveBeenLastCalledWith("14:45:30");
     expect(container.querySelector('input[name="execution-time"]')).toHaveValue("14:45:30");
     expect((await axe(container)).violations).toEqual([]);

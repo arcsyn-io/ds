@@ -1,9 +1,10 @@
 import {
   forwardRef,
+  useEffect,
   useId,
-  useMemo,
   useState,
   type HTMLAttributes,
+  type KeyboardEvent,
   type ReactNode,
 } from "react";
 import { cx } from "../../utilities/cx.js";
@@ -45,15 +46,6 @@ function normalizeStep(value: number) {
   return Math.min(60, Math.max(1, Math.floor(value)));
 }
 
-function createOptions(limit: number, step: number, current: number) {
-  const options = Array.from({ length: Math.ceil(limit / step) }, (_, index) => index * step).filter(
-    (option) => option < limit,
-  );
-  return options.includes(current)
-    ? options
-    : [...options, current].sort((left, right) => left - right);
-}
-
 export const Time = forwardRef<HTMLDivElement, TimeProps>(function Time(
   {
     className,
@@ -86,16 +78,21 @@ export const Time = forwardRef<HTMLDivElement, TimeProps>(function Time(
   const [internalValue, setInternalValue] = useState(defaultValue);
   const selectedValue = isControlled ? value : internalValue;
   const parts = parseTime(selectedValue);
+  const [draftParts, setDraftParts] = useState(() => ({
+    hour: String(parts.hour).padStart(2, "0"),
+    minute: String(parts.minute).padStart(2, "0"),
+    second: String(parts.second).padStart(2, "0"),
+  }));
   const normalizedMinuteStep = normalizeStep(minuteStep);
   const normalizedSecondStep = normalizeStep(secondStep);
-  const minuteOptions = useMemo(
-    () => createOptions(60, normalizedMinuteStep, parts.minute),
-    [normalizedMinuteStep, parts.minute],
-  );
-  const secondOptions = useMemo(
-    () => createOptions(60, normalizedSecondStep, parts.second),
-    [normalizedSecondStep, parts.second],
-  );
+
+  useEffect(() => {
+    setDraftParts({
+      hour: String(parts.hour).padStart(2, "0"),
+      minute: String(parts.minute).padStart(2, "0"),
+      second: String(parts.second).padStart(2, "0"),
+    });
+  }, [parts.hour, parts.minute, parts.second]);
 
   function updatePart(next: Partial<typeof parts>) {
     if (disabled || readOnly) return;
@@ -104,8 +101,39 @@ export const Time = forwardRef<HTMLDivElement, TimeProps>(function Time(
       next.minute ?? parts.minute,
       next.second ?? parts.second,
     );
+    const nextParts = parseTime(nextValue);
+    setDraftParts({
+      hour: String(nextParts.hour).padStart(2, "0"),
+      minute: String(nextParts.minute).padStart(2, "0"),
+      second: String(nextParts.second).padStart(2, "0"),
+    });
     if (!isControlled) setInternalValue(nextValue);
     onValueChange?.(nextValue);
+  }
+
+  function commitPart(part: keyof typeof parts, limit: number) {
+    const draft = draftParts[part];
+    const parsed = Number(draft);
+    const nextValue = Number.isFinite(parsed) ? Math.min(limit - 1, Math.max(0, parsed)) : parts[part];
+    updatePart({ [part]: nextValue });
+  }
+
+  function handlePartKeyDown(
+    event: KeyboardEvent<HTMLInputElement>,
+    part: keyof typeof parts,
+    limit: number,
+    step: number,
+  ) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      commitPart(part, limit);
+      event.currentTarget.select();
+      return;
+    }
+    if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+    event.preventDefault();
+    const direction = event.key === "ArrowUp" ? 1 : -1;
+    updatePart({ [part]: (parts[part] + direction * step + limit) % limit });
   }
 
   return (
@@ -134,54 +162,79 @@ export const Time = forwardRef<HTMLDivElement, TimeProps>(function Time(
       >
         <label>
           <span>Hora</span>
-          <select
+          <input
             aria-label="Hora"
-            value={parts.hour}
+            type="number"
+            inputMode="numeric"
+            min={0}
+            max={23}
+            step={1}
+            value={draftParts.hour}
             disabled={disabled}
-            onChange={(event) => updatePart({ hour: Number(event.target.value) })}
-          >
-            {Array.from({ length: 24 }, (_, option) => (
-              <option key={option} value={option}>
-                {String(option).padStart(2, "0")}
-              </option>
-            ))}
-          </select>
+            readOnly={readOnly}
+            onFocus={(event) => event.currentTarget.select()}
+            onChange={(event) => {
+              if (/^\d{0,2}$/.test(event.target.value)) {
+                setDraftParts((current) => ({ ...current, hour: event.target.value }));
+              }
+            }}
+            onBlur={() => commitPart("hour", 24)}
+            onKeyDown={(event) => handlePartKeyDown(event, "hour", 24, 1)}
+          />
         </label>
         <span className="arcsyn-time__separator" aria-hidden="true">
           :
         </span>
         <label>
           <span>Minuto</span>
-          <select
+          <input
             aria-label="Minuto"
-            value={parts.minute}
+            type="number"
+            inputMode="numeric"
+            min={0}
+            max={59}
+            step={normalizedMinuteStep}
+            value={draftParts.minute}
             disabled={disabled}
-            onChange={(event) => updatePart({ minute: Number(event.target.value) })}
-          >
-            {minuteOptions.map((option) => (
-              <option key={option} value={option}>
-                {String(option).padStart(2, "0")}
-              </option>
-            ))}
-          </select>
+            readOnly={readOnly}
+            onFocus={(event) => event.currentTarget.select()}
+            onChange={(event) => {
+              if (/^\d{0,2}$/.test(event.target.value)) {
+                setDraftParts((current) => ({ ...current, minute: event.target.value }));
+              }
+            }}
+            onBlur={() => commitPart("minute", 60)}
+            onKeyDown={(event) =>
+              handlePartKeyDown(event, "minute", 60, normalizedMinuteStep)
+            }
+          />
         </label>
         <span className="arcsyn-time__separator" aria-hidden="true">
           :
         </span>
         <label>
           <span>Segundo</span>
-          <select
+          <input
             aria-label="Segundo"
-            value={parts.second}
+            type="number"
+            inputMode="numeric"
+            min={0}
+            max={59}
+            step={normalizedSecondStep}
+            value={draftParts.second}
             disabled={disabled}
-            onChange={(event) => updatePart({ second: Number(event.target.value) })}
-          >
-            {secondOptions.map((option) => (
-              <option key={option} value={option}>
-                {String(option).padStart(2, "0")}
-              </option>
-            ))}
-          </select>
+            readOnly={readOnly}
+            onFocus={(event) => event.currentTarget.select()}
+            onChange={(event) => {
+              if (/^\d{0,2}$/.test(event.target.value)) {
+                setDraftParts((current) => ({ ...current, second: event.target.value }));
+              }
+            }}
+            onBlur={() => commitPart("second", 60)}
+            onKeyDown={(event) =>
+              handlePartKeyDown(event, "second", 60, normalizedSecondStep)
+            }
+          />
         </label>
       </div>
       {description ? (

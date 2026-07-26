@@ -1341,13 +1341,13 @@ const componentPages: ComponentPage[] = [
     summary: "Seleciona hora, minuto e segundo em um valor local estável no formato HH:mm:ss.",
     importCode: 'import { Time } from "@arcsyn/react";',
     status: "React estável · React Native",
-    anatomy: ["Label", "Select de hora", "Select de minuto", "Select de segundo", "Descrição e erro opcionais"],
-    accessibility: "O grupo recebe o nome do label e associa descrição e erro. No web, cada segmento usa um select nativo nomeado, incluindo no navegador mobile. No React Native, cada segmento oferece botões nomeados para aumentar e diminuir, com alvos de toque de 44px. O valor não aplica conversão de fuso horário.",
+    anatomy: ["Label", "Input de hora", "Input de minuto", "Input de segundo", "Descrição e erro opcionais"],
+    accessibility: "O grupo recebe o nome do label e associa descrição e erro. No web, cada segmento usa um input numérico nomeado; a digitação é normalizada no blur e as setas respeitam o step. No React Native, cada segmento oferece botões nomeados para aumentar e diminuir, com alvos de toque de 44px. O valor não aplica conversão de fuso horário.",
     properties: [
       { name: "value / defaultValue", type: "string | null", defaultValue: "null", description: "Horário controlado ou inicial no formato HH:mm:ss." },
       { name: "onValueChange", type: "(value: string) => void", defaultValue: "—", description: "Recebe o horário local completo após cada alteração." },
       { name: "label", type: "ReactNode", defaultValue: "—", description: "Nome visível e acessível do grupo." },
-      { name: "minuteStep / secondStep", type: "number", defaultValue: "1", description: "Define a granularidade dos minutos e segundos entre 1 e 60." },
+      { name: "minuteStep / secondStep", type: "number", defaultValue: "1", description: "Define o incremento das setas para minutos e segundos entre 1 e 60." },
       { name: "name", type: "string", defaultValue: "—", description: "Nome do campo oculto enviado por formulários web; não se aplica ao React Native." },
       { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Ajusta o tamanho visual sem reduzir alvos de toque no mobile." },
       { name: "disabled / readOnly / invalid", type: "boolean", defaultValue: "false", description: "Representa indisponibilidade, somente leitura ou erro." },
@@ -1356,7 +1356,7 @@ const componentPages: ComponentPage[] = [
     examples: [
       {
         title: "Horário de execução",
-        description: "Os passos reduzem as opções disponíveis sem alterar o contrato HH:mm:ss.",
+        description: "Digite cada segmento diretamente ou use as setas; o contrato permanece HH:mm:ss.",
         preview: <TimeDemo />,
         code: 'const [time, setTime] = useState("09:30:00");\n\n<Time\n  label="Horário da execução"\n  value={time}\n  onValueChange={setTime}\n  minuteStep={5}\n  secondStep={15}\n  name="execution-time"\n/>',
       },

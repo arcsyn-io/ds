@@ -47,7 +47,7 @@
     white-space: nowrap;
   }
 
-  .arcsyn-time__control select {
+  .arcsyn-time__control input {
     background: transparent;
     border: 0;
     color: var(--arcsyn-color-foreground);
@@ -62,22 +62,22 @@
     width: 100%;
   }
 
-  .arcsyn-time[data-size="sm"] .arcsyn-time__control select {
+  .arcsyn-time[data-size="sm"] .arcsyn-time__control input {
     font-size: var(--arcsyn-font-size-xs);
     min-block-size: calc(var(--arcsyn-control-height-sm) - 2px);
   }
 
-  .arcsyn-time[data-size="lg"] .arcsyn-time__control select {
+  .arcsyn-time[data-size="lg"] .arcsyn-time__control input {
     font-size: var(--arcsyn-font-size-md);
     min-block-size: calc(var(--arcsyn-control-height-lg) - 2px);
   }
 
-  .arcsyn-time__control select:focus-visible {
+  .arcsyn-time__control input:focus-visible {
     background: var(--arcsyn-color-surface-hover);
     box-shadow: inset 0 0 0 2px var(--arcsyn-color-focus-ring);
   }
 
-  .arcsyn-time[data-readonly] .arcsyn-time__control select { cursor: default; }
+  .arcsyn-time[data-readonly] .arcsyn-time__control input { cursor: default; }
   .arcsyn-time__separator { color: var(--arcsyn-color-muted-foreground); font-weight: 600; }
 
   .arcsyn-time__description,
@@ -90,7 +90,7 @@
   .arcsyn-time__error { color: var(--arcsyn-color-danger); font-weight: 500; }
 
   @media (max-width: 39.99rem) {
-    .arcsyn-time__control { min-block-size: 2.75rem; }
-    .arcsyn-time__control select { min-block-size: calc(2.75rem - 2px); }
+    .arcsyn-time__control { min-block-size: 2.875rem; }
+    .arcsyn-time__control input { min-block-size: 2.75rem; }
   }
 }
