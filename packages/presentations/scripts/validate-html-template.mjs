@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const html = await readFile(join(root, "templates", "arcsyn-presentation-template.html"), "utf8");
 const technicalDocument = await readFile(join(root, "templates", "arcsyn-technical-proposal-template.html"), "utf8");
+const architectureDecision = await readFile(join(root, "templates", "arcsyn-architecture-decision-template.html"), "utf8");
 
 const checks = [
   ['lang="pt-BR"', "language"],
@@ -58,3 +59,46 @@ if (qualityCount !== 3) {
 }
 
 console.log("Validated ArcSyn HTML technical proposal template");
+
+const architectureDecisionChecks = [
+  ['lang="pt-BR"', "language"],
+  ['class="technical-document"', "document root"],
+  ['id="criterios"', "criteria section"],
+  ['id="alternativa-a"', "alternative A section"],
+  ['id="alternativa-b"', "alternative B section"],
+  ['id="alternativa-c"', "alternative C section"],
+  ['id="trade-offs"', "trade-offs comparison"],
+  ['id="riscos"', "risks section"],
+  ['id="governanca"', "governance and costs section"],
+  ['id="guia"', "choice guide"],
+  ['id="evidencias"', "evidence section"],
+  ["data-diagram-src=", "interactive diagrams"],
+  ['id="diagram-lightbox"', "diagram lightbox"],
+  ["fitDiagramViewport", "automatic diagram fitting"],
+  ["preparePrintableImages", "print image preparation"],
+  ['class="print-header"', "controlled print header"],
+  ['id="theme-toggle"', "theme control"],
+  ["../assets/architecture-diagram-placeholder.svg", "diagram placeholder"],
+  ["@media print", "print styles"],
+  ["window.print()", "PDF export"],
+];
+
+for (const [needle, label] of architectureDecisionChecks) {
+  if (!architectureDecision.includes(needle)) {
+    throw new Error(`HTML architecture decision template is missing ${label}`);
+  }
+}
+
+const alternativeCount = (architectureDecision.match(/<section class="document-section" id="alternativa-[abc]"/g) ?? []).length;
+
+if (alternativeCount !== 3) {
+  throw new Error(`HTML architecture decision template must expose 3 comparable alternatives; found ${alternativeCount}`);
+}
+
+const diagramCount = (architectureDecision.match(/data-diagram-src=/g) ?? []).length;
+
+if (diagramCount !== 3) {
+  throw new Error(`HTML architecture decision template must expose one diagram per alternative; found ${diagramCount}`);
+}
+
+console.log("Validated ArcSyn HTML architecture decision template");

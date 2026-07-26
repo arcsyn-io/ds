@@ -1,0 +1,2110 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Template ArcSyn para comparação de alternativas, trade-offs e guia de decisão arquitetural." />
+    <title>Guia de decisão arquitetural · ArcSyn</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --background: #161e28;
+        --foreground: #eff4f5;
+        --surface: #1d2936;
+        --surface-raised: #263545;
+        --muted: #91a7b8;
+        --primary: #90dddf;
+        --primary-foreground: #161e28;
+        --border: #2c3d4f;
+        --border-strong: #425a70;
+        --success: #8eaa76;
+        --warning: #d5aa52;
+        --danger: #c56f78;
+        --font-sans: "IBM Plex Sans", "Segoe UI", sans-serif;
+        --font-mono: "IBM Plex Mono", "Cascadia Mono", monospace;
+        --sidebar-width: 17rem;
+        --header-height: 4.5rem;
+        --radius: 0.375rem;
+      }
+
+      [data-theme="light"] {
+        color-scheme: light;
+        --background: #f4f7f8;
+        --foreground: #17212b;
+        --surface: #ffffff;
+        --surface-raised: #edf2f4;
+        --muted: #566b7c;
+        --primary: #0c6f73;
+        --primary-foreground: #ffffff;
+        --border: #ced9df;
+        --border-strong: #9eb1bc;
+        --success: #4f6d3c;
+        --warning: #8a671e;
+        --danger: #99434c;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: calc(var(--header-height) + 2rem);
+      }
+
+      body {
+        background: var(--background);
+        color: var(--foreground);
+        font-family: var(--font-sans);
+        line-height: 1.65;
+        margin: 0;
+      }
+
+      button,
+      input,
+      textarea {
+        font: inherit;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .skip-link {
+        background: var(--primary);
+        color: var(--primary-foreground);
+        left: 1rem;
+        padding: 0.65rem 0.85rem;
+        position: fixed;
+        top: -5rem;
+        z-index: 100;
+      }
+
+      .skip-link:focus {
+        top: 1rem;
+      }
+
+      .print-header {
+        display: none;
+      }
+
+      .document-header {
+        align-items: center;
+        backdrop-filter: blur(14px);
+        background: color-mix(in srgb, var(--background) 92%, transparent);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        height: var(--header-height);
+        justify-content: space-between;
+        left: 0;
+        padding: 0 2rem;
+        position: fixed;
+        right: 0;
+        top: 0;
+        z-index: 20;
+      }
+
+      .document-header__brand {
+        align-items: center;
+        display: flex;
+        gap: 1rem;
+        min-width: 0;
+      }
+
+      .document-header__brand img {
+        display: block;
+        height: auto;
+        width: 6.5rem;
+      }
+
+      .document-header__type {
+        border-left: 1px solid var(--border-strong);
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        line-height: 1.2;
+        padding-left: 1rem;
+        text-transform: uppercase;
+      }
+
+      .document-header__actions {
+        align-items: center;
+        display: flex;
+        gap: 0.75rem;
+      }
+
+      .document-status {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .icon-button {
+        align-items: center;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--foreground);
+        cursor: pointer;
+        display: inline-flex;
+        height: 2.5rem;
+        justify-content: center;
+        padding: 0 0.8rem;
+      }
+
+      .icon-button:hover,
+      .icon-button:focus-visible {
+        border-color: var(--primary);
+        outline: none;
+      }
+
+      .reading-progress {
+        background: var(--primary);
+        height: 2px;
+        left: 0;
+        position: fixed;
+        top: calc(var(--header-height) - 2px);
+        transform: scaleX(0);
+        transform-origin: left;
+        width: 100%;
+        z-index: 30;
+      }
+
+      .document-shell {
+        display: grid;
+        grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+        min-height: 100vh;
+        padding-top: var(--header-height);
+      }
+
+      .document-nav {
+        border-right: 1px solid var(--border);
+        height: calc(100vh - var(--header-height));
+        overflow-y: auto;
+        padding: 2rem 1.5rem;
+        position: sticky;
+        top: var(--header-height);
+      }
+
+      .document-nav__label {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.09em;
+        margin: 0 0 1rem;
+        text-transform: uppercase;
+      }
+
+      .document-nav ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .document-nav a {
+        border-left: 2px solid var(--border);
+        color: var(--muted);
+        display: block;
+        font-size: 0.84rem;
+        line-height: 1.35;
+        padding: 0.6rem 0 0.6rem 0.9rem;
+        text-decoration: none;
+      }
+
+      .document-nav a:hover,
+      .document-nav a[aria-current="location"] {
+        border-left-color: var(--primary);
+        color: var(--foreground);
+      }
+
+      .document-nav a[aria-current="location"] {
+        background: color-mix(in srgb, var(--primary) 8%, transparent);
+      }
+
+      .document-nav__meta {
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        margin-top: 2rem;
+        padding-top: 1rem;
+      }
+
+      .technical-document {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .document-cover {
+        border-bottom: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: minmax(0, 1.7fr) minmax(18rem, 0.7fr);
+        min-height: min(47rem, calc(100vh - var(--header-height)));
+      }
+
+      .document-cover__main {
+        align-content: center;
+        display: grid;
+        padding: clamp(3rem, 7vw, 8rem);
+      }
+
+      .document-cover__aside {
+        background: var(--surface);
+        border-left: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: clamp(2rem, 4vw, 4rem);
+      }
+
+      .document-cover__aside img {
+        height: auto;
+        width: min(11rem, 100%);
+      }
+
+      .eyebrow {
+        color: var(--primary);
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        margin: 0 0 1.25rem;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(3rem, 6.5vw, 7rem);
+        letter-spacing: -0.055em;
+        line-height: 0.98;
+        margin-bottom: 2rem;
+        max-width: 12ch;
+      }
+
+      .document-cover__summary {
+        color: var(--muted);
+        font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+        max-width: 52rem;
+      }
+
+      .document-meta {
+        display: grid;
+        gap: 1.25rem;
+        margin: 0;
+      }
+
+      .document-meta div {
+        border-top: 1px solid var(--border);
+        padding-top: 0.75rem;
+      }
+
+      .document-meta dt {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.2rem;
+        text-transform: uppercase;
+      }
+
+      .document-meta dd {
+        margin: 0;
+      }
+
+      .document-section {
+        border-bottom: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: minmax(11rem, 0.28fr) minmax(0, 1fr);
+        padding: clamp(3rem, 6vw, 7rem) clamp(2rem, 6vw, 7rem);
+      }
+
+      .section-heading {
+        align-self: start;
+        padding-right: clamp(2rem, 5vw, 5rem);
+        position: sticky;
+        top: calc(var(--header-height) + 2rem);
+      }
+
+      .section-number {
+        color: var(--primary);
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.8rem;
+      }
+
+      .section-heading h2 {
+        font-size: clamp(1.65rem, 2.5vw, 2.7rem);
+        letter-spacing: -0.035em;
+        line-height: 1.08;
+        margin-bottom: 1rem;
+      }
+
+      .section-heading p {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .section-content {
+        min-width: 0;
+      }
+
+      .lead {
+        font-size: clamp(1.3rem, 2vw, 2rem);
+        letter-spacing: -0.02em;
+        line-height: 1.35;
+        max-width: 56rem;
+      }
+
+      .content-grid {
+        display: grid;
+        gap: 1px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 2rem;
+      }
+
+      .content-block {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        margin: -1px 0 0 -1px;
+        padding: clamp(1.4rem, 2.5vw, 2.5rem);
+      }
+
+      .content-block h3 {
+        font-size: 1rem;
+        margin-bottom: 0.65rem;
+      }
+
+      .content-block p:last-child {
+        margin-bottom: 0;
+      }
+
+      .content-block--emphasis {
+        border-top: 3px solid var(--primary);
+      }
+
+      .content-block__label {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .decision-banner {
+        background: var(--primary);
+        color: var(--primary-foreground);
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: 8rem minmax(0, 1fr);
+        margin-top: 2.5rem;
+        padding: clamp(1.5rem, 3vw, 3rem);
+      }
+
+      .decision-banner__label {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .decision-banner strong {
+        font-size: clamp(1.25rem, 2vw, 1.8rem);
+        line-height: 1.3;
+      }
+
+      .architecture {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(4, minmax(9rem, 1fr));
+        margin-top: 2.5rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+      }
+
+      .architecture__node {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        min-width: 9rem;
+        padding: 1.25rem;
+        position: relative;
+      }
+
+      .architecture__node:not(:last-child)::after {
+        color: var(--primary);
+        content: "→";
+        font-family: var(--font-mono);
+        position: absolute;
+        right: -0.85rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+      }
+
+      .architecture__node span {
+        color: var(--primary);
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        margin-bottom: 0.45rem;
+        text-transform: uppercase;
+      }
+
+      .architecture__node strong {
+        display: block;
+        line-height: 1.25;
+        margin-bottom: 0.5rem;
+      }
+
+      .architecture__node p {
+        color: var(--muted);
+        font-size: 0.8rem;
+        line-height: 1.45;
+        margin: 0;
+      }
+
+      .architecture__foundation {
+        background: color-mix(in srgb, var(--primary) 8%, var(--surface));
+        border: 1px solid var(--primary);
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        margin-top: 1rem;
+        padding: 1rem 1.25rem;
+        text-align: center;
+      }
+
+      .diagram-preview {
+        margin: 2rem 0 0;
+      }
+
+      .diagram-preview__trigger {
+        background: var(--background);
+        border: 1px solid var(--border);
+        cursor: zoom-in;
+        display: block;
+        height: clamp(20rem, 44vw, 32rem);
+        overflow: hidden;
+        padding: 0;
+        position: relative;
+        width: 100%;
+      }
+
+      .diagram-preview__trigger:focus-visible {
+        outline: 3px solid var(--primary);
+        outline-offset: 3px;
+      }
+
+      .diagram-preview__trigger img {
+        display: block;
+        height: 100%;
+        object-fit: contain;
+        width: 100%;
+      }
+
+      .diagram-preview__action {
+        background: color-mix(in srgb, var(--primary) 14%, var(--background));
+        border: 1px solid color-mix(in srgb, var(--primary) 35%, var(--border));
+        bottom: 0.5rem;
+        color: var(--primary);
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        padding: 0.35rem 0.5rem;
+        position: absolute;
+        right: 0.5rem;
+        text-transform: uppercase;
+      }
+
+      .diagram-preview figcaption {
+        align-items: baseline;
+        color: var(--muted);
+        display: flex;
+        flex-wrap: wrap;
+        font-size: 0.82rem;
+        gap: 0.35rem 1rem;
+        justify-content: space-between;
+        margin-top: 0.65rem;
+      }
+
+      .diagram-preview figcaption strong {
+        color: var(--foreground);
+      }
+
+      .proposal-intro {
+        align-items: center;
+        display: grid;
+        gap: clamp(1.5rem, 3vw, 3rem);
+        grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+        margin-bottom: 2rem;
+      }
+
+      .proposal-intro__copy {
+        align-items: center;
+        display: flex;
+        padding-right: clamp(0rem, 2vw, 2rem);
+      }
+
+      .proposal-intro__copy .lead {
+        font-size: clamp(1.3rem, 1.8vw, 1.85rem);
+        margin: 0;
+      }
+
+      .diagram-preview--inline {
+        display: grid;
+        grid-template-rows: minmax(0, 1fr) auto;
+        margin: 0;
+      }
+
+      .diagram-preview--inline .diagram-preview__trigger {
+        aspect-ratio: 4 / 3;
+        height: auto;
+      }
+
+      .diagram-preview--inline figcaption {
+        color: color-mix(in srgb, var(--muted) 82%, var(--background));
+        font-size: 0.7rem;
+        gap: 0.2rem 0.6rem;
+        margin: 0.5rem 0 0;
+      }
+
+      .diagram-preview--inline figcaption strong {
+        color: var(--muted);
+        font-weight: 500;
+      }
+
+      .diagram-lightbox {
+        background: #0c1219;
+        border: 0;
+        color: #eff4f5;
+        grid-template-rows: auto minmax(0, 1fr);
+        height: 100dvh;
+        margin: 0;
+        max-height: none;
+        max-width: none;
+        padding: 0;
+        width: 100vw;
+      }
+
+      .diagram-lightbox[open] {
+        display: grid;
+      }
+
+      .diagram-lightbox::backdrop {
+        background: rgba(5, 9, 13, 0.92);
+      }
+
+      .diagram-lightbox__toolbar {
+        align-items: center;
+        border-bottom: 1px solid #2c3d4f;
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+        min-height: 4rem;
+        padding: 0.75rem 1rem 0.75rem 1.5rem;
+      }
+
+      .diagram-lightbox__toolbar p {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+        margin: 0;
+        text-transform: uppercase;
+      }
+
+      .diagram-lightbox__actions {
+        align-items: center;
+        display: flex;
+        gap: 0.4rem;
+      }
+
+      .diagram-lightbox__zoom {
+        background: #1d2936;
+        border: 1px solid #425a70;
+        color: #eff4f5;
+        cursor: pointer;
+        font-family: var(--font-mono);
+        min-height: 2.5rem;
+        min-width: 2.5rem;
+        padding: 0.45rem 0.65rem;
+      }
+
+      .diagram-lightbox__zoom-status {
+        color: #a9bac8;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        min-width: 3.25rem;
+        text-align: center;
+      }
+
+      .diagram-lightbox__close {
+        background: #1d2936;
+        border: 1px solid #425a70;
+        color: #eff4f5;
+        cursor: pointer;
+        min-height: 2.5rem;
+        padding: 0.45rem 0.8rem;
+      }
+
+      .diagram-lightbox__close:focus-visible,
+      .diagram-lightbox__zoom:focus-visible,
+      .diagram-lightbox__canvas:focus-visible {
+        outline: 3px solid #90dddf;
+        outline-offset: 2px;
+      }
+
+      .diagram-lightbox__canvas {
+        cursor: grab;
+        min-height: 0;
+        overflow: hidden;
+        padding: 1rem;
+        position: relative;
+        touch-action: none;
+        user-select: none;
+      }
+
+      .diagram-lightbox__canvas[data-dragging="true"] {
+        cursor: grabbing;
+      }
+
+      .diagram-lightbox__stage {
+        display: grid;
+        inset: 1rem;
+        place-items: center;
+        pointer-events: none;
+        position: absolute;
+        transform-origin: center;
+        will-change: transform;
+      }
+
+      .diagram-lightbox__stage img {
+        background: #161e28;
+        display: block;
+        height: 100%;
+        object-fit: contain;
+        width: 100%;
+      }
+
+      .quality-grid {
+        counter-reset: quality;
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-top: 2rem;
+      }
+
+      .quality-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        counter-increment: quality;
+        min-height: 22rem;
+        padding: clamp(1.5rem, 2.5vw, 2.5rem);
+      }
+
+      .quality-card::before {
+        color: var(--primary);
+        content: "0" counter(quality);
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        margin-bottom: 4rem;
+      }
+
+      .quality-card h3 {
+        font-size: clamp(1.4rem, 2vw, 2rem);
+        letter-spacing: -0.025em;
+      }
+
+      .quality-card p {
+        color: var(--muted);
+      }
+
+      .quality-card dl {
+        border-top: 1px solid var(--border);
+        margin: 1.5rem 0 0;
+        padding-top: 1rem;
+      }
+
+      .quality-card dt {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+
+      .quality-card dd {
+        margin: 0.15rem 0 0.85rem;
+      }
+
+      .table-wrap {
+        border: 1px solid var(--border);
+        margin-top: 2rem;
+        overflow-x: auto;
+      }
+
+      table {
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        min-width: 48rem;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--border);
+        padding: 1rem 1.15rem;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: var(--surface-raised);
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      td strong {
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+
+      .tag {
+        border: 1px solid currentColor;
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.63rem;
+        letter-spacing: 0.06em;
+        padding: 0.2rem 0.45rem;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .tag--success {
+        color: var(--success);
+      }
+
+      .tag--warning {
+        color: var(--warning);
+      }
+
+      .tag--danger {
+        color: var(--danger);
+      }
+
+      .risk-matrix {
+        display: grid;
+        gap: 1px;
+        grid-template-columns: 8rem repeat(3, minmax(8rem, 1fr));
+        margin-top: 2rem;
+        overflow-x: auto;
+      }
+
+      .risk-matrix > div {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        margin: -1px 0 0 -1px;
+        min-height: 6rem;
+        padding: 1rem;
+      }
+
+      .risk-matrix__axis {
+        align-items: center;
+        color: var(--muted);
+        display: flex;
+        font-family: var(--font-mono);
+        font-size: 0.63rem;
+        justify-content: center;
+        letter-spacing: 0.06em;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .risk-item {
+        border-left: 3px solid var(--warning);
+        font-size: 0.8rem;
+        line-height: 1.35;
+        margin-bottom: 0.6rem;
+        padding-left: 0.6rem;
+      }
+
+      .risk-item--danger {
+        border-left-color: var(--danger);
+      }
+
+      .risk-item--success {
+        border-left-color: var(--success);
+      }
+
+      .cost-summary {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-top: 2rem;
+      }
+
+      .cost-metric {
+        border-top: 3px solid var(--border-strong);
+        padding: 1.5rem 0;
+      }
+
+      .cost-metric span {
+        color: var(--muted);
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .cost-metric strong {
+        display: block;
+        font-size: clamp(1.7rem, 3vw, 3rem);
+        letter-spacing: -0.04em;
+        margin: 0.25rem 0;
+      }
+
+      .cost-metric small {
+        color: var(--muted);
+      }
+
+      .timeline {
+        border-left: 1px solid var(--border-strong);
+        margin: 2rem 0 0 0.5rem;
+        padding-left: 2rem;
+      }
+
+      .timeline__item {
+        padding: 0 0 2.5rem;
+        position: relative;
+      }
+
+      .timeline__item:last-child {
+        padding-bottom: 0;
+      }
+
+      .timeline__item::before {
+        background: var(--background);
+        border: 2px solid var(--primary);
+        content: "";
+        height: 0.75rem;
+        left: -2.43rem;
+        position: absolute;
+        top: 0.3rem;
+        width: 0.75rem;
+      }
+
+      .timeline__item span {
+        color: var(--primary);
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .timeline__item h3 {
+        margin: 0.25rem 0 0.5rem;
+      }
+
+      .timeline__item p {
+        color: var(--muted);
+        margin-bottom: 0;
+        max-width: 56rem;
+      }
+
+      .callout {
+        border-left: 3px solid var(--primary);
+        margin-top: 2rem;
+        padding: 0.4rem 0 0.4rem 1.25rem;
+      }
+
+      .callout strong {
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+
+      .callout p {
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .document-footer {
+        align-items: flex-end;
+        display: flex;
+        justify-content: space-between;
+        min-height: 20rem;
+        padding: clamp(3rem, 6vw, 7rem);
+      }
+
+      .document-footer img {
+        height: auto;
+        width: 9rem;
+      }
+
+      .document-footer p {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        margin: 0;
+        text-align: right;
+      }
+
+      @media (max-width: 1100px) {
+        :root {
+          --sidebar-width: 14rem;
+        }
+
+        .document-cover,
+        .document-section {
+          grid-template-columns: 1fr;
+        }
+
+        .document-cover__aside {
+          border-left: 0;
+          border-top: 1px solid var(--border);
+          gap: 3rem;
+        }
+
+        .section-heading {
+          margin-bottom: 2rem;
+          position: static;
+        }
+
+        .quality-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .quality-card {
+          min-height: 0;
+        }
+
+        .quality-card::before {
+          margin-bottom: 2rem;
+        }
+      }
+
+      @media (max-width: 760px) {
+        :root {
+          --header-height: 4rem;
+        }
+
+        .document-header {
+          padding: 0 1rem;
+        }
+
+        .document-header__type,
+        .document-status {
+          display: none;
+        }
+
+        .document-shell {
+          display: block;
+        }
+
+        .document-nav {
+          display: none;
+        }
+
+        .document-cover__main,
+        .document-cover__aside,
+        .document-section,
+        .document-footer {
+          padding: 2rem 1.25rem;
+        }
+
+        h1 {
+          font-size: clamp(2.7rem, 15vw, 4.5rem);
+        }
+
+        .content-grid,
+        .cost-summary,
+        .proposal-intro {
+          grid-template-columns: 1fr;
+        }
+
+        .decision-banner {
+          grid-template-columns: 1fr;
+        }
+
+        .document-footer {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 4rem;
+        }
+
+        .document-footer p {
+          text-align: left;
+        }
+      }
+
+      @media print {
+        @page {
+          background: var(--background);
+          margin: 0;
+          size: A4;
+        }
+
+        html {
+          background: var(--background);
+          font-size: 9pt;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        body {
+          background: var(--background);
+          color: var(--foreground);
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        *,
+        *::before,
+        *::after {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        .document-header,
+        .document-nav,
+        .reading-progress,
+        .skip-link,
+        .diagram-lightbox,
+        .document-footer {
+          display: none;
+        }
+
+        .print-header {
+          align-items: center;
+          color: var(--muted);
+          display: flex;
+          font-family: var(--font-mono);
+          font-size: 7pt;
+          justify-content: space-between;
+          left: 18mm;
+          letter-spacing: 0.02em;
+          position: fixed;
+          right: 18mm;
+          top: 7mm;
+          z-index: 100;
+        }
+
+        .print-header span:last-child {
+          text-align: right;
+        }
+
+        .document-shell {
+          display: block;
+          padding-top: 0;
+        }
+
+        .document-cover {
+          min-height: 297mm;
+          padding: 20mm 18mm 18mm;
+          page-break-after: always;
+        }
+
+        .document-section {
+          break-before: page;
+          display: block;
+          page-break-before: always;
+          padding: 20mm 18mm 18mm;
+        }
+
+        .section-heading {
+          break-after: avoid-page;
+          break-inside: avoid;
+          margin-bottom: 8mm;
+          position: static;
+        }
+
+        .content-block,
+        .quality-card,
+        .architecture__node,
+        .diagram-preview,
+        .decision-banner,
+        table,
+        tr {
+          break-inside: avoid;
+        }
+
+        .diagram-preview__trigger {
+          border-color: var(--border);
+          cursor: default;
+          height: auto;
+        }
+
+        .diagram-preview__trigger img {
+          height: 100%;
+          object-fit: contain;
+          width: 100%;
+        }
+
+        .diagram-preview--inline .diagram-preview__trigger {
+          aspect-ratio: auto;
+          height: 140mm;
+        }
+
+        .diagram-preview__action {
+          display: none;
+        }
+
+        a {
+          text-decoration: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="print-header" aria-hidden="true">
+      <time id="print-header-date"></time>
+      <span>Guia de decisão arquitetural · ArcSyn</span>
+    </div>
+    <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+    <header class="document-header">
+      <div class="document-header__brand">
+        <img src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+        <span class="document-header__type">Architecture decision guide</span>
+      </div>
+      <div class="document-header__actions">
+        <span class="document-status">Template · v1.0</span>
+        <button class="icon-button" id="theme-toggle" type="button" aria-label="Alternar tema">
+          <span aria-hidden="true">◐</span>
+        </button>
+        <button class="icon-button" id="print-document" type="button">Exportar PDF</button>
+      </div>
+    </header>
+    <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+
+    <div class="document-shell">
+      <nav class="document-nav" aria-label="Sumário do guia de decisão">
+        <p class="document-nav__label">Neste documento</p>
+        <ol>
+          <li><a href="#resumo">01 · Visão geral</a></li>
+          <li><a href="#criterios">02 · Premissas e critérios</a></li>
+          <li><a href="#alternativa-a">03 · Alternativa A</a></li>
+          <li><a href="#alternativa-b">04 · Alternativa B</a></li>
+          <li><a href="#alternativa-c">05 · Alternativa C</a></li>
+          <li><a href="#trade-offs">06 · Trade-offs comparados</a></li>
+          <li><a href="#riscos">07 · Riscos por alternativa</a></li>
+          <li><a href="#governanca">08 · Governança e custos</a></li>
+          <li><a href="#guia">09 · Guia de escolha</a></li>
+          <li><a href="#evidencias">10 · Evidências necessárias</a></li>
+        </ol>
+        <div class="document-nav__meta">
+          <span>Tipo</span>
+          Guia de decisão arquitetural
+        </div>
+      </nav>
+
+      <main class="technical-document" id="conteudo">
+        <section class="document-cover" aria-labelledby="document-title">
+          <div class="document-cover__main">
+            <p class="eyebrow">Comparativo de arquitetura · apoio à decisão</p>
+            <h1 id="document-title">[Questão arquitetural em linguagem de negócio]</h1>
+            <p class="document-cover__summary">
+              Este documento compara alternativas sem antecipar uma decisão final. Cada opção deve ser descrita pelo mesmo conjunto de critérios, com fatos
+              separados de hipóteses e da avaliação qualitativa do autor.
+            </p>
+          </div>
+          <aside class="document-cover__aside" aria-label="Metadados do comparativo">
+            <img src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+            <dl class="document-meta">
+              <div>
+                <dt>Finalidade</dt>
+                <dd>Apoio à decisão</dd>
+              </div>
+              <div>
+                <dt>Proprietário</dt>
+                <dd>[Organização proprietária]</dd>
+              </div>
+              <div>
+                <dt>Autor</dt>
+                <dd>[Nome do autor]</dd>
+              </div>
+              <div>
+                <dt>Elaborado por</dt>
+                <dd>[Consultoria, área ou organização]</dd>
+              </div>
+              <div>
+                <dt>Alternativas</dt>
+                <dd>[Alternativa A] · [Alternativa B] · [Alternativa C]</dd>
+              </div>
+              <div>
+                <dt>Atualização</dt>
+                <dd>[DD mmm AAAA]</dd>
+              </div>
+              <div>
+                <dt>Classificação</dt>
+                <dd>[Pública, interna ou confidencial]</dd>
+              </div>
+            </dl>
+          </aside>
+        </section>
+
+        <section class="document-section" id="resumo" aria-labelledby="resumo-title">
+          <div class="section-heading">
+            <span class="section-number">01</span>
+            <h2 id="resumo-title">Visão geral</h2>
+            <p>Apresente a questão decisiva e a diferença essencial entre as alternativas.</p>
+          </div>
+          <div class="section-content">
+            <p class="lead">
+              [Explique por que não existe uma alternativa dominante sem confirmar contexto, volume, latência, semântica dos dados, capacidade dos times e
+              restrições comerciais.]
+            </p>
+            <div class="content-grid">
+              <article class="content-block content-block--emphasis">
+                <span class="content-block__label">Alternativa A</span>
+                <h3>[Nome e tese em uma frase]</h3>
+                <p>[Fluxo resumido, principal ganho e principal custo.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Alternativa B</span>
+                <h3>[Nome e tese em uma frase]</h3>
+                <p>[Fluxo resumido, principal ganho e principal custo.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Alternativa C</span>
+                <h3>[Nome e tese em uma frase]</h3>
+                <p>[Fluxo resumido, principal ganho e principal custo.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Questão decisiva</span>
+                <h3>[Pergunta que realmente separa as opções]</h3>
+                <p>[Quais evidências transformam essa pergunta em uma decisão verificável?]</p>
+              </article>
+            </div>
+            <div class="decision-banner">
+              <span class="decision-banner__label">Uso deste documento</span>
+              <strong>Comparar opções e produzir evidência; não ocultar incerteza nem antecipar a escolha.</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="document-section" id="criterios" aria-labelledby="criterios-title">
+          <div class="section-heading">
+            <span class="section-number">02</span>
+            <h2 id="criterios-title">Premissas e critérios</h2>
+            <p>Declare o que precisa ser verdadeiro e como todas as alternativas serão avaliadas.</p>
+          </div>
+          <div class="section-content">
+            <p class="lead">[Registre a principal incerteza que impede uma comparação puramente objetiva.]</p>
+            <div class="content-grid">
+              <article class="content-block">
+                <span class="content-block__label">Premissas técnicas</span>
+                <h3>[Volume, latência e consistência]</h3>
+                <p>[Liste hipóteses mensuráveis e identifique o que ainda não foi validado.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Premissas organizacionais</span>
+                <h3>[Times, ownership e capacidade]</h3>
+                <p>[Explicite dependências entre equipes e disponibilidade operacional.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Critérios técnicos</span>
+                <h3>[Critérios comuns]</h3>
+                <p>[Ex.: escala, resiliência, latência, consistência, segurança e reversibilidade.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Critérios econômicos</span>
+                <h3>[Custos comuns]</h3>
+                <p>[Ex.: licença, infraestrutura, implantação, operação e custo de oportunidade.]</p>
+              </article>
+            </div>
+            <aside class="callout">
+              <strong>Regra de comparação</strong>
+              <p>Use os mesmos critérios, horizonte temporal e unidade de medida para todas as alternativas.</p>
+            </aside>
+          </div>
+        </section>
+
+        <section class="document-section" id="alternativa-a" aria-labelledby="alternativa-a-title">
+          <div class="section-heading">
+            <span class="section-number">03</span>
+            <h2 id="alternativa-a-title">Alternativa A · [Nome]</h2>
+            <p>[Tese curta que diferencia esta opção.]</p>
+          </div>
+          <div class="section-content">
+            <div class="proposal-intro">
+              <article class="proposal-intro__copy">
+                <p class="lead">[Explique em duas ou três frases o princípio da alternativa, o que ela preserva e de qual premissa depende.]</p>
+              </article>
+              <figure class="diagram-preview diagram-preview--inline">
+                <button
+                  class="diagram-preview__trigger"
+                  type="button"
+                  data-diagram-src="../assets/architecture-diagram-placeholder.svg"
+                  data-diagram-title="Alternativa A · Arquitetura"
+                  data-diagram-alt="Diagrama arquitetural da Alternativa A · [Nome]"
+                  aria-label="Ampliar o diagrama da Alternativa A · [Nome]"
+                >
+                  <img
+                    src="../assets/architecture-diagram-placeholder.svg"
+                    alt="Preview do diagrama da Alternativa A · [Nome]"
+                    decoding="async"
+                    fetchpriority="high"
+                    loading="eager"
+                  />
+                  <span class="diagram-preview__action" aria-hidden="true">Ampliar</span>
+                </button>
+                <figcaption>
+                  <strong>Desenho detalhado · Alternativa A · [Nome]</strong>
+                  <span>Clique para visualizar em tela cheia.</span>
+                </figcaption>
+              </figure>
+            </div>
+
+            <div class="architecture" role="img" aria-label="Fluxo resumido da Alternativa A · [Nome]">
+              <div class="architecture__node">
+                <span>Origem</span>
+                <strong>[Produtores]</strong>
+                <p>[Sistemas, serviços ou times que produzem o dado.]</p>
+              </div>
+              <div class="architecture__node">
+                <span>Processamento</span>
+                <strong>[Núcleo da alternativa]</strong>
+                <p>[Onde o dado é transformado, consolidado ou governado.]</p>
+              </div>
+              <div class="architecture__node">
+                <span>Integração</span>
+                <strong>[Contrato e transporte]</strong>
+                <p>[API, eventos, sincronização, lote ou adaptador.]</p>
+              </div>
+              <div class="architecture__node">
+                <span>Destino</span>
+                <strong>[Sistema consumidor]</strong>
+                <p>[Como o destino recebe, identifica e aplica a mudança.]</p>
+              </div>
+            </div>
+
+            <div class="content-grid">
+              <article class="content-block content-block--emphasis">
+                <span class="content-block__label">O que esta opção privilegia</span>
+                <h3>[Principal benefício]</h3>
+                <p>[Descreva coerência, autonomia, velocidade, custo, escala ou simplicidade preservada.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">O que esta opção sacrifica</span>
+                <h3>[Principal limitação]</h3>
+                <p>[Descreva custo, dependência, latência, coordenação ou complexidade adicional.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Condição de adequação</span>
+                <h3>[Quando tende a ser adequada]</h3>
+                <p>[Declare as condições observáveis sob as quais esta alternativa funciona melhor.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Sinal de revisão</span>
+                <h3>[Quando reconsiderar]</h3>
+                <p>[Defina o limite, evidência ou mudança de contexto que reabre a análise.]</p>
+              </article>
+            </div>
+
+            <div class="architecture__foundation">[Modelo de governança · responsáveis · contribuição · operação]</div>
+          </div>
+        </section>
+
+        <section class="document-section" id="alternativa-b" aria-labelledby="alternativa-b-title">
+          <div class="section-heading">
+            <span class="section-number">04</span>
+            <h2 id="alternativa-b-title">Alternativa B · [Nome]</h2>
+            <p>[Tese curta que diferencia esta opção.]</p>
+          </div>
+          <div class="section-content">
+            <div class="proposal-intro">
+              <article class="proposal-intro__copy">
+                <p class="lead">[Explique em duas ou três frases o princípio da alternativa, o que ela preserva e de qual premissa depende.]</p>
+              </article>
+              <figure class="diagram-preview diagram-preview--inline">
+                <button
+                  class="diagram-preview__trigger"
+                  type="button"
+                  data-diagram-src="../assets/architecture-diagram-placeholder.svg"
+                  data-diagram-title="Alternativa B · Arquitetura"
+                  data-diagram-alt="Diagrama arquitetural da Alternativa B · [Nome]"
+                  aria-label="Ampliar o diagrama da Alternativa B · [Nome]"
+                >
+                  <img
+                    src="../assets/architecture-diagram-placeholder.svg"
+                    alt="Preview do diagrama da Alternativa B · [Nome]"
+                    decoding="async"
+                    fetchpriority="high"
+                    loading="eager"
+                  />
+                  <span class="diagram-preview__action" aria-hidden="true">Ampliar</span>
+                </button>
+                <figcaption>
+                  <strong>Desenho detalhado · Alternativa B · [Nome]</strong>
+                  <span>Clique para visualizar em tela cheia.</span>
+                </figcaption>
+              </figure>
+            </div>
+
+            <div class="architecture" role="img" aria-label="Fluxo resumido da Alternativa B · [Nome]">
+              <div class="architecture__node">
+                <span>Origem</span>
+                <strong>[Produtores]</strong>
+                <p>[Sistemas, serviços ou times que produzem o dado.]</p>
+              </div>
+              <div class="architecture__node">
+                <span>Processamento</span>
+                <strong>[Núcleo da alternativa]</strong>
+                <p>[Onde o dado é transformado, consolidado ou governado.]</p>
+              </div>
+              <div class="architecture__node">
+                <span>Integração</span>
+                <strong>[Contrato e transporte]</strong>
+                <p>[API, eventos, sincronização, lote ou adaptador.]</p>
+              </div>
+              <div class="architecture__node">
+                <span>Destino</span>
+                <strong>[Sistema consumidor]</strong>
+                <p>[Como o destino recebe, identifica e aplica a mudança.]</p>
+              </div>
+            </div>
+
+            <div class="content-grid">
+              <article class="content-block content-block--emphasis">
+                <span class="content-block__label">O que esta opção privilegia</span>
+                <h3>[Principal benefício]</h3>
+                <p>[Descreva coerência, autonomia, velocidade, custo, escala ou simplicidade preservada.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">O que esta opção sacrifica</span>
+                <h3>[Principal limitação]</h3>
+                <p>[Descreva custo, dependência, latência, coordenação ou complexidade adicional.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Condição de adequação</span>
+                <h3>[Quando tende a ser adequada]</h3>
+                <p>[Declare as condições observáveis sob as quais esta alternativa funciona melhor.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Sinal de revisão</span>
+                <h3>[Quando reconsiderar]</h3>
+                <p>[Defina o limite, evidência ou mudança de contexto que reabre a análise.]</p>
+              </article>
+            </div>
+
+            <div class="architecture__foundation">[Modelo de governança · responsáveis · coordenação entre times · operação]</div>
+          </div>
+        </section>
+
+        <section class="document-section" id="alternativa-c" aria-labelledby="alternativa-c-title">
+          <div class="section-heading">
+            <span class="section-number">05</span>
+            <h2 id="alternativa-c-title">Alternativa C · [Nome]</h2>
+            <p>[Tese curta que diferencia esta opção.]</p>
+          </div>
+          <div class="section-content">
+            <div class="proposal-intro">
+              <article class="proposal-intro__copy">
+                <p class="lead">[Explique em duas ou três frases o princípio da alternativa, o que ela preserva e de qual premissa depende.]</p>
+              </article>
+              <figure class="diagram-preview diagram-preview--inline">
+                <button
+                  class="diagram-preview__trigger"
+                  type="button"
+                  data-diagram-src="../assets/architecture-diagram-placeholder.svg"
+                  data-diagram-title="Alternativa C · Arquitetura"
+                  data-diagram-alt="Diagrama arquitetural da Alternativa C · [Nome]"
+                  aria-label="Ampliar o diagrama da Alternativa C · [Nome]"
+                >
+                  <img
+                    src="../assets/architecture-diagram-placeholder.svg"
+                    alt="Preview do diagrama da Alternativa C · [Nome]"
+                    decoding="async"
+                    fetchpriority="high"
+                    loading="eager"
+                  />
+                  <span class="diagram-preview__action" aria-hidden="true">Ampliar</span>
+                </button>
+                <figcaption>
+                  <strong>Desenho detalhado · Alternativa C · [Nome]</strong>
+                  <span>Clique para visualizar em tela cheia.</span>
+                </figcaption>
+              </figure>
+            </div>
+
+            <div class="architecture" role="img" aria-label="Fluxo resumido da Alternativa C · [Nome]">
+              <div class="architecture__node">
+                <span>Origem</span>
+                <strong>[Produtores]</strong>
+                <p>[Sistemas, serviços ou times que produzem o dado.]</p>
+              </div>
+              <div class="architecture__node">
+                <span>Processamento</span>
+                <strong>[Núcleo da alternativa]</strong>
+                <p>[Onde o dado é transformado, consolidado ou governado.]</p>
+              </div>
+              <div class="architecture__node">
+                <span>Integração</span>
+                <strong>[Contrato e transporte]</strong>
+                <p>[API, eventos, sincronização, lote ou adaptador.]</p>
+              </div>
+              <div class="architecture__node">
+                <span>Destino</span>
+                <strong>[Sistema consumidor]</strong>
+                <p>[Como o destino recebe, identifica e aplica a mudança.]</p>
+              </div>
+            </div>
+
+            <div class="content-grid">
+              <article class="content-block content-block--emphasis">
+                <span class="content-block__label">O que esta opção privilegia</span>
+                <h3>[Principal benefício]</h3>
+                <p>[Descreva coerência, autonomia, velocidade, custo, escala ou simplicidade preservada.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">O que esta opção sacrifica</span>
+                <h3>[Principal limitação]</h3>
+                <p>[Descreva custo, dependência, latência, coordenação ou complexidade adicional.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Condição de adequação</span>
+                <h3>[Quando tende a ser adequada]</h3>
+                <p>[Declare as condições observáveis sob as quais esta alternativa funciona melhor.]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Sinal de revisão</span>
+                <h3>[Quando reconsiderar]</h3>
+                <p>[Defina o limite, evidência ou mudança de contexto que reabre a análise.]</p>
+              </article>
+            </div>
+
+            <div class="architecture__foundation">[Modelo de governança · ownership central ou federado · operação]</div>
+          </div>
+        </section>
+
+        <section class="document-section" id="trade-offs" aria-labelledby="trade-offs-title">
+          <div class="section-heading">
+            <span class="section-number">06</span>
+            <h2 id="trade-offs-title">Trade-offs comparados</h2>
+            <p>Compare as alternativas na mesma escala e explique o significado de cada avaliação.</p>
+          </div>
+          <div class="section-content">
+            <p class="lead">[Resuma o conflito central: o ganho de uma opção corresponde a qual custo em outra?]</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Critério</th>
+                    <th>Alternativa A</th>
+                    <th>Alternativa B</th>
+                    <th>Alternativa C</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Latência</th>
+                    <td>[Avaliação + motivo]</td>
+                    <td>[Avaliação + motivo]</td>
+                    <td>[Avaliação + motivo]</td>
+                  </tr>
+                  <tr>
+                    <th>Escalabilidade</th>
+                    <td>[Avaliação + motivo]</td>
+                    <td>[Avaliação + motivo]</td>
+                    <td>[Avaliação + motivo]</td>
+                  </tr>
+                  <tr>
+                    <th>Consistência</th>
+                    <td>[Avaliação + motivo]</td>
+                    <td>[Avaliação + motivo]</td>
+                    <td>[Avaliação + motivo]</td>
+                  </tr>
+                  <tr>
+                    <th>Governança</th>
+                    <td>[Avaliação + motivo]</td>
+                    <td>[Avaliação + motivo]</td>
+                    <td>[Avaliação + motivo]</td>
+                  </tr>
+                  <tr>
+                    <th>Custo</th>
+                    <td>[Avaliação + motivo]</td>
+                    <td>[Avaliação + motivo]</td>
+                    <td>[Avaliação + motivo]</td>
+                  </tr>
+                  <tr>
+                    <th>Reversibilidade</th>
+                    <td>[Avaliação + motivo]</td>
+                    <td>[Avaliação + motivo]</td>
+                    <td>[Avaliação + motivo]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <aside class="callout">
+              <strong>Escala sugerida</strong>
+              <p>Use termos como favorável, intermediária e desfavorável somente quando acompanhados da justificativa.</p>
+            </aside>
+          </div>
+        </section>
+
+        <section class="document-section" id="riscos" aria-labelledby="riscos-title">
+          <div class="section-heading">
+            <span class="section-number">07</span>
+            <h2 id="riscos-title">Riscos por alternativa</h2>
+            <p>Registre risco, consequência, sinal de materialização e resposta possível.</p>
+          </div>
+          <div class="section-content">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Alternativa</th>
+                    <th>Risco</th>
+                    <th>Impacto</th>
+                    <th>Indicador</th>
+                    <th>Resposta</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="tag tag--warning">A</span></td>
+                    <td>[Risco principal]</td>
+                    <td>[Consequência]</td>
+                    <td>[Sinal mensurável]</td>
+                    <td>[Mitigação ou saída]</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag tag--warning">B</span></td>
+                    <td>[Risco principal]</td>
+                    <td>[Consequência]</td>
+                    <td>[Sinal mensurável]</td>
+                    <td>[Mitigação ou saída]</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag tag--warning">C</span></td>
+                    <td>[Risco principal]</td>
+                    <td>[Consequência]</td>
+                    <td>[Sinal mensurável]</td>
+                    <td>[Mitigação ou saída]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="risk-matrix" aria-label="Matriz qualitativa de riscos">
+              <div>
+                <span class="risk-matrix__axis">Alto impacto</span>
+                <article class="risk-item risk-item--danger"><strong>[Risco crítico]</strong><br />[Alternativa e resposta]</article>
+              </div>
+              <div>
+                <article class="risk-item"><strong>[Risco relevante]</strong><br />[Alternativa e resposta]</article>
+              </div>
+              <div>
+                <span class="risk-matrix__axis">Baixo impacto</span>
+                <article class="risk-item risk-item--success"><strong>[Risco controlado]</strong><br />[Alternativa e resposta]</article>
+              </div>
+              <div><span class="risk-matrix__axis">Baixa probabilidade → Alta probabilidade</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="document-section" id="governanca" aria-labelledby="governanca-title">
+          <div class="section-heading">
+            <span class="section-number">08</span>
+            <h2 id="governanca-title">Governança, operação e custos</h2>
+            <p>Compare quem decide, quem executa, quem opera e quanto custa sustentar cada alternativa.</p>
+          </div>
+          <div class="section-content">
+            <div class="cost-summary">
+              <div class="cost-metric"><span>Alternativa A</span><strong>[Faixa]</strong><small>[Principais vetores de custo]</small></div>
+              <div class="cost-metric"><span>Alternativa B</span><strong>[Faixa]</strong><small>[Principais vetores de custo]</small></div>
+              <div class="cost-metric"><span>Alternativa C</span><strong>[Faixa]</strong><small>[Principais vetores de custo]</small></div>
+            </div>
+            <div class="content-grid">
+              <article class="content-block">
+                <span class="content-block__label">Ownership</span>
+                <h3>[Central, federado ou composto]</h3>
+                <p>[Quem define contratos, aceita mudanças e responde por incidentes?]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Coordenação</span>
+                <h3>[Times envolvidos]</h3>
+                <p>[Quantas equipes precisam concordar e em qual frequência?]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Operação</span>
+                <h3>[Runbooks e observabilidade]</h3>
+                <p>[Quais filas, limites, SLIs, alertas e procedimentos precisam existir?]</p>
+              </article>
+              <article class="content-block">
+                <span class="content-block__label">Custo total</span>
+                <h3>[Implantação + recorrência]</h3>
+                <p>[Separe plataforma, infraestrutura, pessoas, licença e oportunidade.]</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="document-section" id="guia" aria-labelledby="guia-title">
+          <div class="section-heading">
+            <span class="section-number">09</span>
+            <h2 id="guia-title">Guia de escolha</h2>
+            <p>Transforme critérios e cenários em orientação, mantendo a decisão final fora da análise.</p>
+          </div>
+          <div class="section-content">
+            <div class="quality-grid">
+              <article class="quality-card">
+                <h3>Considere a Alternativa A quando…</h3>
+                <p>[Condições verificáveis que favorecem A.]</p>
+                <dl>
+                  <dt>Evite quando</dt>
+                  <dd>[Condição que invalida A.]</dd>
+                </dl>
+              </article>
+              <article class="quality-card">
+                <h3>Considere a Alternativa B quando…</h3>
+                <p>[Condições verificáveis que favorecem B.]</p>
+                <dl>
+                  <dt>Evite quando</dt>
+                  <dd>[Condição que invalida B.]</dd>
+                </dl>
+              </article>
+              <article class="quality-card">
+                <h3>Considere a Alternativa C quando…</h3>
+                <p>[Condições verificáveis que favorecem C.]</p>
+                <dl>
+                  <dt>Evite quando</dt>
+                  <dd>[Condição que invalida C.]</dd>
+                </dl>
+              </article>
+            </div>
+            <aside class="callout">
+              <strong>Avaliação qualitativa do autor · confiança [baixa, média ou alta]</strong>
+              <p>[Opcional: registre a percepção do autor, as razões e as incertezas. Mantenha esta nota explicitamente separada da comparação factual.]</p>
+            </aside>
+          </div>
+        </section>
+
+        <section class="document-section" id="evidencias" aria-labelledby="evidencias-title">
+          <div class="section-heading">
+            <span class="section-number">10</span>
+            <h2 id="evidencias-title">Evidências necessárias</h2>
+            <p>Converta hipóteses em medições, responsáveis e condições de reavaliação.</p>
+          </div>
+          <div class="section-content">
+            <div class="timeline">
+              <article class="timeline__item">
+                <span>Evidência 01</span>
+                <h3>[Inventário]</h3>
+                <p>[O que precisa ser identificado e por quê.]</p>
+              </article>
+              <article class="timeline__item">
+                <span>Evidência 02</span>
+                <h3>[Linha de base]</h3>
+                <p>[Volume, latência, custo ou capacidade a medir.]</p>
+              </article>
+              <article class="timeline__item">
+                <span>Evidência 03</span>
+                <h3>[Validação]</h3>
+                <p>[Teste técnico, comercial ou operacional necessário.]</p>
+              </article>
+              <article class="timeline__item">
+                <span>Evidência 04</span>
+                <h3>[Modelo operacional]</h3>
+                <p>[Ownership, runbook e compromisso entre times.]</p>
+              </article>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Descrição</th>
+                    <th>Responsável</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>EVD-01</td>
+                    <td>[Hipótese a medir]</td>
+                    <td>[Responsável]</td>
+                    <td>Pendente</td>
+                  </tr>
+                  <tr>
+                    <td>VAL-01</td>
+                    <td>[Limite a validar]</td>
+                    <td>[Responsável]</td>
+                    <td>Pendente</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <aside class="callout">
+              <strong>Resultado esperado</strong>
+              <p>[Defina qual registro formal receberá a decisão, as evidências utilizadas e os gatilhos de revisão.]</p>
+            </aside>
+          </div>
+        </section>
+
+        <footer class="document-footer">
+          <img src="../assets/arcsyn-logo.png" alt="ArcSyn" />
+          <p>Guia de decisão arquitetural · [ID DO DOCUMENTO]<br />[Classificação] · [Organização] · [AAAA]</p>
+        </footer>
+      </main>
+    </div>
+
+    <dialog class="diagram-lightbox" id="diagram-lightbox" aria-labelledby="diagram-lightbox-title">
+      <div class="diagram-lightbox__toolbar">
+        <p id="diagram-lightbox-title">Diagrama de arquitetura</p>
+        <div class="diagram-lightbox__actions">
+          <button class="diagram-lightbox__zoom" id="diagram-zoom-out" type="button" aria-label="Diminuir zoom">−</button>
+          <output class="diagram-lightbox__zoom-status" id="diagram-zoom-status" aria-live="polite">100%</output>
+          <button class="diagram-lightbox__zoom" id="diagram-zoom-in" type="button" aria-label="Aumentar zoom">+</button>
+          <button class="diagram-lightbox__zoom" id="diagram-zoom-reset" type="button" title="Exibir o diagrama inteiro">Ajustar</button>
+          <button class="diagram-lightbox__close" id="diagram-lightbox-close" type="button">Fechar <span aria-hidden="true">×</span></button>
+        </div>
+      </div>
+      <div
+        class="diagram-lightbox__canvas"
+        id="diagram-lightbox-canvas"
+        tabindex="0"
+        aria-label="Diagrama ampliado. Use a roda do mouse ou os botões para aplicar zoom; clique e arraste para mover."
+      >
+        <div class="diagram-lightbox__stage" id="diagram-lightbox-stage">
+          <img id="diagram-lightbox-image" alt="" draggable="false" />
+        </div>
+      </div>
+    </dialog>
+
+    <script>
+      (() => {
+        const root = document.documentElement;
+        const progress = document.querySelector("#reading-progress");
+        const printHeaderDate = document.querySelector("#print-header-date");
+        const sections = [...document.querySelectorAll(".document-section[id]")];
+        const links = [...document.querySelectorAll(".document-nav a")];
+        const diagramLightbox = document.querySelector("#diagram-lightbox");
+        const diagramLightboxCanvas = document.querySelector("#diagram-lightbox-canvas");
+        const diagramLightboxStage = document.querySelector("#diagram-lightbox-stage");
+        const diagramLightboxImage = document.querySelector("#diagram-lightbox-image");
+        const diagramLightboxTitle = document.querySelector("#diagram-lightbox-title");
+        const diagramLightboxClose = document.querySelector("#diagram-lightbox-close");
+        const diagramZoomIn = document.querySelector("#diagram-zoom-in");
+        const diagramZoomOut = document.querySelector("#diagram-zoom-out");
+        const diagramZoomReset = document.querySelector("#diagram-zoom-reset");
+        const diagramZoomStatus = document.querySelector("#diagram-zoom-status");
+        const diagramTriggers = [...document.querySelectorAll("[data-diagram-src]")];
+        const savedTheme = localStorage.getItem("arcsyn-architecture-decision-theme");
+        const diagramZoomStep = 0.05;
+        const diagramZoomMin = 0.05;
+        const diagramZoomMax = 5;
+        const diagramViewport = {
+          zoom: 1,
+          x: 0,
+          y: 0,
+          dragging: false,
+          pointerId: null,
+          startX: 0,
+          startY: 0,
+          originX: 0,
+          originY: 0,
+        };
+
+        if (savedTheme === "light" || savedTheme === "dark") {
+          root.dataset.theme = savedTheme;
+        }
+
+        document.querySelector("#theme-toggle").addEventListener("click", () => {
+          root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+          localStorage.setItem("arcsyn-architecture-decision-theme", root.dataset.theme);
+        });
+
+        const updatePrintHeaderDate = () => {
+          printHeaderDate.textContent = new Intl.DateTimeFormat("pt-BR", {
+            dateStyle: "short",
+            timeStyle: "short",
+          }).format(new Date());
+        };
+
+        const preparePrintableImages = async () => {
+          const images = [...document.querySelectorAll(".diagram-preview img")];
+
+          await Promise.all(
+            images.map(async (image) => {
+              if (!image.complete) {
+                await new Promise((resolve) => {
+                  image.addEventListener("load", resolve, { once: true });
+                  image.addEventListener("error", resolve, { once: true });
+                });
+              }
+
+              if (typeof image.decode === "function") {
+                await image.decode().catch(() => {});
+              }
+            }),
+          );
+        };
+
+        document.querySelector("#print-document").addEventListener("click", async () => {
+          updatePrintHeaderDate();
+          await preparePrintableImages();
+          window.print();
+        });
+        window.addEventListener("beforeprint", updatePrintHeaderDate);
+
+        const renderDiagramViewport = () => {
+          diagramLightboxStage.style.transform = `translate(${diagramViewport.x}px, ${diagramViewport.y}px) scale(${diagramViewport.zoom})`;
+          diagramZoomStatus.value = `${Math.round(diagramViewport.zoom * 100)}%`;
+          diagramZoomOut.disabled = diagramViewport.zoom <= diagramZoomMin;
+          diagramZoomIn.disabled = diagramViewport.zoom >= diagramZoomMax;
+        };
+
+        const centerDiagramViewport = () => {
+          diagramViewport.x = 0;
+          diagramViewport.y = 0;
+        };
+
+        const setDiagramZoom = (nextZoom) => {
+          diagramViewport.zoom = Math.min(diagramZoomMax, Math.max(diagramZoomMin, nextZoom));
+          renderDiagramViewport();
+        };
+
+        const fitDiagramViewport = () => {
+          if (!diagramLightboxImage.naturalWidth || !diagramLightboxImage.naturalHeight) return;
+
+          const availableWidth = Math.max(1, diagramLightboxCanvas.clientWidth - 32);
+          const availableHeight = Math.max(1, diagramLightboxCanvas.clientHeight - 32);
+          const exactZoom = Math.min(availableWidth / diagramLightboxImage.naturalWidth, availableHeight / diagramLightboxImage.naturalHeight, diagramZoomMax);
+          const roundedZoom = Math.round(exactZoom / diagramZoomStep) * diagramZoomStep;
+
+          centerDiagramViewport();
+          diagramViewport.zoom = Math.min(diagramZoomMax, Math.max(diagramZoomMin, roundedZoom));
+          renderDiagramViewport();
+        };
+
+        diagramLightboxImage.addEventListener("load", fitDiagramViewport);
+
+        for (const trigger of diagramTriggers) {
+          trigger.addEventListener("click", () => {
+            diagramLightboxImage.src = trigger.dataset.diagramSrc;
+            diagramLightboxImage.alt = trigger.dataset.diagramAlt;
+            diagramLightboxTitle.textContent = trigger.dataset.diagramTitle;
+            centerDiagramViewport();
+            diagramLightbox.showModal();
+            diagramLightboxCanvas.focus();
+            if (diagramLightboxImage.complete) requestAnimationFrame(fitDiagramViewport);
+          });
+        }
+
+        diagramZoomIn.addEventListener("click", () => setDiagramZoom(diagramViewport.zoom + diagramZoomStep));
+        diagramZoomOut.addEventListener("click", () => setDiagramZoom(diagramViewport.zoom - diagramZoomStep));
+        diagramZoomReset.addEventListener("click", fitDiagramViewport);
+
+        diagramLightboxCanvas.addEventListener(
+          "wheel",
+          (event) => {
+            event.preventDefault();
+            setDiagramZoom(diagramViewport.zoom + (event.deltaY < 0 ? diagramZoomStep : -diagramZoomStep));
+          },
+          { passive: false },
+        );
+
+        diagramLightboxCanvas.addEventListener("pointerdown", (event) => {
+          if (event.button !== 0) return;
+          diagramViewport.dragging = true;
+          diagramViewport.pointerId = event.pointerId;
+          diagramViewport.startX = event.clientX;
+          diagramViewport.startY = event.clientY;
+          diagramViewport.originX = diagramViewport.x;
+          diagramViewport.originY = diagramViewport.y;
+          diagramLightboxCanvas.dataset.dragging = "true";
+          diagramLightboxCanvas.setPointerCapture(event.pointerId);
+        });
+
+        diagramLightboxCanvas.addEventListener("pointermove", (event) => {
+          if (!diagramViewport.dragging || event.pointerId !== diagramViewport.pointerId) return;
+          diagramViewport.x = diagramViewport.originX + event.clientX - diagramViewport.startX;
+          diagramViewport.y = diagramViewport.originY + event.clientY - diagramViewport.startY;
+          renderDiagramViewport();
+        });
+
+        const stopDiagramDrag = (event) => {
+          if (!diagramViewport.dragging || event.pointerId !== diagramViewport.pointerId) return;
+          diagramViewport.dragging = false;
+          diagramViewport.pointerId = null;
+          delete diagramLightboxCanvas.dataset.dragging;
+          if (diagramLightboxCanvas.hasPointerCapture(event.pointerId)) {
+            diagramLightboxCanvas.releasePointerCapture(event.pointerId);
+          }
+        };
+
+        diagramLightboxCanvas.addEventListener("pointerup", stopDiagramDrag);
+        diagramLightboxCanvas.addEventListener("pointercancel", stopDiagramDrag);
+
+        diagramLightboxCanvas.addEventListener("keydown", (event) => {
+          if (event.key === "+" || event.key === "=") {
+            setDiagramZoom(diagramViewport.zoom + diagramZoomStep);
+          }
+          if (event.key === "-") setDiagramZoom(diagramViewport.zoom - diagramZoomStep);
+          if (event.key === "0") fitDiagramViewport();
+        });
+
+        diagramLightboxClose.addEventListener("click", () => diagramLightbox.close());
+
+        diagramLightbox.addEventListener("click", (event) => {
+          if (event.target === diagramLightbox) diagramLightbox.close();
+        });
+
+        diagramLightbox.addEventListener("close", () => {
+          centerDiagramViewport();
+          diagramViewport.zoom = 1;
+          diagramLightboxImage.removeAttribute("src");
+          diagramLightboxImage.alt = "";
+        });
+
+        const updateProgress = () => {
+          const available = document.documentElement.scrollHeight - window.innerHeight;
+          const ratio = available > 0 ? window.scrollY / available : 0;
+          progress.style.transform = `scaleX(${Math.min(1, Math.max(0, ratio))})`;
+        };
+
+        const updateNavigation = () => {
+          let current = sections[0]?.id;
+          for (const section of sections) {
+            if (section.getBoundingClientRect().top <= window.innerHeight * 0.35) {
+              current = section.id;
+            }
+          }
+
+          for (const link of links) {
+            const active = link.getAttribute("href") === `#${current}`;
+            if (active) link.setAttribute("aria-current", "location");
+            else link.removeAttribute("aria-current");
+          }
+        };
+
+        const onScroll = () => {
+          updateProgress();
+          updateNavigation();
+        };
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", onScroll);
+        onScroll();
+      })();
+    </script>
+  </body>
+</html>
