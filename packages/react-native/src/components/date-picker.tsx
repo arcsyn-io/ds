@@ -36,6 +36,8 @@ export interface DatePickerProps {
   invalid?: boolean;
   required?: boolean;
   clearable?: boolean;
+  includeTime?: boolean;
+  minuteStep?: number;
   size?: DatePickerSize;
   firstDayOfWeek?: 0 | 1;
   isDateUnavailable?: (value: string) => boolean;
@@ -48,10 +50,12 @@ export interface DatePickerProps {
 }
 
 const isoPattern = /^\d{4}-\d{2}-\d{2}$/;
+const isoDateTimePattern = /^(\d{4}-\d{2}-\d{2})T([01]\d|2[0-3]):([0-5]\d)$/;
 
 function fromISO(value: string | null | undefined) {
-  if (!value || !isoPattern.test(value)) return null;
-  const [year, month, day] = value.split("-").map(Number);
+  const dateValue = value?.slice(0, 10);
+  if (!dateValue || !isoPattern.test(dateValue)) return null;
+  const [year, month, day] = dateValue.split("-").map(Number);
   const date = new Date(year, month - 1, day);
   return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day
     ? date
@@ -60,6 +64,16 @@ function fromISO(value: string | null | undefined) {
 
 function toISO(date: Date) {
   return `${String(date.getFullYear()).padStart(4, "0")}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function getTime(value: string | null | undefined) {
+  const match = value ? isoDateTimePattern.exec(value) : null;
+  return match ? { hour: Number(match[2]), minute: Number(match[3]) } : { hour: 0, minute: 0 };
+}
+
+function toValue(date: Date, includeTime: boolean, hour = 0, minute = 0) {
+  if (!includeTime) return toISO(date);
+  return `${toISO(date)}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 }
 
 function addDays(date: Date, amount: number) {
@@ -72,19 +86,31 @@ function addMonths(date: Date, amount: number) {
 
 function defaultFormatValue(value: string, locale: string) {
   const date = fromISO(value);
-  return date
-    ? new Intl.DateTimeFormat(locale, { day: "2-digit", month: "2-digit", year: "numeric" }).format(date)
-    : value;
+  if (!date) return value;
+  const time = getTime(value);
+  return new Intl.DateTimeFormat(locale, {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    ...(isoDateTimePattern.test(value)
+      ? { hour: "2-digit", minute: "2-digit", hour12: false }
+      : {}),
+  }).format(new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.hour, time.minute));
 }
 
-function defaultParseInput(input: string) {
+function defaultParseInput(input: string, _locale: string, includeTime = false) {
   const normalized = input.trim();
-  if (fromISO(normalized)) return normalized;
-  const match = /^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/.exec(normalized);
+  if (isoDateTimePattern.test(normalized)) return normalized;
+  if (fromISO(normalized) && !includeTime) return normalized;
+  const match = /^(\d{1,2})[./-](\d{1,2})[./-](\d{4})(?:\s+([01]?\d|2[0-3]):([0-5]\d))?$/.exec(
+    normalized,
+  );
   if (!match) return null;
-  const [, day, month, year] = match;
+  const [, day, month, year, hour, minute] = match;
   const value = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-  return fromISO(value) ? value : null;
+  if (!fromISO(value)) return null;
+  if (!includeTime) return value;
+  return `${value}T${String(hour ?? "0").padStart(2, "0")}:${minute ?? "00"}`;
 }
 
 const heightBySize: Record<DatePickerSize, number> = { sm: 44, md: 44, lg: 48 };
@@ -96,7 +122,7 @@ export function DatePicker({
   label,
   description,
   error,
-  placeholder = "Selecione uma data",
+  placeholder,
   locale = "pt-BR",
   min,
   max,
@@ -105,11 +131,13 @@ export function DatePicker({
   invalid = false,
   required = false,
   clearable = true,
+  includeTime = false,
+  minuteStep = 1,
   size = "md",
   firstDayOfWeek = 0,
   isDateUnavailable,
   formatValue = defaultFormatValue,
-  parseInput = defaultParseInput,
+  parseInput,
   invalidInputMessage = "Informe uma data válida.",
   accessibilityHint = "Abre o calendário para escolher uma data",
   style,
@@ -120,17 +148,21 @@ export function DatePicker({
   const [internalValue, setInternalValue] = useState(defaultValue);
   const selectedValue = isControlled ? value : internalValue;
   const selectedDate = fromISO(selectedValue);
+  const selectedTime = getTime(selectedValue);
   const today = new Date();
   const [draft, setDraft] = useState(() =>
     selectedValue ? formatValue(selectedValue, locale) : "",
   );
   const [inputInvalid, setInputInvalid] = useState(false);
   const [open, setOpen] = useState(false);
+  const [hour, setHour] = useState(selectedTime.hour);
+  const [minute, setMinute] = useState(selectedTime.minute);
   const [viewDate, setViewDate] = useState(
     () => new Date((selectedDate ?? today).getFullYear(), (selectedDate ?? today).getMonth(), 1),
   );
   const minDate = fromISO(min);
   const maxDate = fromISO(max);
+  const normalizedMinuteStep = Math.min(60, Math.max(1, Math.floor(minuteStep)));
 
   const weekdays = useMemo(() => {
     const formatter = new Intl.DateTimeFormat(locale, { weekday: "narrow" });
@@ -182,6 +214,9 @@ export function DatePicker({
 
   useEffect(() => {
     setDraft(selectedValue ? formatValue(selectedValue, locale) : "");
+    const nextTime = getTime(selectedValue);
+    setHour(nextTime.hour);
+    setMinute(nextTime.minute);
     setInputInvalid(false);
   }, [formatValue, locale, selectedValue]);
 
@@ -192,9 +227,16 @@ export function DatePicker({
       if (!required) updateValue(null);
       return;
     }
-    const parsed = parseInput(trimmed, locale);
+    const parsed = parseInput
+      ? parseInput(trimmed, locale)
+      : defaultParseInput(trimmed, locale, includeTime);
     const date = fromISO(parsed);
-    if (!parsed || !date || unavailable(date)) {
+    if (
+      !parsed ||
+      !date ||
+      unavailable(date) ||
+      (includeTime && !isoDateTimePattern.test(parsed))
+    ) {
       setInputInvalid(true);
       return;
     }
@@ -207,15 +249,31 @@ export function DatePicker({
     if (disabled || readOnly) return;
     const next = selectedDate ?? today;
     setViewDate(new Date(next.getFullYear(), next.getMonth(), 1));
+    const nextTime = getTime(selectedValue);
+    setHour(nextTime.hour);
+    setMinute(nextTime.minute);
     setOpen(true);
   }
 
   function selectDate(date: Date) {
     if (unavailable(date)) return;
-    updateValue(toISO(date));
-    setDraft(formatValue(toISO(date), locale));
+    const nextValue = toValue(date, includeTime, hour, minute);
+    updateValue(nextValue);
+    setDraft(formatValue(nextValue, locale));
     setInputInvalid(false);
-    setOpen(false);
+    if (!includeTime) setOpen(false);
+  }
+
+  function updateTime(nextHour: number, nextMinute: number) {
+    const normalizedHour = (nextHour + 24) % 24;
+    const normalizedMinute = (nextMinute + 60) % 60;
+    setHour(normalizedHour);
+    setMinute(normalizedMinute);
+    if (!selectedDate) return;
+    const nextValue = toValue(selectedDate, true, normalizedHour, normalizedMinute);
+    updateValue(nextValue);
+    setDraft(formatValue(nextValue, locale));
+    setInputInvalid(false);
   }
 
   return (
@@ -233,7 +291,7 @@ export function DatePicker({
           accessibilityState={{ disabled }}
           editable={!disabled && !readOnly}
           value={draft}
-          placeholder={placeholder}
+          placeholder={placeholder ?? (includeTime ? "Selecione data e hora" : "Selecione uma data")}
           placeholderTextColor={colors.mutedForeground}
           keyboardType="numbers-and-punctuation"
           returnKeyType="done"
@@ -389,7 +447,7 @@ export function DatePicker({
               <View style={styles.week} key={week}>
                 {days.slice(week * 7, week * 7 + 7).map((date) => {
                   const dateValue = toISO(date);
-                  const selected = selectedValue === dateValue;
+                  const selected = Boolean(selectedDate && toISO(selectedDate) === dateValue);
                   const outside = date.getMonth() !== viewDate.getMonth();
                   const blocked = unavailable(date);
                   return (
@@ -427,6 +485,100 @@ export function DatePicker({
                 })}
               </View>
             ))}
+            {includeTime ? (
+              <View
+                accessibilityLabel="Horário"
+                style={[styles.timeSection, { borderTopColor: colors.border }]}
+              >
+                <Text
+                  style={[
+                    styles.timeHeading,
+                    {
+                      color: colors.mutedForeground,
+                      fontFamily: tokens.fontFamily.sansSemibold,
+                    },
+                  ]}
+                >
+                  Horário
+                </Text>
+                <View style={styles.timeControls}>
+                  <View style={styles.timeField}>
+                    <Text
+                      style={[
+                        styles.timeLabel,
+                        { color: colors.mutedForeground, fontFamily: tokens.fontFamily.sans },
+                      ]}
+                    >
+                      Hora
+                    </Text>
+                    <View style={[styles.timeStepper, { borderColor: colors.border }]}>
+                      <Pressable
+                        accessibilityRole="button"
+                        accessibilityLabel="Diminuir hora"
+                        onPress={() => updateTime(hour - 1, minute)}
+                        style={styles.timeButton}
+                      >
+                        <Text style={{ color: colors.foreground }}>−</Text>
+                      </Pressable>
+                      <Text
+                        accessibilityLabel={`Hora ${String(hour).padStart(2, "0")}`}
+                        style={[
+                          styles.timeValue,
+                          { color: colors.foreground, fontFamily: tokens.fontFamily.sansSemibold },
+                        ]}
+                      >
+                        {String(hour).padStart(2, "0")}
+                      </Text>
+                      <Pressable
+                        accessibilityRole="button"
+                        accessibilityLabel="Aumentar hora"
+                        onPress={() => updateTime(hour + 1, minute)}
+                        style={styles.timeButton}
+                      >
+                        <Text style={{ color: colors.foreground }}>+</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                  <View style={styles.timeField}>
+                    <Text
+                      style={[
+                        styles.timeLabel,
+                        { color: colors.mutedForeground, fontFamily: tokens.fontFamily.sans },
+                      ]}
+                    >
+                      Minuto
+                    </Text>
+                    <View style={[styles.timeStepper, { borderColor: colors.border }]}>
+                      <Pressable
+                        accessibilityRole="button"
+                        accessibilityLabel="Diminuir minuto"
+                        onPress={() => updateTime(hour, minute - normalizedMinuteStep)}
+                        style={styles.timeButton}
+                      >
+                        <Text style={{ color: colors.foreground }}>−</Text>
+                      </Pressable>
+                      <Text
+                        accessibilityLabel={`Minuto ${String(minute).padStart(2, "0")}`}
+                        style={[
+                          styles.timeValue,
+                          { color: colors.foreground, fontFamily: tokens.fontFamily.sansSemibold },
+                        ]}
+                      >
+                        {String(minute).padStart(2, "0")}
+                      </Text>
+                      <Pressable
+                        accessibilityRole="button"
+                        accessibilityLabel="Aumentar minuto"
+                        onPress={() => updateTime(hour, minute + normalizedMinuteStep)}
+                        style={styles.timeButton}
+                      >
+                        <Text style={{ color: colors.foreground }}>+</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            ) : null}
             <View style={[styles.footer, { borderTopColor: colors.border }]}>
               <Pressable
                 accessibilityRole="button"
@@ -444,7 +596,7 @@ export function DatePicker({
                 style={[styles.footerButton, { borderColor: colors.border }]}
               >
                 <Text style={{ color: colors.foreground, fontFamily: tokens.fontFamily.sansMedium }}>
-                  Fechar
+                  {includeTime ? "Aplicar" : "Fechar"}
                 </Text>
               </Pressable>
             </View>
@@ -534,6 +686,30 @@ const styles = StyleSheet.create({
     width: `${100 / 7}%`,
   },
   blocked: { opacity: 0.32 },
+  timeSection: {
+    borderTopWidth: 1,
+    gap: tokens.spacing[2],
+    marginTop: tokens.spacing[2],
+    paddingTop: tokens.spacing[2],
+  },
+  timeHeading: { fontSize: tokens.fontSize.xs },
+  timeControls: { flexDirection: "row", gap: tokens.spacing[2] },
+  timeField: { flex: 1, gap: tokens.spacing[1] },
+  timeLabel: { fontSize: tokens.fontSize.xs },
+  timeStepper: {
+    alignItems: "center",
+    borderRadius: tokens.radius.sm,
+    borderWidth: 1,
+    flexDirection: "row",
+    minHeight: 44,
+  },
+  timeButton: {
+    alignItems: "center",
+    height: 44,
+    justifyContent: "center",
+    width: 44,
+  },
+  timeValue: { flex: 1, fontSize: tokens.fontSize.sm, textAlign: "center" },
   footer: {
     alignItems: "center",
     borderTopWidth: 1,

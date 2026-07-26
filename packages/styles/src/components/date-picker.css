@@ -89,6 +89,7 @@
   .arcsyn-date-picker__trigger:focus-visible,
   .arcsyn-date-picker__nav:focus-visible,
   .arcsyn-date-picker__day:focus-visible,
+  .arcsyn-date-picker__time select:focus-visible,
   .arcsyn-date-picker__today:focus-visible,
   .arcsyn-date-picker__close:focus-visible {
     outline: 2px solid var(--arcsyn-color-focus-ring);
@@ -276,6 +277,61 @@
   .arcsyn-date-picker__day:disabled,
   .arcsyn-date-picker__nav:disabled,
   .arcsyn-date-picker__today:disabled { cursor: not-allowed; opacity: 0.35; text-decoration: line-through; }
+
+  .arcsyn-date-picker__time {
+    align-items: end;
+    border: 0;
+    border-block-start: 1px solid var(--arcsyn-color-border);
+    display: grid;
+    gap: var(--arcsyn-spacing-1);
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    margin: var(--arcsyn-spacing-2) 0 0;
+    padding: var(--arcsyn-spacing-2) 0 0;
+  }
+
+  .arcsyn-date-picker__time legend {
+    color: var(--arcsyn-color-muted-foreground);
+    float: inline-start;
+    font-size: var(--arcsyn-font-size-xs);
+    font-weight: 600;
+    grid-column: 1 / -1;
+    margin-block-end: var(--arcsyn-spacing-1);
+    padding: 0;
+    width: 100%;
+  }
+
+  .arcsyn-date-picker__time label {
+    display: grid;
+    gap: 2px;
+  }
+
+  .arcsyn-date-picker__time label > span {
+    block-size: 1px;
+    clip-path: inset(50%);
+    inline-size: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  }
+
+  .arcsyn-date-picker__time > span {
+    align-items: center;
+    display: flex;
+    font-weight: 600;
+    min-block-size: 2.25rem;
+  }
+
+  .arcsyn-date-picker__time select {
+    background: var(--arcsyn-color-surface);
+    border: 1px solid var(--arcsyn-color-border);
+    border-radius: var(--arcsyn-radius-sm);
+    color: var(--arcsyn-color-foreground);
+    font: inherit;
+    font-size: var(--arcsyn-font-size-sm);
+    min-block-size: 2.25rem;
+    padding-inline: var(--arcsyn-spacing-2);
+    width: 100%;
+  }
 
   .arcsyn-date-picker__footer {
     align-items: center;

@@ -150,6 +150,25 @@ describe("contratos dos componentes React", () => {
     expect(screen.getByRole("grid", { name: "novembro de 2027" })).toBeInTheDocument();
   });
 
+  it("seleciona hora e minuto opcionalmente sem converter fuso", async () => {
+    const onValueChange = vi.fn();
+    const user = userEvent.setup();
+    render(<DatePicker label="Início da implantação" defaultValue="2026-08-14T09:30" onValueChange={onValueChange} includeTime minuteStep={5} />);
+
+    const input = screen.getByLabelText("Início da implantação");
+    expect(input).toHaveValue("14/08/2026, 09:30");
+    await user.click(screen.getByRole("button", { name: "Abrir calendário para Início da implantação" }));
+    await user.selectOptions(screen.getByRole("combobox", { name: "Hora" }), "14");
+    await user.selectOptions(screen.getByRole("combobox", { name: "Minuto" }), "45");
+    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-14T14:45");
+
+    await user.click(document.querySelector<HTMLButtonElement>('[data-date="2026-08-20"]')!);
+    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-20T14:45");
+    expect(screen.getByRole("dialog", { name: "Escolher data para Início da implantação" })).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Aplicar" }));
+    expect(screen.queryByRole("dialog", { name: "Escolher data para Início da implantação" })).toBeNull();
+  });
+
   it("altera o Slider pelo teclado e respeita step", async () => {
     const onValueChange = vi.fn();
     const user = userEvent.setup();

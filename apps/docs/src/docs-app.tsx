@@ -157,6 +157,25 @@ function DatePickerDemo() {
   );
 }
 
+function DateTimePickerDemo() {
+  const [dateTime, setDateTime] = useState<string | null>("2026-08-14T09:30");
+  return (
+    <div className="docs-demo-stack">
+      <DatePicker
+        label="Início da implantação"
+        description="Defina a data e o horário local da execução."
+        value={dateTime}
+        onValueChange={setDateTime}
+        includeTime
+        minuteStep={5}
+      />
+      <span className="docs-muted-copy" role="status">
+        Valor local: {dateTime ?? "nenhuma data selecionada"}
+      </span>
+    </div>
+  );
+}
+
 function SliderMixDemo() {
   const [boost, setBoost] = useState(125);
   const primaryWidth = Math.min(boost, 100) / 150 * 100;
@@ -1255,20 +1274,22 @@ const componentPages: ComponentPage[] = [
   {
     id: "date-picker",
     title: "Date Picker",
-    summary: "Seleciona ou permite digitar uma data com valor ISO estável, navegação por mês e validação acessível.",
+    summary: "Seleciona ou permite digitar uma data, com hora e minuto opcionais, navegação por mês e validação acessível.",
     importCode: 'import { DatePicker } from "@arcsyn/react";',
     status: "React estável · Base UI · React Native",
-    anatomy: ["Label", "Campo para digitação", "Botão do calendário", "Select nativo para mês e controle incremental para ano", "Grade de dias", "Descrição e erro opcionais"],
-    accessibility: "O campo é nomeado pelo label e referencia descrição e erro. No web, o calendário abre ao focar o input sem mover o cursor; Alt + seta para baixo transfere o foco para a grade. O mês usa o select nativo do navegador no desktop e no mobile; o ano oferece botões nomeados para avançar e retroceder. Na grade, setas percorrem dias, Home e End percorrem a semana, Page Up e Page Down mudam o mês e Shift muda o ano. No React Native, o input mantém o teclado e o cursor, enquanto o botão abre o Modal nativo com meses selecionáveis, alvos de 44px e fechamento explícito.",
+    anatomy: ["Label", "Campo para digitação", "Botão do calendário", "Select nativo para mês e controle incremental para ano", "Grade de dias", "Controles opcionais de hora e minuto", "Descrição e erro opcionais"],
+    accessibility: "O campo é nomeado pelo label e referencia descrição e erro. No web, o calendário abre ao focar o input sem mover o cursor; Alt + seta para baixo transfere o foco para a grade. Mês, hora e minuto usam selects nativos; o ano oferece botões nomeados. Na grade, setas percorrem dias, Home e End percorrem a semana, Page Up e Page Down mudam o mês e Shift muda o ano. No React Native, o modal oferece meses selecionáveis e controles de hora e minuto com botões nomeados e alvos de 44px.",
     properties: [
-      { name: "value / defaultValue", type: "string | null", defaultValue: "null", description: "Data controlada ou inicial no formato ISO YYYY-MM-DD." },
-      { name: "onValueChange", type: "(value: string | null) => void", defaultValue: "—", description: "Recebe a data ISO selecionada ou null quando o campo é limpo." },
+      { name: "value / defaultValue", type: "string | null", defaultValue: "null", description: "Data local em YYYY-MM-DD ou, com includeTime, YYYY-MM-DDTHH:mm." },
+      { name: "onValueChange", type: "(value: string | null) => void", defaultValue: "—", description: "Recebe a data ou data/hora local selecionada, sem conversão de fuso." },
       { name: "label", type: "ReactNode", defaultValue: "—", description: "Nome acessível e visível do campo." },
       { name: "min / max", type: "string", defaultValue: "—", description: "Limites inclusivos no formato ISO." },
       { name: "isDateUnavailable", type: "(value: string) => boolean", defaultValue: "—", description: "Desabilita datas por regra de negócio, como fins de semana ou bloqueios." },
       { name: "locale", type: "string", defaultValue: '"pt-BR"', description: "Controla nomes de mês, semana e apresentação do valor." },
-      { name: "formatValue / parseInput", type: "function", defaultValue: "formato local", description: "Personaliza a apresentação e a interpretação da data digitada. O padrão aceita DD/MM/AAAA e ISO." },
-      { name: "invalidInputMessage", type: "ReactNode", defaultValue: '"Informe uma data válida."', description: "Feedback anunciado quando a digitação não representa uma data permitida." },
+      { name: "includeTime", type: "boolean", defaultValue: "false", description: "Adiciona seleção e digitação de hora e minuto." },
+      { name: "minuteStep", type: "number", defaultValue: "1", description: "Define o incremento dos minutos; valores são normalizados entre 1 e 60." },
+      { name: "formatValue / parseInput", type: "function", defaultValue: "formato local", description: "Personaliza a apresentação e interpretação. O padrão também aceita DD/MM/AAAA HH:mm e ISO local." },
+      { name: "invalidInputMessage", type: "ReactNode", defaultValue: '"Informe uma data válida."', description: "Feedback anunciado quando a digitação não representa uma data ou horário permitido." },
       { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Ajusta o tamanho do trigger sem reduzir alvos de toque no mobile." },
       { name: "disabled / readOnly / invalid", type: "boolean", defaultValue: "false", description: "Representa indisponibilidade, valor somente leitura ou erro de validação." },
       { name: "description / error", type: "ReactNode", defaultValue: "—", description: "Texto de apoio e mensagem de erro ligados ao campo." },
@@ -1279,6 +1300,12 @@ const componentPages: ComponentPage[] = [
         description: "Foque e digite DD/MM/AAAA sem perder o cursor, ou escolha mês, ano e dia. Limites e regras de indisponibilidade também validam a entrada manual.",
         preview: <DatePickerDemo />,
         code: 'const [date, setDate] = useState("2026-08-14");\n\n<DatePicker\n  label="Data de implantação"\n  description="Escolha uma data dentro da janela aprovada."\n  value={date}\n  onValueChange={setDate}\n  min="2026-08-10"\n  max="2026-09-30"\n  isDateUnavailable={(value) => {\n    const day = new Date(`${value}T12:00:00`).getDay();\n    return day === 0 || day === 6;\n  }}\n/>',
+      },
+      {
+        title: "Data e horário",
+        description: "Hora e minuto são opcionais e mantêm um valor local estável, sem aplicar fuso horário.",
+        preview: <DateTimePickerDemo />,
+        code: 'const [dateTime, setDateTime] = useState("2026-08-14T09:30");\n\n<DatePicker\n  label="Início da implantação"\n  value={dateTime}\n  onValueChange={setDateTime}\n  includeTime\n  minuteStep={5}\n/>',
       },
       {
         title: "Estados e validação",

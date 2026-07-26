@@ -40,6 +40,8 @@ export interface DatePickerProps
   readOnly?: boolean;
   invalid?: boolean;
   clearable?: boolean;
+  includeTime?: boolean;
+  minuteStep?: number;
   size?: DatePickerSize;
   firstDayOfWeek?: 0 | 1;
   isDateUnavailable?: (value: string) => boolean;
@@ -49,10 +51,12 @@ export interface DatePickerProps
 }
 
 const isoPattern = /^\d{4}-\d{2}-\d{2}$/;
+const isoDateTimePattern = /^(\d{4}-\d{2}-\d{2})T([01]\d|2[0-3]):([0-5]\d)$/;
 
 function fromISO(value: string | null | undefined) {
-  if (!value || !isoPattern.test(value)) return null;
-  const [year, month, day] = value.split("-").map(Number);
+  const dateValue = value?.slice(0, 10);
+  if (!dateValue || !isoPattern.test(dateValue)) return null;
+  const [year, month, day] = dateValue.split("-").map(Number);
   const date = new Date(year, month - 1, day);
   return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day
     ? date
@@ -64,6 +68,16 @@ function toISO(date: Date) {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
+}
+
+function getTime(value: string | null | undefined) {
+  const match = value ? isoDateTimePattern.exec(value) : null;
+  return match ? { hour: Number(match[2]), minute: Number(match[3]) } : { hour: 0, minute: 0 };
+}
+
+function toValue(date: Date, includeTime: boolean, hour = 0, minute = 0) {
+  if (!includeTime) return toISO(date);
+  return `${toISO(date)}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 }
 
 function startOfMonth(date: Date) {
@@ -86,19 +100,31 @@ function sameDay(left: Date, right: Date) {
 
 function defaultFormatValue(value: string, locale: string) {
   const date = fromISO(value);
-  return date
-    ? new Intl.DateTimeFormat(locale, { day: "2-digit", month: "2-digit", year: "numeric" }).format(date)
-    : value;
+  if (!date) return value;
+  const time = getTime(value);
+  return new Intl.DateTimeFormat(locale, {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    ...(isoDateTimePattern.test(value)
+      ? { hour: "2-digit", minute: "2-digit", hour12: false }
+      : {}),
+  }).format(new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.hour, time.minute));
 }
 
-function defaultParseInput(input: string) {
+function defaultParseInput(input: string, _locale: string, includeTime = false) {
   const normalized = input.trim();
-  if (fromISO(normalized)) return normalized;
-  const match = /^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/.exec(normalized);
+  if (isoDateTimePattern.test(normalized)) return normalized;
+  if (fromISO(normalized) && !includeTime) return normalized;
+  const match = /^(\d{1,2})[./-](\d{1,2})[./-](\d{4})(?:\s+([01]?\d|2[0-3]):([0-5]\d))?$/.exec(
+    normalized,
+  );
   if (!match) return null;
-  const [, day, month, year] = match;
+  const [, day, month, year, hour, minute] = match;
   const value = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-  return fromISO(value) ? value : null;
+  if (!fromISO(value)) return null;
+  if (!includeTime) return value;
+  return `${value}T${String(hour ?? "0").padStart(2, "0")}:${minute ?? "00"}`;
 }
 
 export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function DatePicker(
@@ -110,7 +136,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
     label,
     description,
     error,
-    placeholder = "Selecione uma data",
+    placeholder,
     locale = "pt-BR",
     min,
     max,
@@ -120,11 +146,13 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
     readOnly = false,
     invalid = false,
     clearable = true,
+    includeTime = false,
+    minuteStep = 1,
     size = "md",
     firstDayOfWeek = 0,
     isDateUnavailable,
     formatValue = defaultFormatValue,
-    parseInput = defaultParseInput,
+    parseInput,
     invalidInputMessage = "Informe uma data válida.",
     id,
     ...props
@@ -144,11 +172,14 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
   const [internalValue, setInternalValue] = useState(defaultValue);
   const selectedValue = isControlled ? value : internalValue;
   const selectedDate = useMemo(() => fromISO(selectedValue), [selectedValue]);
+  const selectedTime = useMemo(() => getTime(selectedValue), [selectedValue]);
   const today = useMemo(() => new Date(), []);
   const [draft, setDraft] = useState(() =>
     selectedValue ? formatValue(selectedValue, locale) : "",
   );
   const [open, setOpen] = useState(false);
+  const [hour, setHour] = useState(selectedTime.hour);
+  const [minute, setMinute] = useState(selectedTime.minute);
   const [viewDate, setViewDate] = useState(() => startOfMonth(selectedDate ?? today));
   const [activeDate, setActiveDate] = useState(() => selectedDate ?? today);
   const fieldRef = useRef<HTMLDivElement>(null);
@@ -158,6 +189,14 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
   const openingModeRef = useRef<"input" | "calendar">("calendar");
   const minDate = fromISO(min);
   const maxDate = fromISO(max);
+  const normalizedMinuteStep = Math.min(60, Math.max(1, Math.floor(minuteStep)));
+  const minuteOptions = useMemo(() => {
+    const options = Array.from(
+      { length: Math.ceil(60 / normalizedMinuteStep) },
+      (_, index) => index * normalizedMinuteStep,
+    ).filter((option) => option < 60);
+    return options.includes(minute) ? options : [...options, minute].sort((left, right) => left - right);
+  }, [minute, normalizedMinuteStep]);
   const unavailable = (date: Date) => {
     const iso = toISO(date);
     return Boolean(
@@ -169,6 +208,9 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
 
   useEffect(() => {
     setDraft(selectedValue ? formatValue(selectedValue, locale) : "");
+    const nextTime = getTime(selectedValue);
+    setHour(nextTime.hour);
+    setMinute(nextTime.minute);
     setInputInvalid(false);
   }, [formatValue, locale, selectedValue]);
 
@@ -177,7 +219,10 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
     const next = selectedDate ?? today;
     setViewDate(startOfMonth(next));
     setActiveDate(next);
-  }, [open, selectedDate, today]);
+    const nextTime = getTime(selectedValue);
+    setHour(nextTime.hour);
+    setMinute(nextTime.minute);
+  }, [open, selectedDate, selectedValue, today]);
 
   useEffect(() => {
     if (!open || openingModeRef.current === "input") return;
@@ -243,9 +288,16 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
       if (!required) updateValue(null);
       return;
     }
-    const parsed = parseInput(trimmed, locale);
+    const parsed = parseInput
+      ? parseInput(trimmed, locale)
+      : defaultParseInput(trimmed, locale, includeTime);
     const date = fromISO(parsed);
-    if (!parsed || !date || unavailable(date)) {
+    if (
+      !parsed ||
+      !date ||
+      unavailable(date) ||
+      (includeTime && !isoDateTimePattern.test(parsed))
+    ) {
       setInputInvalid(true);
       return;
     }
@@ -256,10 +308,21 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
 
   function selectDate(date: Date) {
     if (disabled || readOnly || unavailable(date)) return;
-    updateValue(toISO(date));
-    setDraft(formatValue(toISO(date), locale));
+    const nextValue = toValue(date, includeTime, hour, minute);
+    updateValue(nextValue);
+    setDraft(formatValue(nextValue, locale));
     setInputInvalid(false);
-    setOpen(false);
+    if (!includeTime) setOpen(false);
+  }
+
+  function updateTime(nextHour: number, nextMinute: number) {
+    setHour(nextHour);
+    setMinute(nextMinute);
+    if (!selectedDate) return;
+    const nextValue = toValue(selectedDate, true, nextHour, nextMinute);
+    updateValue(nextValue);
+    setDraft(formatValue(nextValue, locale));
+    setInputInvalid(false);
   }
 
   function moveActive(next: Date) {
@@ -323,7 +386,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
             inputMode="numeric"
             autoComplete="off"
             value={draft}
-            placeholder={placeholder}
+            placeholder={placeholder ?? (includeTime ? "Selecione data e hora" : "Selecione uma data")}
             aria-describedby={describedBy}
             aria-invalid={invalid || inputInvalid || Boolean(error) || undefined}
             aria-required={required || undefined}
@@ -509,6 +572,40 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
                   </div>
                 ))}
               </div>
+              {includeTime ? (
+                <fieldset className="arcsyn-date-picker__time">
+                  <legend>Horário</legend>
+                  <label>
+                    <span>Hora</span>
+                    <select
+                      aria-label="Hora"
+                      value={hour}
+                      onChange={(event) => updateTime(Number(event.target.value), minute)}
+                    >
+                      {Array.from({ length: 24 }, (_, option) => (
+                        <option key={option} value={option}>
+                          {String(option).padStart(2, "0")}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <span aria-hidden="true">:</span>
+                  <label>
+                    <span>Minuto</span>
+                    <select
+                      aria-label="Minuto"
+                      value={minute}
+                      onChange={(event) => updateTime(hour, Number(event.target.value))}
+                    >
+                      {minuteOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {String(option).padStart(2, "0")}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </fieldset>
+              ) : null}
               <div className="arcsyn-date-picker__footer">
                 <button
                   type="button"
@@ -519,7 +616,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
                   Hoje
                 </button>
                 <BasePopover.Close className="arcsyn-date-picker__close">
-                  Fechar
+                  {includeTime ? "Aplicar" : "Fechar"}
                 </BasePopover.Close>
               </div>
             </BasePopover.Popup>

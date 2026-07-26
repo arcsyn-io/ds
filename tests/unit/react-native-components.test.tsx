@@ -93,4 +93,21 @@ describe("contratos dos componentes React Native", () => {
     fireEvent.click(screen.getByRole("button", { name: "setembro" }));
     expect(screen.getByRole("button", { name: "terça-feira, 1 de setembro de 2026" })).toBeInTheDocument();
   });
+
+  it("oferece hora e minuto opcionais no Date Picker nativo", () => {
+    const onValueChange = vi.fn();
+    render(
+      <ArcSynProvider theme="dark">
+        <DatePicker label="Início da implantação" defaultValue="2026-08-15T09:30" onValueChange={onValueChange} includeTime minuteStep={5} />
+      </ArcSynProvider>,
+    );
+
+    expect(screen.getByLabelText("Início da implantação")).toHaveValue("15/08/2026, 09:30");
+    fireEvent.click(screen.getByRole("button", { name: "Abrir calendário para Início da implantação" }));
+    expect(screen.getByRole("button", { name: "Aplicar" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Aumentar hora" }));
+    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-15T10:30");
+    fireEvent.click(screen.getByRole("button", { name: "Aumentar minuto" }));
+    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-15T10:35");
+  });
 });
