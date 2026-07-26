@@ -144,8 +144,10 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
   const [open, setOpen] = useState(false);
   const [viewDate, setViewDate] = useState(() => startOfMonth(selectedDate ?? today));
   const [activeDate, setActiveDate] = useState(() => selectedDate ?? today);
+  const inputRef = useRef<HTMLInputElement>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
   const activeDayRef = useRef<HTMLButtonElement>(null);
+  const openingModeRef = useRef<"input" | "calendar">("calendar");
   const minDate = fromISO(min);
   const maxDate = fromISO(max);
   const unavailable = (date: Date) => {
@@ -170,7 +172,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
   }, [open, selectedDate, today]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open || openingModeRef.current === "input") return;
     calendarRef.current
       ?.querySelector<HTMLButtonElement>(`[data-date="${toISO(activeDate)}"]`)
       ?.focus();
@@ -288,9 +290,22 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
         {label}
         {required ? <span aria-hidden="true"> *</span> : null}
       </label>
-      <BasePopover.Root open={open} onOpenChange={setOpen}>
+      <BasePopover.Root
+        open={open}
+        onOpenChange={(nextOpen, eventDetails) => {
+          if (
+            !nextOpen &&
+            eventDetails.event?.target instanceof Node &&
+            inputRef.current?.contains(eventDetails.event.target)
+          ) {
+            return;
+          }
+          setOpen(nextOpen);
+        }}
+      >
         <div className="arcsyn-date-picker__field">
           <input
+            ref={inputRef}
             id={inputId}
             className="arcsyn-date-picker__input"
             type="text"
@@ -303,6 +318,10 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
             aria-required={required || undefined}
             disabled={disabled}
             readOnly={readOnly}
+            onFocus={() => {
+              openingModeRef.current = "input";
+              setOpen(true);
+            }}
             onChange={(event) => {
               setDraft(event.target.value);
               setInputInvalid(false);
@@ -315,6 +334,8 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
               }
               if (event.key === "ArrowDown" && event.altKey) {
                 event.preventDefault();
+                openingModeRef.current = "calendar";
+                activeDayRef.current?.focus();
                 setOpen(true);
               }
             }}
@@ -323,6 +344,12 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
             className="arcsyn-date-picker__trigger"
             aria-label={`Abrir calendário para ${typeof label === "string" ? label : "o campo"}`}
             disabled={disabled}
+            onPointerDown={() => {
+              openingModeRef.current = "calendar";
+            }}
+            onKeyDown={() => {
+              openingModeRef.current = "calendar";
+            }}
           >
             <CalendarIcon aria-hidden size={16} />
           </BasePopover.Trigger>
@@ -346,7 +373,10 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
             <BasePopover.Popup
               className="arcsyn-date-picker__popup"
               aria-label={`Escolher data para ${typeof label === "string" ? label : "o campo"}`}
-              initialFocus={() => activeDayRef.current}
+              initialFocus={() =>
+                openingModeRef.current === "input" ? false : activeDayRef.current
+              }
+              finalFocus={() => (openingModeRef.current === "input" ? false : true)}
             >
               <div className="arcsyn-date-picker__header">
                 <button

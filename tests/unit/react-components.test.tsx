@@ -131,12 +131,15 @@ describe("contratos dos componentes React", () => {
     render(<DatePicker label="Data de corte" defaultValue="2026-08-14" onValueChange={onValueChange} />);
 
     const input = screen.getByLabelText("Data de corte");
+    await user.click(input);
+    expect(screen.getByRole("dialog", { name: "Escolher data para Data de corte" })).toBeVisible();
+    expect(input).toHaveFocus();
     await user.clear(input);
     await user.type(input, "20/09/2026{Enter}");
     expect(onValueChange).toHaveBeenLastCalledWith("2026-09-20");
     expect(input).toHaveValue("20/09/2026");
+    expect(input).toHaveFocus();
 
-    await user.click(screen.getByRole("button", { name: "Abrir calendário para Data de corte" }));
     await user.selectOptions(screen.getByRole("combobox", { name: "Mês" }), "10");
     expect(screen.getByRole("grid", { name: "novembro de 2026" })).toBeInTheDocument();
   });

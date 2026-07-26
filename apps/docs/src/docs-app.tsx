@@ -1259,7 +1259,7 @@ const componentPages: ComponentPage[] = [
     importCode: 'import { DatePicker } from "@arcsyn/react";',
     status: "React estável · Base UI · React Native",
     anatomy: ["Label", "Campo para digitação", "Botão do calendário", "Seletores de mês e ano", "Grade de dias", "Descrição e erro opcionais"],
-    accessibility: "O campo é nomeado pelo label e referencia descrição e erro. Digite DD/MM/AAAA ou use Alt + seta para baixo para abrir o calendário. Na grade, setas percorrem dias, Home e End percorrem a semana, Page Up e Page Down mudam o mês e Shift muda o ano. A versão React Native usa um Modal nativo, meses selecionáveis, botões de 44px e fechamento explícito.",
+    accessibility: "O campo é nomeado pelo label e referencia descrição e erro. No web, o calendário abre ao focar o input sem mover o cursor; Alt + seta para baixo transfere o foco para a grade. Na grade, setas percorrem dias, Home e End percorrem a semana, Page Up e Page Down mudam o mês e Shift muda o ano. No React Native, o input mantém o teclado e o cursor, enquanto o botão abre o Modal nativo com meses selecionáveis, alvos de 44px e fechamento explícito.",
     properties: [
       { name: "value / defaultValue", type: "string | null", defaultValue: "null", description: "Data controlada ou inicial no formato ISO YYYY-MM-DD." },
       { name: "onValueChange", type: "(value: string | null) => void", defaultValue: "—", description: "Recebe a data ISO selecionada ou null quando o campo é limpo." },
@@ -1276,7 +1276,7 @@ const componentPages: ComponentPage[] = [
     examples: [
       {
         title: "Janela de implantação",
-        description: "Digite DD/MM/AAAA ou escolha mês, ano e dia. Limites e regras de indisponibilidade também validam a entrada manual.",
+        description: "Foque e digite DD/MM/AAAA sem perder o cursor, ou escolha mês, ano e dia. Limites e regras de indisponibilidade também validam a entrada manual.",
         preview: <DatePickerDemo />,
         code: 'const [date, setDate] = useState("2026-08-14");\n\n<DatePicker\n  label="Data de implantação"\n  description="Escolha uma data dentro da janela aprovada."\n  value={date}\n  onValueChange={setDate}\n  min="2026-08-10"\n  max="2026-09-30"\n  isDateUnavailable={(value) => {\n    const day = new Date(`${value}T12:00:00`).getDay();\n    return day === 0 || day === 6;\n  }}\n/>',
       },
