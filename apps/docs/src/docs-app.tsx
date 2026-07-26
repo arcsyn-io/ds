@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type CSSProperties, typ
 import { createPresentationTheme, narrativePatterns, presentationLayouts } from "@arcsyn/presentations";
 import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, Tooltip, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
 import { ArrowRightIcon, CheckIcon, CircleIcon, EllipsisIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn/react/icons";
-import { ActivityFeed, BarChart, Chat, DataState, LineChart, NotificationCenter, PageHeader, SearchInput, Sparkline, StatCard, StatusIndicator, UserMenu } from "@arcsyn/react";
+import { ActivityFeed, BarChart, Chat, Command, DataState, LineChart, NotificationCenter, PageHeader, SearchInput, Sparkline, StatCard, StatusIndicator, UserMenu } from "@arcsyn/react";
 import * as ArcSynIcons from "@arcsyn/react/icons";
 
 type Property = {
@@ -67,6 +67,43 @@ function ControlledTabsDemo() {
           <Tabs.Panel value="permissions">Papéis, grupos e políticas de acesso.</Tabs.Panel>
         </Tabs.Panels>
       </Tabs.Root>
+    </div>
+  );
+}
+
+function CommandItems({ onSelect }: { onSelect: (value: string) => void }) {
+  return (
+    <>
+      <Command.Input placeholder="Buscar páginas e ações..." />
+      <Command.List>
+        <Command.Empty>Nenhum comando encontrado.</Command.Empty>
+        <Command.Group heading="Navegação">
+          <Command.Item value="dashboard" keywords={["início", "visão geral"]} onSelect={onSelect}><ArcSynIcons.DashboardIcon aria-hidden size={16} />Visão geral<Command.Shortcut>G V</Command.Shortcut></Command.Item>
+          <Command.Item value="projects" keywords={["projetos", "aplicações"]} onSelect={onSelect}><ArcSynIcons.ApplicationIcon aria-hidden size={16} />Projetos<Command.Shortcut>G P</Command.Shortcut></Command.Item>
+        </Command.Group>
+        <Command.Separator />
+        <Command.Group heading="Ações">
+          <Command.Item value="new-project" keywords={["criar", "adicionar"]} onSelect={onSelect}><PlusIcon aria-hidden size={16} />Novo projeto<Command.Shortcut>⌘ N</Command.Shortcut></Command.Item>
+          <Command.Item value="settings" onSelect={onSelect}><SettingsIcon aria-hidden size={16} />Configurações</Command.Item>
+          <Command.Item value="billing" disabled onSelect={onSelect}><CircleIcon aria-hidden size={16} />Faturamento indisponível</Command.Item>
+        </Command.Group>
+      </Command.List>
+    </>
+  );
+}
+
+function CommandDemo() {
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState("Nenhum comando executado");
+  return (
+    <div className="docs-demo-stack docs-command-demo">
+      <div className="docs-demo-row">
+        <Button onClick={() => setOpen(true)}>Abrir Command</Button>
+        <span className="docs-muted-copy">Também abre com Ctrl/⌘ + K</span>
+      </div>
+      <div className="docs-command-stage"><Command.Root><CommandItems onSelect={setSelected} /></Command.Root></div>
+      <span className="docs-muted-copy" role="status">Última ação: {selected}</span>
+      <Command.Dialog open={open} onOpenChange={setOpen}><CommandItems onSelect={setSelected} /></Command.Dialog>
     </div>
   );
 }
@@ -1609,7 +1646,27 @@ const componentPages: ComponentPage[] = [
       { name: "shortcut / onShortcut", type: "string / function", defaultValue: "—", description: "mod usa ⌘ no macOS e Ctrl nas demais plataformas." },
       { name: "clearable / clearLabel", type: "boolean / string", defaultValue: 'false / "Limpar busca"', description: "Exibe uma ação acessível de limpeza." },
     ],
-    examples: [{ title: "Busca global", description: "O componente continua funcional sem atalho e sem integração com Command.", preview: <div className="docs-demo-stack"><SearchInputDemo /><SearchInput aria-label="Busca carregando" placeholder="Sincronizando índice..." loading defaultValue="ArcSyn" /><SearchInput aria-label="Busca inválida" invalid placeholder="Filtro inválido" /></div>, code: '<SearchInput aria-label="Buscar no workspace" value={query} onValueChange={setQuery} shortcut="mod+k" clearable />' }],
+    examples: [{ title: "Busca global", description: "Use isoladamente para busca textual; para executar ações e navegar por teclado, combine o fluxo com Command.", preview: <div className="docs-demo-stack"><SearchInputDemo /><SearchInput aria-label="Busca carregando" placeholder="Sincronizando índice..." loading defaultValue="ArcSyn" /><SearchInput aria-label="Busca inválida" invalid placeholder="Filtro inválido" /></div>, code: '<SearchInput aria-label="Buscar no workspace" value={query} onValueChange={setQuery} shortcut="mod+k" clearable />' }],
+  },
+  {
+    id: "command",
+    title: "Command",
+    summary: "Busca e executa ações rápidas em uma lista compacta, com navegação completa por teclado.",
+    importCode: 'import { Command } from "@arcsyn/react";',
+    status: "React estável · React Native · Base UI",
+    anatomy: ["Root ou Dialog", "Input de busca", "Lista e grupos", "Itens acionáveis", "Atalhos auxiliares", "Estados vazio e carregando"],
+    accessibility: "Input e List implementam o padrão combobox/listbox. O foco permanece na busca; setas percorrem opções, Home e End saltam para os limites, Enter executa e Escape fecha o Dialog. Itens desabilitados são ignorados. Command.Dialog usa Base UI para foco, portal e teclado; no React Native, usa Modal nativo e alvos de toque de 44px.",
+    properties: [
+      { name: "Root value / defaultValue", type: "string", defaultValue: '""', description: "Controla o texto usado para filtrar itens, incluindo palavras-chave." },
+      { name: "Item value / keywords", type: "string / string[]", defaultValue: "obrigatório / []", description: "Define a identidade, o texto pesquisável adicional e o valor entregue a onSelect." },
+      { name: "Item disabled / onSelect", type: "boolean / (value) => void", defaultValue: "false / —", description: "Impede execução ou recebe a ação selecionada." },
+      { name: "Dialog open / defaultOpen", type: "boolean", defaultValue: "não controlado", description: "Permite controlar a abertura sem perder o atalho global." },
+      { name: "Dialog shortcut", type: "string | false", defaultValue: '"mod+k"', description: "Abre a paleta fora de campos editáveis; false desativa o listener." },
+      { name: "Loading label", type: "string", defaultValue: '"Carregando comandos"', description: "Nome acessível do estado assíncrono." },
+    ],
+    examples: [
+      { title: "Navegação e ações", description: "Digite para filtrar, use as setas e confirme com Enter. O mesmo conteúdo pode ser exibido inline ou dentro de Command.Dialog.", preview: <CommandDemo />, code: '<Command.Dialog open={open} onOpenChange={setOpen}>\n  <Command.Input placeholder="Buscar páginas e ações..." />\n  <Command.List>\n    <Command.Empty>Nenhum comando encontrado.</Command.Empty>\n    <Command.Group heading="Navegação">\n      <Command.Item value="dashboard" keywords={["início"]} onSelect={navigate}>\n        Visão geral\n        <Command.Shortcut>G V</Command.Shortcut>\n      </Command.Item>\n    </Command.Group>\n  </Command.List>\n</Command.Dialog>' },
+    ],
   },
   {
     id: "status-indicator",

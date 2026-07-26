@@ -42,6 +42,7 @@ export * from "./components/stat-card/index.js";
 export * from "./components/charts/index.js";
 export * from "./components/page-header/index.js";
 export * from "./components/search-input/index.js";
+export * from "./components/command/index.js";
 export * from "./components/status-indicator/index.js";
 export * from "./components/activity-feed/index.js";
 export * from "./components/user-menu/index.js";

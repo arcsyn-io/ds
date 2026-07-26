@@ -73,6 +73,7 @@
 @import "./components/charts.css";
 @import "./components/page-header.css";
 @import "./components/search-input.css";
+@import "./components/command.css";
 @import "./components/status-indicator.css";
 @import "./components/activity-feed.css";
 @import "./components/user-menu.css";
