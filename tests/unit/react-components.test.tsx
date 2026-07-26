@@ -101,7 +101,9 @@ describe("contratos dos componentes React", () => {
       <Slider.Root defaultValue={40} step={5} onValueChange={onValueChange}>
         <Slider.Label>Volume</Slider.Label>
         <Slider.Control>
-          <Slider.Track><Slider.Indicator /></Slider.Track>
+          <Slider.Track>
+            <Slider.Indicator />
+          </Slider.Track>
           <Slider.Thumb />
         </Slider.Control>
       </Slider.Root>,
@@ -117,7 +119,9 @@ describe("contratos dos componentes React", () => {
       <Slider.Root defaultValue={[20, 80]} readOnly>
         <Slider.Label>Faixa permitida</Slider.Label>
         <Slider.Control>
-          <Slider.Track><Slider.Indicator /></Slider.Track>
+          <Slider.Track>
+            <Slider.Indicator />
+          </Slider.Track>
           <Slider.Thumb index={0} label="Mínimo" />
           <Slider.Thumb index={1} label="Máximo" />
         </Slider.Control>

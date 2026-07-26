@@ -57,7 +57,9 @@ describe("contratos dos componentes React Native", () => {
         <Slider.Root defaultValue={35}>
           <Slider.Label>Volume</Slider.Label>
           <Slider.Control>
-            <Slider.Track><Slider.Indicator /></Slider.Track>
+            <Slider.Track>
+              <Slider.Indicator />
+            </Slider.Track>
             <Slider.Thumb label="Volume" />
           </Slider.Control>
           <Slider.Value />
