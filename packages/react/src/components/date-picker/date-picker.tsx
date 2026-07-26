@@ -37,6 +37,8 @@ export interface DatePickerProps
   firstDayOfWeek?: 0 | 1;
   isDateUnavailable?: (value: string) => boolean;
   formatValue?: (value: string, locale: string) => string;
+  parseInput?: (input: string, locale: string) => string | null;
+  invalidInputMessage?: ReactNode;
 }
 
 const isoPattern = /^\d{4}-\d{2}-\d{2}$/;
@@ -82,6 +84,16 @@ function defaultFormatValue(value: string, locale: string) {
     : value;
 }
 
+function defaultParseInput(input: string) {
+  const normalized = input.trim();
+  if (fromISO(normalized)) return normalized;
+  const match = /^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/.exec(normalized);
+  if (!match) return null;
+  const [, day, month, year] = match;
+  const value = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+  return fromISO(value) ? value : null;
+}
+
 export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function DatePicker(
   {
     className,
@@ -105,6 +117,8 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
     firstDayOfWeek = 0,
     isDateUnavailable,
     formatValue = defaultFormatValue,
+    parseInput = defaultParseInput,
+    invalidInputMessage = "Informe uma data válida.",
     id,
     ...props
   },
@@ -112,15 +126,21 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
 ) {
   const generatedId = useId();
   const inputId = id ?? `arcsyn-date-picker-${generatedId}`;
+  const [inputInvalid, setInputInvalid] = useState(false);
   const labelId = `${inputId}-label`;
   const descriptionId = description ? `${inputId}-description` : undefined;
-  const errorId = error ? `${inputId}-error` : undefined;
-  const describedBy = [descriptionId, errorId].filter(Boolean).join(" ") || undefined;
+  const errorId = `${inputId}-error`;
+  const describedBy =
+    [descriptionId, error || inputInvalid ? errorId : undefined].filter(Boolean).join(" ") ||
+    undefined;
   const isControlled = value !== undefined;
   const [internalValue, setInternalValue] = useState(defaultValue);
   const selectedValue = isControlled ? value : internalValue;
   const selectedDate = useMemo(() => fromISO(selectedValue), [selectedValue]);
   const today = useMemo(() => new Date(), []);
+  const [draft, setDraft] = useState(() =>
+    selectedValue ? formatValue(selectedValue, locale) : "",
+  );
   const [open, setOpen] = useState(false);
   const [viewDate, setViewDate] = useState(() => startOfMonth(selectedDate ?? today));
   const [activeDate, setActiveDate] = useState(() => selectedDate ?? today);
@@ -136,6 +156,11 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
         isDateUnavailable?.(iso),
     );
   };
+
+  useEffect(() => {
+    setDraft(selectedValue ? formatValue(selectedValue, locale) : "");
+    setInputInvalid(false);
+  }, [formatValue, locale, selectedValue]);
 
   useEffect(() => {
     if (!open) return;
@@ -170,6 +195,22 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
     month: "long",
     year: "numeric",
   }).format(viewDate);
+  const monthOptions = useMemo(
+    () =>
+      Array.from({ length: 12 }, (_, month) => ({
+        month,
+        label: new Intl.DateTimeFormat(locale, { month: "long" }).format(
+          new Date(2024, month, 1),
+        ),
+      })),
+    [locale],
+  );
+  const firstYear = minDate?.getFullYear() ?? viewDate.getFullYear() - 100;
+  const lastYear = maxDate?.getFullYear() ?? viewDate.getFullYear() + 100;
+  const yearOptions = Array.from(
+    { length: lastYear - firstYear + 1 },
+    (_, index) => firstYear + index,
+  );
   const fullDateFormatter = new Intl.DateTimeFormat(locale, {
     weekday: "long",
     day: "numeric",
@@ -182,9 +223,29 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
     onValueChange?.(next);
   }
 
+  function commitDraft() {
+    const trimmed = draft.trim();
+    if (!trimmed) {
+      setInputInvalid(required);
+      if (!required) updateValue(null);
+      return;
+    }
+    const parsed = parseInput(trimmed, locale);
+    const date = fromISO(parsed);
+    if (!parsed || !date || unavailable(date)) {
+      setInputInvalid(true);
+      return;
+    }
+    setInputInvalid(false);
+    setDraft(formatValue(parsed, locale));
+    updateValue(parsed);
+  }
+
   function selectDate(date: Date) {
     if (disabled || readOnly || unavailable(date)) return;
     updateValue(toISO(date));
+    setDraft(formatValue(toISO(date), locale));
+    setInputInvalid(false);
     setOpen(false);
   }
 
@@ -219,29 +280,51 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
       ref={ref}
       className={cx("arcsyn-date-picker", className)}
       data-disabled={disabled || undefined}
-      data-invalid={invalid || Boolean(error) || undefined}
+      data-invalid={invalid || inputInvalid || Boolean(error) || undefined}
       data-size={size}
       {...props}
     >
-      <span className="arcsyn-date-picker__label" id={labelId}>
+      <label className="arcsyn-date-picker__label" id={labelId} htmlFor={inputId}>
         {label}
         {required ? <span aria-hidden="true"> *</span> : null}
-      </span>
+      </label>
       <BasePopover.Root open={open} onOpenChange={setOpen}>
         <div className="arcsyn-date-picker__field">
-          <BasePopover.Trigger
+          <input
             id={inputId}
-            className="arcsyn-date-picker__trigger"
-            aria-labelledby={labelId}
+            className="arcsyn-date-picker__input"
+            type="text"
+            inputMode="numeric"
+            autoComplete="off"
+            value={draft}
+            placeholder={placeholder}
             aria-describedby={describedBy}
-            aria-invalid={invalid || Boolean(error) || undefined}
+            aria-invalid={invalid || inputInvalid || Boolean(error) || undefined}
             aria-required={required || undefined}
+            disabled={disabled}
+            readOnly={readOnly}
+            onChange={(event) => {
+              setDraft(event.target.value);
+              setInputInvalid(false);
+            }}
+            onBlur={commitDraft}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                commitDraft();
+              }
+              if (event.key === "ArrowDown" && event.altKey) {
+                event.preventDefault();
+                setOpen(true);
+              }
+            }}
+          />
+          <BasePopover.Trigger
+            className="arcsyn-date-picker__trigger"
+            aria-label={`Abrir calendário para ${typeof label === "string" ? label : "o campo"}`}
             disabled={disabled}
           >
             <CalendarIcon aria-hidden size={16} />
-            <span data-placeholder={!selectedValue || undefined}>
-              {selectedValue ? formatValue(selectedValue, locale) : placeholder}
-            </span>
           </BasePopover.Trigger>
           {clearable && selectedValue && !disabled && !readOnly ? (
             <button
@@ -274,7 +357,44 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
                 >
                   <ChevronLeftIcon aria-hidden size={16} />
                 </button>
-                <strong aria-live="polite">{monthLabel}</strong>
+                <div className="arcsyn-date-picker__period" aria-live="polite">
+                  <select
+                    aria-label="Mês"
+                    value={viewDate.getMonth()}
+                    onChange={(event) =>
+                      setViewDate(
+                        new Date(viewDate.getFullYear(), Number(event.target.value), 1),
+                      )
+                    }
+                  >
+                    {monthOptions.map(({ month, label: optionLabel }) => {
+                      const monthStart = new Date(viewDate.getFullYear(), month, 1);
+                      const monthEnd = new Date(viewDate.getFullYear(), month + 1, 0);
+                      const monthDisabled = Boolean(
+                        (minDate && monthEnd < minDate) || (maxDate && monthStart > maxDate),
+                      );
+                      return (
+                        <option value={month} key={month} disabled={monthDisabled}>
+                          {optionLabel}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <select
+                    aria-label="Ano"
+                    value={viewDate.getFullYear()}
+                    onChange={(event) =>
+                      setViewDate(new Date(Number(event.target.value), viewDate.getMonth(), 1))
+                    }
+                  >
+                    {yearOptions.map((year) => (
+                      <option value={year} key={year}>
+                        {year}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="arcsyn-date-picker__period-label">{monthLabel}</span>
+                </div>
                 <button
                   type="button"
                   className="arcsyn-date-picker__nav"
@@ -354,9 +474,9 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
           {description}
         </span>
       ) : null}
-      {error ? (
+      {error || inputInvalid ? (
         <span className="arcsyn-date-picker__error" id={errorId} role="alert">
-          {error}
+          {error ?? invalidInputMessage}
         </span>
       ) : null}
       {name ? <input type="hidden" name={name} value={selectedValue ?? ""} /> : null}

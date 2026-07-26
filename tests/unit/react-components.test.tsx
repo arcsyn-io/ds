@@ -102,11 +102,11 @@ describe("contratos dos componentes React", () => {
       <DatePicker label="Data de implantação" description="Use a data prevista para produção." defaultValue="2026-08-15" onValueChange={onValueChange} />,
     );
 
-    const trigger = screen.getByRole("button", { name: "Data de implantação" });
-    expect(trigger).toHaveTextContent("15/08/2026");
+    const input = screen.getByLabelText("Data de implantação");
+    expect(input).toHaveValue("15/08/2026");
     expect((await axe(container)).violations).toEqual([]);
 
-    await user.click(trigger);
+    await user.click(screen.getByRole("button", { name: "Abrir calendário para Data de implantação" }));
     const target = document.querySelector<HTMLButtonElement>('[data-date="2026-08-20"]');
     expect(target).not.toBeNull();
     await user.click(target!);
@@ -118,11 +118,27 @@ describe("contratos dos componentes React", () => {
     const user = userEvent.setup();
     render(<DatePicker label="Janela de mudança" defaultValue="2026-08-15" min="2026-08-10" max="2026-08-20" onValueChange={onValueChange} />);
 
-    await user.click(screen.getByRole("button", { name: "Janela de mudança" }));
+    await user.click(screen.getByRole("button", { name: "Abrir calendário para Janela de mudança" }));
     expect(document.querySelector<HTMLButtonElement>('[data-date="2026-08-09"]')).toBeDisabled();
     await waitFor(() => expect(document.querySelector<HTMLButtonElement>('[data-date="2026-08-15"]')).toHaveFocus());
     await user.keyboard("{ArrowRight}{Enter}");
     expect(onValueChange).toHaveBeenLastCalledWith("2026-08-16");
+  });
+
+  it("aceita digitação manual e navegação direta por mês", async () => {
+    const onValueChange = vi.fn();
+    const user = userEvent.setup();
+    render(<DatePicker label="Data de corte" defaultValue="2026-08-14" onValueChange={onValueChange} />);
+
+    const input = screen.getByLabelText("Data de corte");
+    await user.clear(input);
+    await user.type(input, "20/09/2026{Enter}");
+    expect(onValueChange).toHaveBeenLastCalledWith("2026-09-20");
+    expect(input).toHaveValue("20/09/2026");
+
+    await user.click(screen.getByRole("button", { name: "Abrir calendário para Data de corte" }));
+    await user.selectOptions(screen.getByRole("combobox", { name: "Mês" }), "10");
+    expect(screen.getByRole("grid", { name: "novembro de 2026" })).toBeInTheDocument();
   });
 
   it("altera o Slider pelo teclado e respeita step", async () => {

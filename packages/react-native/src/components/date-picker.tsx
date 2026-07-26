@@ -1,9 +1,11 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   Modal,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
   type StyleProp,
   type ViewStyle,
@@ -38,6 +40,8 @@ export interface DatePickerProps {
   firstDayOfWeek?: 0 | 1;
   isDateUnavailable?: (value: string) => boolean;
   formatValue?: (value: string, locale: string) => string;
+  parseInput?: (input: string, locale: string) => string | null;
+  invalidInputMessage?: ReactNode;
   accessibilityHint?: string;
   style?: StyleProp<ViewStyle>;
   testID?: string;
@@ -73,6 +77,16 @@ function defaultFormatValue(value: string, locale: string) {
     : value;
 }
 
+function defaultParseInput(input: string) {
+  const normalized = input.trim();
+  if (fromISO(normalized)) return normalized;
+  const match = /^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/.exec(normalized);
+  if (!match) return null;
+  const [, day, month, year] = match;
+  const value = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+  return fromISO(value) ? value : null;
+}
+
 const heightBySize: Record<DatePickerSize, number> = { sm: 44, md: 44, lg: 48 };
 
 export function DatePicker({
@@ -95,6 +109,8 @@ export function DatePicker({
   firstDayOfWeek = 0,
   isDateUnavailable,
   formatValue = defaultFormatValue,
+  parseInput = defaultParseInput,
+  invalidInputMessage = "Informe uma data válida.",
   accessibilityHint = "Abre o calendário para escolher uma data",
   style,
   testID,
@@ -105,6 +121,10 @@ export function DatePicker({
   const selectedValue = isControlled ? value : internalValue;
   const selectedDate = fromISO(selectedValue);
   const today = new Date();
+  const [draft, setDraft] = useState(() =>
+    selectedValue ? formatValue(selectedValue, locale) : "",
+  );
+  const [inputInvalid, setInputInvalid] = useState(false);
   const [open, setOpen] = useState(false);
   const [viewDate, setViewDate] = useState(
     () => new Date((selectedDate ?? today).getFullYear(), (selectedDate ?? today).getMonth(), 1),
@@ -127,10 +147,19 @@ export function DatePicker({
     return Array.from({ length: 42 }, (_, index) => addDays(start, index));
   }, [firstDayOfWeek, viewDate]);
 
-  const monthLabel = new Intl.DateTimeFormat(locale, {
-    month: "long",
-    year: "numeric",
-  }).format(viewDate);
+  const monthOptions = useMemo(
+    () =>
+      Array.from({ length: 12 }, (_, month) => ({
+        month,
+        label: new Intl.DateTimeFormat(locale, { month: "short" })
+          .format(new Date(2024, month, 1))
+          .replace(".", ""),
+        fullLabel: new Intl.DateTimeFormat(locale, { month: "long" }).format(
+          new Date(2024, month, 1),
+        ),
+      })),
+    [locale],
+  );
   const fullDateFormatter = new Intl.DateTimeFormat(locale, {
     weekday: "long",
     day: "numeric",
@@ -151,6 +180,29 @@ export function DatePicker({
     onValueChange?.(next);
   }
 
+  useEffect(() => {
+    setDraft(selectedValue ? formatValue(selectedValue, locale) : "");
+    setInputInvalid(false);
+  }, [formatValue, locale, selectedValue]);
+
+  function commitDraft() {
+    const trimmed = draft.trim();
+    if (!trimmed) {
+      setInputInvalid(required);
+      if (!required) updateValue(null);
+      return;
+    }
+    const parsed = parseInput(trimmed, locale);
+    const date = fromISO(parsed);
+    if (!parsed || !date || unavailable(date)) {
+      setInputInvalid(true);
+      return;
+    }
+    setInputInvalid(false);
+    setDraft(formatValue(parsed, locale));
+    updateValue(parsed);
+  }
+
   function showCalendar() {
     if (disabled || readOnly) return;
     const next = selectedDate ?? today;
@@ -161,6 +213,8 @@ export function DatePicker({
   function selectDate(date: Date) {
     if (unavailable(date)) return;
     updateValue(toISO(date));
+    setDraft(formatValue(toISO(date), locale));
+    setInputInvalid(false);
     setOpen(false);
   }
 
@@ -174,35 +228,43 @@ export function DatePicker({
         {required ? " *" : ""}
       </Text>
       <View style={styles.field}>
-        <Pressable
-          accessibilityRole="button"
+        <TextInput
           accessibilityLabel={label}
-          accessibilityHint={accessibilityHint}
           accessibilityState={{ disabled }}
-          onPress={showCalendar}
-          style={({ pressed }) => [
+          editable={!disabled && !readOnly}
+          value={draft}
+          placeholder={placeholder}
+          placeholderTextColor={colors.mutedForeground}
+          keyboardType="numbers-and-punctuation"
+          returnKeyType="done"
+          onChangeText={(next) => {
+            setDraft(next);
+            setInputInvalid(false);
+          }}
+          onBlur={commitDraft}
+          onSubmitEditing={commitDraft}
+          style={[
             styles.trigger,
             {
               backgroundColor: colors.surface,
-              borderColor: invalid || error ? colors.danger : colors.border,
+              borderColor: invalid || inputInvalid || error ? colors.danger : colors.border,
+              color: colors.foreground,
+              fontFamily: tokens.fontFamily.sans,
               minHeight: heightBySize[size],
-              opacity: disabled ? 0.5 : pressed ? 0.82 : 1,
+              opacity: disabled ? 0.5 : 1,
             },
           ]}
+        />
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Abrir calendário para ${label}`}
+          accessibilityHint={accessibilityHint}
+          accessibilityState={{ disabled }}
+          disabled={disabled}
+          onPress={showCalendar}
+          style={styles.calendarButton}
         >
           <CalendarIcon aria-hidden size={17} color={colors.mutedForeground} />
-          <Text
-            numberOfLines={1}
-            style={[
-              styles.value,
-              {
-                color: selectedValue ? colors.foreground : colors.mutedForeground,
-                fontFamily: tokens.fontFamily.sans,
-              },
-            ]}
-          >
-            {selectedValue ? formatValue(selectedValue, locale) : placeholder}
-          </Text>
         </Pressable>
         {clearable && selectedValue && !disabled && !readOnly ? (
           <Pressable
@@ -221,12 +283,12 @@ export function DatePicker({
           {description}
         </Text>
       ) : null}
-      {error ? (
+      {error || inputInvalid ? (
         <Text
           accessibilityLiveRegion="polite"
           style={[styles.supporting, { color: colors.danger, fontFamily: tokens.fontFamily.sansMedium }]}
         >
-          {error}
+          {error ?? invalidInputMessage}
         </Text>
       ) : null}
       <Modal
@@ -251,8 +313,8 @@ export function DatePicker({
             <View style={styles.header}>
               <Pressable
                 accessibilityRole="button"
-                accessibilityLabel="Mês anterior"
-                onPress={() => setViewDate((current) => addMonths(current, -1))}
+                accessibilityLabel="Ano anterior"
+                onPress={() => setViewDate((current) => addMonths(current, -12))}
                 style={styles.iconButton}
               >
                 <ChevronLeftIcon aria-hidden size={18} color={colors.foreground} />
@@ -261,17 +323,58 @@ export function DatePicker({
                 accessibilityRole="header"
                 style={[styles.month, { color: colors.foreground, fontFamily: tokens.fontFamily.sansSemibold }]}
               >
-                {monthLabel}
+                {viewDate.getFullYear()}
               </Text>
               <Pressable
                 accessibilityRole="button"
-                accessibilityLabel="Próximo mês"
-                onPress={() => setViewDate((current) => addMonths(current, 1))}
+                accessibilityLabel="Próximo ano"
+                onPress={() => setViewDate((current) => addMonths(current, 12))}
                 style={styles.iconButton}
               >
                 <ChevronRightIcon aria-hidden size={18} color={colors.foreground} />
               </Pressable>
             </View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.monthList}
+              accessibilityLabel="Escolher mês"
+            >
+              {monthOptions.map(({ month, label: optionLabel, fullLabel }) => {
+                const selected = month === viewDate.getMonth();
+                return (
+                  <Pressable
+                    key={month}
+                    accessibilityRole="button"
+                    accessibilityLabel={fullLabel}
+                    accessibilityState={{ selected }}
+                    onPress={() =>
+                      setViewDate(new Date(viewDate.getFullYear(), month, 1))
+                    }
+                    style={[
+                      styles.monthOption,
+                      {
+                        backgroundColor: selected ? colors.primary : colors.surface,
+                        borderColor: selected ? colors.primary : colors.border,
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={{
+                        color: selected ? colors.primaryForeground : colors.foreground,
+                        fontFamily: selected
+                          ? tokens.fontFamily.sansSemibold
+                          : tokens.fontFamily.sans,
+                        fontSize: tokens.fontSize.xs,
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {optionLabel}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </ScrollView>
             <View style={styles.week}>
               {weekdays.map((weekday, index) => (
                 <Text
@@ -357,21 +460,27 @@ const styles = StyleSheet.create({
   label: { fontSize: tokens.fontSize.sm, lineHeight: 19 },
   field: { position: "relative" },
   trigger: {
-    alignItems: "center",
     borderRadius: tokens.radius.md,
     borderWidth: 1,
-    flexDirection: "row",
-    gap: tokens.spacing[2],
+    fontSize: tokens.fontSize.sm,
     paddingLeft: tokens.spacing[3],
-    paddingRight: 44,
+    paddingRight: 88,
   },
-  value: { flex: 1, fontSize: tokens.fontSize.sm },
-  clear: {
+  calendarButton: {
     alignItems: "center",
     height: 44,
     justifyContent: "center",
     position: "absolute",
     right: 0,
+    top: 0,
+    width: 44,
+  },
+  clear: {
+    alignItems: "center",
+    height: 44,
+    justifyContent: "center",
+    position: "absolute",
+    right: 44,
     top: 0,
     width: 44,
   },
@@ -398,6 +507,16 @@ const styles = StyleSheet.create({
   },
   iconButton: { alignItems: "center", height: 44, justifyContent: "center", width: 44 },
   month: { flex: 1, fontSize: tokens.fontSize.sm, textAlign: "center", textTransform: "capitalize" },
+  monthList: { gap: tokens.spacing[1], paddingBottom: tokens.spacing[2] },
+  monthOption: {
+    alignItems: "center",
+    borderRadius: tokens.radius.sm,
+    borderWidth: 1,
+    justifyContent: "center",
+    minHeight: 44,
+    minWidth: 52,
+    paddingHorizontal: tokens.spacing[2],
+  },
   week: { flexDirection: "row" },
   weekday: {
     fontSize: tokens.fontSize.xs,

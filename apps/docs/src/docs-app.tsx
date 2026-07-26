@@ -1255,11 +1255,11 @@ const componentPages: ComponentPage[] = [
   {
     id: "date-picker",
     title: "Date Picker",
-    summary: "Seleciona uma data em calendário com valor ISO estável, limites, datas indisponíveis e validação acessível.",
+    summary: "Seleciona ou permite digitar uma data com valor ISO estável, navegação por mês e validação acessível.",
     importCode: 'import { DatePicker } from "@arcsyn/react";',
     status: "React estável · Base UI · React Native",
-    anatomy: ["Label", "Trigger com valor formatado", "Popover ou modal", "Cabeçalho de navegação", "Grade de dias", "Descrição e erro opcionais"],
-    accessibility: "O trigger é nomeado pelo label e referencia descrição e erro. No calendário web, setas percorrem dias, Home e End percorrem a semana, Page Up e Page Down mudam o mês e Shift muda o ano. A versão React Native usa um Modal nativo, botões de 44px e fechamento explícito.",
+    anatomy: ["Label", "Campo para digitação", "Botão do calendário", "Seletores de mês e ano", "Grade de dias", "Descrição e erro opcionais"],
+    accessibility: "O campo é nomeado pelo label e referencia descrição e erro. Digite DD/MM/AAAA ou use Alt + seta para baixo para abrir o calendário. Na grade, setas percorrem dias, Home e End percorrem a semana, Page Up e Page Down mudam o mês e Shift muda o ano. A versão React Native usa um Modal nativo, meses selecionáveis, botões de 44px e fechamento explícito.",
     properties: [
       { name: "value / defaultValue", type: "string | null", defaultValue: "null", description: "Data controlada ou inicial no formato ISO YYYY-MM-DD." },
       { name: "onValueChange", type: "(value: string | null) => void", defaultValue: "—", description: "Recebe a data ISO selecionada ou null quando o campo é limpo." },
@@ -1267,6 +1267,8 @@ const componentPages: ComponentPage[] = [
       { name: "min / max", type: "string", defaultValue: "—", description: "Limites inclusivos no formato ISO." },
       { name: "isDateUnavailable", type: "(value: string) => boolean", defaultValue: "—", description: "Desabilita datas por regra de negócio, como fins de semana ou bloqueios." },
       { name: "locale", type: "string", defaultValue: '"pt-BR"', description: "Controla nomes de mês, semana e apresentação do valor." },
+      { name: "formatValue / parseInput", type: "function", defaultValue: "formato local", description: "Personaliza a apresentação e a interpretação da data digitada. O padrão aceita DD/MM/AAAA e ISO." },
+      { name: "invalidInputMessage", type: "ReactNode", defaultValue: '"Informe uma data válida."', description: "Feedback anunciado quando a digitação não representa uma data permitida." },
       { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Ajusta o tamanho do trigger sem reduzir alvos de toque no mobile." },
       { name: "disabled / readOnly / invalid", type: "boolean", defaultValue: "false", description: "Representa indisponibilidade, valor somente leitura ou erro de validação." },
       { name: "description / error", type: "ReactNode", defaultValue: "—", description: "Texto de apoio e mensagem de erro ligados ao campo." },
@@ -1274,7 +1276,7 @@ const componentPages: ComponentPage[] = [
     examples: [
       {
         title: "Janela de implantação",
-        description: "Limites e regras de indisponibilidade impedem a escolha de datas inválidas sem alterar o valor ISO.",
+        description: "Digite DD/MM/AAAA ou escolha mês, ano e dia. Limites e regras de indisponibilidade também validam a entrada manual.",
         preview: <DatePickerDemo />,
         code: 'const [date, setDate] = useState("2026-08-14");\n\n<DatePicker\n  label="Data de implantação"\n  description="Escolha uma data dentro da janela aprovada."\n  value={date}\n  onValueChange={setDate}\n  min="2026-08-10"\n  max="2026-09-30"\n  isDateUnavailable={(value) => {\n    const day = new Date(`${value}T12:00:00`).getDay();\n    return day === 0 || day === 6;\n  }}\n/>',
       },

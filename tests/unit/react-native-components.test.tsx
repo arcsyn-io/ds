@@ -85,9 +85,12 @@ describe("contratos dos componentes React Native", () => {
       </ArcSynProvider>,
     );
 
-    const trigger = screen.getByRole("button", { name: "Data de implantação" });
-    expect(getComputedStyle(trigger).minHeight).toBe("44px");
-    fireEvent.click(trigger);
+    const input = screen.getByLabelText("Data de implantação");
+    expect(input).toHaveValue("15/08/2026");
+    expect(getComputedStyle(input).minHeight).toBe("44px");
+    fireEvent.click(screen.getByRole("button", { name: "Abrir calendário para Data de implantação" }));
     expect(screen.getByRole("button", { name: "Fechar" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "setembro" }));
+    expect(screen.getByRole("button", { name: "terça-feira, 1 de setembro de 2026" })).toBeInTheDocument();
   });
 });
