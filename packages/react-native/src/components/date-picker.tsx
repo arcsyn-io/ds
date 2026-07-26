@@ -17,6 +17,7 @@ import {
   XIcon,
 } from "../icons/index.js";
 import { tokens, useArcSynTheme } from "../theme.js";
+import { Time } from "./time.js";
 
 export type DatePickerSize = "sm" | "md" | "lg";
 
@@ -162,7 +163,6 @@ export function DatePicker({
   );
   const minDate = fromISO(min);
   const maxDate = fromISO(max);
-  const normalizedMinuteStep = Math.min(60, Math.max(1, Math.floor(minuteStep)));
 
   const weekdays = useMemo(() => {
     const formatter = new Intl.DateTimeFormat(locale, { weekday: "narrow" });
@@ -486,98 +486,18 @@ export function DatePicker({
               </View>
             ))}
             {includeTime ? (
-              <View
-                accessibilityLabel="Horário"
-                style={[styles.timeSection, { borderTopColor: colors.border }]}
-              >
-                <Text
-                  style={[
-                    styles.timeHeading,
-                    {
-                      color: colors.mutedForeground,
-                      fontFamily: tokens.fontFamily.sansSemibold,
-                    },
-                  ]}
-                >
-                  Horário
-                </Text>
-                <View style={styles.timeControls}>
-                  <View style={styles.timeField}>
-                    <Text
-                      style={[
-                        styles.timeLabel,
-                        { color: colors.mutedForeground, fontFamily: tokens.fontFamily.sans },
-                      ]}
-                    >
-                      Hora
-                    </Text>
-                    <View style={[styles.timeStepper, { borderColor: colors.border }]}>
-                      <Pressable
-                        accessibilityRole="button"
-                        accessibilityLabel="Diminuir hora"
-                        onPress={() => updateTime(hour - 1, minute)}
-                        style={styles.timeButton}
-                      >
-                        <Text style={{ color: colors.foreground }}>−</Text>
-                      </Pressable>
-                      <Text
-                        accessibilityLabel={`Hora ${String(hour).padStart(2, "0")}`}
-                        style={[
-                          styles.timeValue,
-                          { color: colors.foreground, fontFamily: tokens.fontFamily.sansSemibold },
-                        ]}
-                      >
-                        {String(hour).padStart(2, "0")}
-                      </Text>
-                      <Pressable
-                        accessibilityRole="button"
-                        accessibilityLabel="Aumentar hora"
-                        onPress={() => updateTime(hour + 1, minute)}
-                        style={styles.timeButton}
-                      >
-                        <Text style={{ color: colors.foreground }}>+</Text>
-                      </Pressable>
-                    </View>
-                  </View>
-                  <View style={styles.timeField}>
-                    <Text
-                      style={[
-                        styles.timeLabel,
-                        { color: colors.mutedForeground, fontFamily: tokens.fontFamily.sans },
-                      ]}
-                    >
-                      Minuto
-                    </Text>
-                    <View style={[styles.timeStepper, { borderColor: colors.border }]}>
-                      <Pressable
-                        accessibilityRole="button"
-                        accessibilityLabel="Diminuir minuto"
-                        onPress={() => updateTime(hour, minute - normalizedMinuteStep)}
-                        style={styles.timeButton}
-                      >
-                        <Text style={{ color: colors.foreground }}>−</Text>
-                      </Pressable>
-                      <Text
-                        accessibilityLabel={`Minuto ${String(minute).padStart(2, "0")}`}
-                        style={[
-                          styles.timeValue,
-                          { color: colors.foreground, fontFamily: tokens.fontFamily.sansSemibold },
-                        ]}
-                      >
-                        {String(minute).padStart(2, "0")}
-                      </Text>
-                      <Pressable
-                        accessibilityRole="button"
-                        accessibilityLabel="Aumentar minuto"
-                        onPress={() => updateTime(hour, minute + normalizedMinuteStep)}
-                        style={styles.timeButton}
-                      >
-                        <Text style={{ color: colors.foreground }}>+</Text>
-                      </Pressable>
-                    </View>
-                  </View>
-                </View>
-              </View>
+              <Time
+                label="Horário"
+                value={`${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`}
+                onValueChange={(nextTime) => {
+                  const [nextHour, nextMinute] = nextTime.split(":").map(Number);
+                  updateTime(nextHour, nextMinute);
+                }}
+                includeSeconds={false}
+                minuteStep={minuteStep}
+                size="sm"
+                style={[styles.time, { borderTopColor: colors.border }]}
+              />
             ) : null}
             <View style={[styles.footer, { borderTopColor: colors.border }]}>
               <Pressable
@@ -686,30 +606,11 @@ const styles = StyleSheet.create({
     width: `${100 / 7}%`,
   },
   blocked: { opacity: 0.32 },
-  timeSection: {
+  time: {
     borderTopWidth: 1,
-    gap: tokens.spacing[2],
     marginTop: tokens.spacing[2],
     paddingTop: tokens.spacing[2],
   },
-  timeHeading: { fontSize: tokens.fontSize.xs },
-  timeControls: { flexDirection: "row", gap: tokens.spacing[2] },
-  timeField: { flex: 1, gap: tokens.spacing[1] },
-  timeLabel: { fontSize: tokens.fontSize.xs },
-  timeStepper: {
-    alignItems: "center",
-    borderRadius: tokens.radius.sm,
-    borderWidth: 1,
-    flexDirection: "row",
-    minHeight: 44,
-  },
-  timeButton: {
-    alignItems: "center",
-    height: 44,
-    justifyContent: "center",
-    width: 44,
-  },
-  timeValue: { flex: 1, fontSize: tokens.fontSize.sm, textAlign: "center" },
   footer: {
     alignItems: "center",
     borderTopWidth: 1,

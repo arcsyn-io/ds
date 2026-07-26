@@ -106,6 +106,7 @@ describe("contratos dos componentes React Native", () => {
     expect(screen.getByLabelText("Início da implantação")).toHaveValue("15/08/2026, 09:30");
     fireEvent.click(screen.getByRole("button", { name: "Abrir calendário para Início da implantação" }));
     expect(screen.getByRole("button", { name: "Aplicar" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Aumentar segundo" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Aumentar hora" }));
     expect(onValueChange).toHaveBeenLastCalledWith("2026-08-15T10:30");
     fireEvent.click(screen.getByRole("button", { name: "Aumentar minuto" }));

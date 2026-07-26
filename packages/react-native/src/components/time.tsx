@@ -22,6 +22,7 @@ export interface TimeProps {
   disabled?: boolean;
   readOnly?: boolean;
   invalid?: boolean;
+  includeSeconds?: boolean;
   minuteStep?: number;
   secondStep?: number;
   size?: TimeSize;
@@ -125,6 +126,7 @@ export function Time({
   disabled = false,
   readOnly = false,
   invalid = false,
+  includeSeconds = true,
   minuteStep = 1,
   secondStep = 1,
   size = "md",
@@ -194,15 +196,19 @@ export function Time({
           disabled={interactionDisabled}
           onChange={(minute) => updatePart({ minute })}
         />
-        <Text style={[styles.separator, { color: colors.mutedForeground }]}>:</Text>
-        <TimeSegment
-          label="Segundo"
-          value={parts.second}
-          step={normalizeStep(secondStep)}
-          limit={60}
-          disabled={interactionDisabled}
-          onChange={(second) => updatePart({ second })}
-        />
+        {includeSeconds ? (
+          <>
+            <Text style={[styles.separator, { color: colors.mutedForeground }]}>:</Text>
+            <TimeSegment
+              label="Segundo"
+              value={parts.second}
+              step={normalizeStep(secondStep)}
+              limit={60}
+              disabled={interactionDisabled}
+              onChange={(second) => updatePart({ second })}
+            />
+          </>
+        ) : null}
       </View>
       {description ? (
         <Text

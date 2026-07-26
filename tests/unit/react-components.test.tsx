@@ -159,8 +159,15 @@ describe("contratos dos componentes React", () => {
     const input = screen.getByLabelText("Início da implantação");
     expect(input).toHaveValue("14/08/2026, 09:30");
     await user.click(screen.getByRole("button", { name: "Abrir calendário para Início da implantação" }));
-    await user.selectOptions(screen.getByRole("combobox", { name: "Hora" }), "14");
-    await user.selectOptions(screen.getByRole("combobox", { name: "Minuto" }), "45");
+    const hour = screen.getByRole("spinbutton", { name: "Hora" });
+    const minute = screen.getByRole("spinbutton", { name: "Minuto" });
+    expect(screen.queryByRole("spinbutton", { name: "Segundo" })).toBeNull();
+    await user.clear(hour);
+    await user.type(hour, "14");
+    await user.tab();
+    await user.clear(minute);
+    await user.type(minute, "45");
+    await user.tab();
     expect(onValueChange).toHaveBeenLastCalledWith("2026-08-14T14:45");
 
     await user.click(document.querySelector<HTMLButtonElement>('[data-date="2026-08-20"]')!);

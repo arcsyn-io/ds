@@ -19,6 +19,7 @@ import {
   XIcon,
 } from "../../icons/index.js";
 import { cx } from "../../utilities/cx.js";
+import { Time } from "../time/time.js";
 
 export type DatePickerSize = "sm" | "md" | "lg";
 
@@ -189,14 +190,6 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
   const openingModeRef = useRef<"input" | "calendar">("calendar");
   const minDate = fromISO(min);
   const maxDate = fromISO(max);
-  const normalizedMinuteStep = Math.min(60, Math.max(1, Math.floor(minuteStep)));
-  const minuteOptions = useMemo(() => {
-    const options = Array.from(
-      { length: Math.ceil(60 / normalizedMinuteStep) },
-      (_, index) => index * normalizedMinuteStep,
-    ).filter((option) => option < 60);
-    return options.includes(minute) ? options : [...options, minute].sort((left, right) => left - right);
-  }, [minute, normalizedMinuteStep]);
   const unavailable = (date: Date) => {
     const iso = toISO(date);
     return Boolean(
@@ -573,38 +566,18 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
                 ))}
               </div>
               {includeTime ? (
-                <fieldset className="arcsyn-date-picker__time">
-                  <legend>Horário</legend>
-                  <label>
-                    <span>Hora</span>
-                    <select
-                      aria-label="Hora"
-                      value={hour}
-                      onChange={(event) => updateTime(Number(event.target.value), minute)}
-                    >
-                      {Array.from({ length: 24 }, (_, option) => (
-                        <option key={option} value={option}>
-                          {String(option).padStart(2, "0")}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <span aria-hidden="true">:</span>
-                  <label>
-                    <span>Minuto</span>
-                    <select
-                      aria-label="Minuto"
-                      value={minute}
-                      onChange={(event) => updateTime(hour, Number(event.target.value))}
-                    >
-                      {minuteOptions.map((option) => (
-                        <option key={option} value={option}>
-                          {String(option).padStart(2, "0")}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                </fieldset>
+                <Time
+                  className="arcsyn-date-picker__time"
+                  label="Horário"
+                  value={`${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`}
+                  onValueChange={(nextTime) => {
+                    const [nextHour, nextMinute] = nextTime.split(":").map(Number);
+                    updateTime(nextHour, nextMinute);
+                  }}
+                  includeSeconds={false}
+                  minuteStep={minuteStep}
+                  size="sm"
+                />
               ) : null}
               <div className="arcsyn-date-picker__footer">
                 <button

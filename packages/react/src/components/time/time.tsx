@@ -24,6 +24,7 @@ export interface TimeProps
   disabled?: boolean;
   readOnly?: boolean;
   invalid?: boolean;
+  includeSeconds?: boolean;
   minuteStep?: number;
   secondStep?: number;
   size?: TimeSize;
@@ -60,6 +61,7 @@ export const Time = forwardRef<HTMLDivElement, TimeProps>(function Time(
     disabled = false,
     readOnly = false,
     invalid = false,
+    includeSeconds = true,
     minuteStep = 1,
     secondStep = 1,
     size = "md",
@@ -144,6 +146,7 @@ export const Time = forwardRef<HTMLDivElement, TimeProps>(function Time(
       data-disabled={disabled || undefined}
       data-invalid={invalid || Boolean(error) || undefined}
       data-readonly={readOnly || undefined}
+      data-seconds={includeSeconds || undefined}
       data-size={size}
       {...props}
     >
@@ -209,33 +212,37 @@ export const Time = forwardRef<HTMLDivElement, TimeProps>(function Time(
             }
           />
         </label>
-        <span className="arcsyn-time__separator" aria-hidden="true">
-          :
-        </span>
-        <label>
-          <span>Segundo</span>
-          <input
-            aria-label="Segundo"
-            type="number"
-            inputMode="numeric"
-            min={0}
-            max={59}
-            step={normalizedSecondStep}
-            value={draftParts.second}
-            disabled={disabled}
-            readOnly={readOnly}
-            onFocus={(event) => event.currentTarget.select()}
-            onChange={(event) => {
-              if (/^\d{0,2}$/.test(event.target.value)) {
-                setDraftParts((current) => ({ ...current, second: event.target.value }));
-              }
-            }}
-            onBlur={() => commitPart("second", 60)}
-            onKeyDown={(event) =>
-              handlePartKeyDown(event, "second", 60, normalizedSecondStep)
-            }
-          />
-        </label>
+        {includeSeconds ? (
+          <>
+            <span className="arcsyn-time__separator" aria-hidden="true">
+              :
+            </span>
+            <label>
+              <span>Segundo</span>
+              <input
+                aria-label="Segundo"
+                type="number"
+                inputMode="numeric"
+                min={0}
+                max={59}
+                step={normalizedSecondStep}
+                value={draftParts.second}
+                disabled={disabled}
+                readOnly={readOnly}
+                onFocus={(event) => event.currentTarget.select()}
+                onChange={(event) => {
+                  if (/^\d{0,2}$/.test(event.target.value)) {
+                    setDraftParts((current) => ({ ...current, second: event.target.value }));
+                  }
+                }}
+                onBlur={() => commitPart("second", 60)}
+                onKeyDown={(event) =>
+                  handlePartKeyDown(event, "second", 60, normalizedSecondStep)
+                }
+              />
+            </label>
+          </>
+        ) : null}
       </div>
       {description ? (
         <span className="arcsyn-time__description" id={descriptionId}>
