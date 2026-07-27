@@ -98,10 +98,13 @@ export const Time = forwardRef<HTMLDivElement, TimeProps>(function Time(
 
   function updatePart(next: Partial<typeof parts>) {
     if (disabled || readOnly) return;
+    const draftHour = Number(draftParts.hour);
+    const draftMinute = Number(draftParts.minute);
+    const draftSecond = Number(draftParts.second);
     const nextValue = toTime(
-      next.hour ?? parts.hour,
-      next.minute ?? parts.minute,
-      next.second ?? parts.second,
+      next.hour ?? (Number.isFinite(draftHour) ? draftHour : parts.hour),
+      next.minute ?? (Number.isFinite(draftMinute) ? draftMinute : parts.minute),
+      next.second ?? (Number.isFinite(draftSecond) ? draftSecond : parts.second),
     );
     const nextParts = parseTime(nextValue);
     setDraftParts({

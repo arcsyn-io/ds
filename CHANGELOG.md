@@ -11,7 +11,7 @@
 - `NotificationCenter` with unread count, a five-item popover and a React Native modal adapter.
 - `Command` and `Command.Dialog` with filtering, keyboard navigation, shortcuts and a React Native modal adapter.
 - `Slider` with single and range values, marks, horizontal and vertical orientations, and React Native parity.
-- `DatePicker` with focus-open behavior that preserves the typing cursor, typed dates, optional local hour/minute selection powered by `Time`, direct month navigation, ISO values, keyboard calendar navigation, validation states and a React Native modal adapter.
+- `DatePicker` with focus-open behavior that preserves the typing cursor, typed dates, optional local hour/minute/second selection powered by `Time`, direct month navigation, ISO values, keyboard calendar navigation, validation states and a React Native modal adapter.
 - `Time` for accessible local hour, minute and second selection with configurable steps and React Native parity.
 - Composed `Card` anatomy while preserving the existing root API.
 - Data state support in `DataTable`.

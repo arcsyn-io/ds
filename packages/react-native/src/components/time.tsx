@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -139,15 +139,21 @@ export function Time({
   const [internalValue, setInternalValue] = useState(defaultValue);
   const selectedValue = isControlled ? value : internalValue;
   const parts = parseTime(selectedValue);
+  const [currentParts, setCurrentParts] = useState(parts);
   const interactionDisabled = disabled || readOnly;
+
+  useEffect(() => {
+    setCurrentParts(parseTime(selectedValue));
+  }, [selectedValue]);
 
   function updatePart(next: Partial<typeof parts>) {
     if (interactionDisabled) return;
     const nextValue = toTime(
-      next.hour ?? parts.hour,
-      next.minute ?? parts.minute,
-      next.second ?? parts.second,
+      next.hour ?? currentParts.hour,
+      next.minute ?? currentParts.minute,
+      next.second ?? currentParts.second,
     );
+    setCurrentParts(parseTime(nextValue));
     if (!isControlled) setInternalValue(nextValue);
     onValueChange?.(nextValue);
   }
@@ -181,7 +187,7 @@ export function Time({
       >
         <TimeSegment
           label="Hora"
-          value={parts.hour}
+          value={currentParts.hour}
           step={1}
           limit={24}
           disabled={interactionDisabled}
@@ -190,7 +196,7 @@ export function Time({
         <Text style={[styles.separator, { color: colors.mutedForeground }]}>:</Text>
         <TimeSegment
           label="Minuto"
-          value={parts.minute}
+          value={currentParts.minute}
           step={normalizeStep(minuteStep)}
           limit={60}
           disabled={interactionDisabled}
@@ -201,7 +207,7 @@ export function Time({
             <Text style={[styles.separator, { color: colors.mutedForeground }]}>:</Text>
             <TimeSegment
               label="Segundo"
-              value={parts.second}
+              value={currentParts.second}
               step={normalizeStep(secondStep)}
               limit={60}
               disabled={interactionDisabled}

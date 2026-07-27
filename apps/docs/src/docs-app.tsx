@@ -158,7 +158,7 @@ function DatePickerDemo() {
 }
 
 function DateTimePickerDemo() {
-  const [dateTime, setDateTime] = useState<string | null>("2026-08-14T09:30");
+  const [dateTime, setDateTime] = useState<string | null>("2026-08-14T09:30:00");
   return (
     <div className="docs-demo-stack">
       <DatePicker
@@ -168,6 +168,7 @@ function DateTimePickerDemo() {
         onValueChange={setDateTime}
         includeTime
         minuteStep={5}
+        secondStep={15}
       />
       <span className="docs-muted-copy" role="status">
         Valor local: {dateTime ?? "nenhuma data selecionada"}
@@ -1294,21 +1295,21 @@ const componentPages: ComponentPage[] = [
   {
     id: "date-picker",
     title: "Date Picker",
-    summary: "Seleciona ou permite digitar uma data, com hora e minuto opcionais, navegação por mês e validação acessível.",
+    summary: "Seleciona ou permite digitar uma data, com hora, minuto e segundo opcionais, navegação por mês e validação acessível.",
     importCode: 'import { DatePicker } from "@arcsyn/react";',
     status: "React estável · Base UI · React Native",
-    anatomy: ["Label", "Campo para digitação", "Botão do calendário", "Select nativo para mês e controle incremental para ano", "Grade de dias", "Componente Time opcional para hora e minuto", "Descrição e erro opcionais"],
+    anatomy: ["Label", "Campo para digitação", "Botão do calendário", "Select nativo para mês e controle incremental para ano", "Grade de dias", "Componente Time opcional", "Descrição e erro opcionais"],
     accessibility: "O campo é nomeado pelo label e referencia descrição e erro. No web, o calendário abre ao focar o input sem mover o cursor; Alt + seta para baixo transfere o foco para a grade. O mês usa select nativo, o ano oferece botões nomeados e o horário reutiliza os inputs acessíveis do Time. Na grade, setas percorrem dias, Home e End percorrem a semana, Page Up e Page Down mudam o mês e Shift muda o ano. No React Native, o modal reutiliza os controles incrementais do Time com alvos de 44px.",
     properties: [
-      { name: "value / defaultValue", type: "string | null", defaultValue: "null", description: "Data local em YYYY-MM-DD ou, com includeTime, YYYY-MM-DDTHH:mm." },
+      { name: "value / defaultValue", type: "string | null", defaultValue: "null", description: "Data local em YYYY-MM-DD ou, com includeTime, YYYY-MM-DDTHH:mm:ss." },
       { name: "onValueChange", type: "(value: string | null) => void", defaultValue: "—", description: "Recebe a data ou data/hora local selecionada, sem conversão de fuso." },
       { name: "label", type: "ReactNode", defaultValue: "—", description: "Nome acessível e visível do campo." },
       { name: "min / max", type: "string", defaultValue: "—", description: "Limites inclusivos no formato ISO." },
       { name: "isDateUnavailable", type: "(value: string) => boolean", defaultValue: "—", description: "Desabilita datas por regra de negócio, como fins de semana ou bloqueios." },
       { name: "locale", type: "string", defaultValue: '"pt-BR"', description: "Controla nomes de mês, semana e apresentação do valor." },
-      { name: "includeTime", type: "boolean", defaultValue: "false", description: "Adiciona o componente Time em modo hora e minuto." },
-      { name: "minuteStep", type: "number", defaultValue: "1", description: "Define o incremento dos minutos; valores são normalizados entre 1 e 60." },
-      { name: "formatValue / parseInput", type: "function", defaultValue: "formato local", description: "Personaliza a apresentação e interpretação. O padrão também aceita DD/MM/AAAA HH:mm e ISO local." },
+      { name: "includeTime", type: "boolean", defaultValue: "false", description: "Adiciona o componente Time com hora, minuto e segundo." },
+      { name: "minuteStep / secondStep", type: "number", defaultValue: "1", description: "Define os incrementos de minutos e segundos entre 1 e 60." },
+      { name: "formatValue / parseInput", type: "function", defaultValue: "formato local", description: "Personaliza a apresentação e interpretação. O padrão também aceita DD/MM/AAAA HH:mm:ss e ISO local." },
       { name: "invalidInputMessage", type: "ReactNode", defaultValue: '"Informe uma data válida."', description: "Feedback anunciado quando a digitação não representa uma data ou horário permitido." },
       { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Ajusta o tamanho do trigger sem reduzir alvos de toque no mobile." },
       { name: "disabled / readOnly / invalid", type: "boolean", defaultValue: "false", description: "Representa indisponibilidade, valor somente leitura ou erro de validação." },
@@ -1323,9 +1324,9 @@ const componentPages: ComponentPage[] = [
       },
       {
         title: "Data e horário",
-        description: "Hora e minuto são opcionais e mantêm um valor local estável, sem aplicar fuso horário.",
+        description: "Hora, minuto e segundo são opcionais e mantêm um valor local estável, sem aplicar fuso horário.",
         preview: <DateTimePickerDemo />,
-        code: 'const [dateTime, setDateTime] = useState("2026-08-14T09:30");\n\n<DatePicker\n  label="Início da implantação"\n  value={dateTime}\n  onValueChange={setDateTime}\n  includeTime\n  minuteStep={5}\n/>',
+        code: 'const [dateTime, setDateTime] = useState("2026-08-14T09:30:00");\n\n<DatePicker\n  label="Início da implantação"\n  value={dateTime}\n  onValueChange={setDateTime}\n  includeTime\n  minuteStep={5}\n  secondStep={15}\n/>',
       },
       {
         title: "Estados e validação",

@@ -43,6 +43,7 @@ export interface DatePickerProps
   clearable?: boolean;
   includeTime?: boolean;
   minuteStep?: number;
+  secondStep?: number;
   size?: DatePickerSize;
   firstDayOfWeek?: 0 | 1;
   isDateUnavailable?: (value: string) => boolean;
@@ -52,7 +53,8 @@ export interface DatePickerProps
 }
 
 const isoPattern = /^\d{4}-\d{2}-\d{2}$/;
-const isoDateTimePattern = /^(\d{4}-\d{2}-\d{2})T([01]\d|2[0-3]):([0-5]\d)$/;
+const isoDateTimePattern =
+  /^(\d{4}-\d{2}-\d{2})T([01]\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?$/;
 
 function fromISO(value: string | null | undefined) {
   const dateValue = value?.slice(0, 10);
@@ -73,12 +75,14 @@ function toISO(date: Date) {
 
 function getTime(value: string | null | undefined) {
   const match = value ? isoDateTimePattern.exec(value) : null;
-  return match ? { hour: Number(match[2]), minute: Number(match[3]) } : { hour: 0, minute: 0 };
+  return match
+    ? { hour: Number(match[2]), minute: Number(match[3]), second: Number(match[4] ?? 0) }
+    : { hour: 0, minute: 0, second: 0 };
 }
 
-function toValue(date: Date, includeTime: boolean, hour = 0, minute = 0) {
+function toValue(date: Date, includeTime: boolean, hour = 0, minute = 0, second = 0) {
   if (!includeTime) return toISO(date);
-  return `${toISO(date)}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+  return `${toISO(date)}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:${String(second).padStart(2, "0")}`;
 }
 
 function startOfMonth(date: Date) {
@@ -108,24 +112,37 @@ function defaultFormatValue(value: string, locale: string) {
     month: "2-digit",
     year: "numeric",
     ...(isoDateTimePattern.test(value)
-      ? { hour: "2-digit", minute: "2-digit", hour12: false }
+      ? { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }
       : {}),
-  }).format(new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.hour, time.minute));
+  }).format(
+    new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      time.hour,
+      time.minute,
+      time.second,
+    ),
+  );
 }
 
 function defaultParseInput(input: string, _locale: string, includeTime = false) {
   const normalized = input.trim();
-  if (isoDateTimePattern.test(normalized)) return normalized;
+  const isoDateTimeMatch = isoDateTimePattern.exec(normalized);
+  if (isoDateTimeMatch) {
+    return `${isoDateTimeMatch[1]}T${isoDateTimeMatch[2]}:${isoDateTimeMatch[3]}:${isoDateTimeMatch[4] ?? "00"}`;
+  }
   if (fromISO(normalized) && !includeTime) return normalized;
-  const match = /^(\d{1,2})[./-](\d{1,2})[./-](\d{4})(?:\s+([01]?\d|2[0-3]):([0-5]\d))?$/.exec(
-    normalized,
-  );
+  const match =
+    /^(\d{1,2})[./-](\d{1,2})[./-](\d{4})(?:\s+([01]?\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?)?$/.exec(
+      normalized,
+    );
   if (!match) return null;
-  const [, day, month, year, hour, minute] = match;
+  const [, day, month, year, hour, minute, second] = match;
   const value = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
   if (!fromISO(value)) return null;
   if (!includeTime) return value;
-  return `${value}T${String(hour ?? "0").padStart(2, "0")}:${minute ?? "00"}`;
+  return `${value}T${String(hour ?? "0").padStart(2, "0")}:${minute ?? "00"}:${second ?? "00"}`;
 }
 
 export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function DatePicker(
@@ -149,6 +166,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
     clearable = true,
     includeTime = false,
     minuteStep = 1,
+    secondStep = 1,
     size = "md",
     firstDayOfWeek = 0,
     isDateUnavailable,
@@ -181,6 +199,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
   const [open, setOpen] = useState(false);
   const [hour, setHour] = useState(selectedTime.hour);
   const [minute, setMinute] = useState(selectedTime.minute);
+  const [second, setSecond] = useState(selectedTime.second);
   const [viewDate, setViewDate] = useState(() => startOfMonth(selectedDate ?? today));
   const [activeDate, setActiveDate] = useState(() => selectedDate ?? today);
   const fieldRef = useRef<HTMLDivElement>(null);
@@ -204,6 +223,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
     const nextTime = getTime(selectedValue);
     setHour(nextTime.hour);
     setMinute(nextTime.minute);
+    setSecond(nextTime.second);
     setInputInvalid(false);
   }, [formatValue, locale, selectedValue]);
 
@@ -215,6 +235,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
     const nextTime = getTime(selectedValue);
     setHour(nextTime.hour);
     setMinute(nextTime.minute);
+    setSecond(nextTime.second);
   }, [open, selectedDate, selectedValue, today]);
 
   useEffect(() => {
@@ -301,18 +322,19 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
 
   function selectDate(date: Date) {
     if (disabled || readOnly || unavailable(date)) return;
-    const nextValue = toValue(date, includeTime, hour, minute);
+    const nextValue = toValue(date, includeTime, hour, minute, second);
     updateValue(nextValue);
     setDraft(formatValue(nextValue, locale));
     setInputInvalid(false);
     if (!includeTime) setOpen(false);
   }
 
-  function updateTime(nextHour: number, nextMinute: number) {
+  function updateTime(nextHour: number, nextMinute: number, nextSecond: number) {
     setHour(nextHour);
     setMinute(nextMinute);
+    setSecond(nextSecond);
     if (!selectedDate) return;
-    const nextValue = toValue(selectedDate, true, nextHour, nextMinute);
+    const nextValue = toValue(selectedDate, true, nextHour, nextMinute, nextSecond);
     updateValue(nextValue);
     setDraft(formatValue(nextValue, locale));
     setInputInvalid(false);
@@ -569,13 +591,13 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(function D
                 <Time
                   className="arcsyn-date-picker__time"
                   label="Horário"
-                  value={`${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`}
+                  value={`${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:${String(second).padStart(2, "0")}`}
                   onValueChange={(nextTime) => {
-                    const [nextHour, nextMinute] = nextTime.split(":").map(Number);
-                    updateTime(nextHour, nextMinute);
+                    const [nextHour, nextMinute, nextSecond] = nextTime.split(":").map(Number);
+                    updateTime(nextHour, nextMinute, nextSecond);
                   }}
-                  includeSeconds={false}
                   minuteStep={minuteStep}
+                  secondStep={secondStep}
                   size="sm"
                 />
               ) : null}

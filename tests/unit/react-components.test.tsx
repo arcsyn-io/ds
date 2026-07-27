@@ -154,24 +154,29 @@ describe("contratos dos componentes React", () => {
   it("seleciona hora e minuto opcionalmente sem converter fuso", async () => {
     const onValueChange = vi.fn();
     const user = userEvent.setup();
-    render(<DatePicker label="Início da implantação" defaultValue="2026-08-14T09:30" onValueChange={onValueChange} includeTime minuteStep={5} />);
+    render(
+      <DatePicker label="Início da implantação" defaultValue="2026-08-14T09:30:00" onValueChange={onValueChange} includeTime minuteStep={5} secondStep={15} />,
+    );
 
     const input = screen.getByLabelText("Início da implantação");
-    expect(input).toHaveValue("14/08/2026, 09:30");
+    expect(input).toHaveValue("14/08/2026, 09:30:00");
     await user.click(screen.getByRole("button", { name: "Abrir calendário para Início da implantação" }));
     const hour = screen.getByRole("spinbutton", { name: "Hora" });
     const minute = screen.getByRole("spinbutton", { name: "Minuto" });
-    expect(screen.queryByRole("spinbutton", { name: "Segundo" })).toBeNull();
+    const second = screen.getByRole("spinbutton", { name: "Segundo" });
     await user.clear(hour);
     await user.type(hour, "14");
     await user.tab();
     await user.clear(minute);
     await user.type(minute, "45");
     await user.tab();
-    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-14T14:45");
+    await user.clear(second);
+    await user.type(second, "30");
+    await user.tab();
+    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-14T14:45:30");
 
     await user.click(document.querySelector<HTMLButtonElement>('[data-date="2026-08-20"]')!);
-    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-20T14:45");
+    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-20T14:45:30");
     expect(screen.getByRole("dialog", { name: "Escolher data para Início da implantação" })).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Aplicar" }));
     expect(screen.queryByRole("dialog", { name: "Escolher data para Início da implantação" })).toBeNull();

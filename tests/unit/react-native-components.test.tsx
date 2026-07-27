@@ -99,18 +99,19 @@ describe("contratos dos componentes React Native", () => {
     const onValueChange = vi.fn();
     render(
       <ArcSynProvider theme="dark">
-        <DatePicker label="Início da implantação" defaultValue="2026-08-15T09:30" onValueChange={onValueChange} includeTime minuteStep={5} />
+        <DatePicker label="Início da implantação" defaultValue="2026-08-15T09:30:00" onValueChange={onValueChange} includeTime minuteStep={5} secondStep={15} />
       </ArcSynProvider>,
     );
 
-    expect(screen.getByLabelText("Início da implantação")).toHaveValue("15/08/2026, 09:30");
+    expect(screen.getByLabelText("Início da implantação")).toHaveValue("15/08/2026, 09:30:00");
     fireEvent.click(screen.getByRole("button", { name: "Abrir calendário para Início da implantação" }));
     expect(screen.getByRole("button", { name: "Aplicar" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Aumentar segundo" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Aumentar hora" }));
-    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-15T10:30");
+    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-15T10:30:00");
     fireEvent.click(screen.getByRole("button", { name: "Aumentar minuto" }));
-    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-15T10:35");
+    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-15T10:35:00");
+    fireEvent.click(screen.getByRole("button", { name: "Aumentar segundo" }));
+    expect(onValueChange).toHaveBeenLastCalledWith("2026-08-15T10:35:15");
   });
 
   it("altera hora, minuto e segundo no Time nativo", () => {
