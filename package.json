@@ -5,6 +5,7 @@
   "packageManager": "pnpm@11.13.0",
   "scripts": {
     "build": "pnpm --filter @arcsyn-io/tokens build && pnpm --filter @arcsyn-io/presentations build && pnpm --filter @arcsyn-io/react build && pnpm --filter @arcsyn-io/react-native build && pnpm --filter @arcsyn-io/docs build",
+    "dev:docs:all": "node scripts/dev-docs.mjs",
     "check": "pnpm tokens:validate && pnpm --filter @arcsyn-io/tokens build && pnpm --filter @arcsyn-io/presentations build && pnpm --filter @arcsyn-io/react build && pnpm --filter @arcsyn-io/react-native check && pnpm --filter @arcsyn-io/docs build",
     "dev:docs": "pnpm --filter @arcsyn-io/tokens build && pnpm --filter @arcsyn-io/docs dev",
     "format": "prettier --write .",
