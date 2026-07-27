@@ -48,8 +48,8 @@ Ofereça também uma API composta para casos avançados:
 - Layout responsivo e suporte a valores longos.
 - Ícone e tendência opcionais.
 - Não incluir gráficos internamente; permitir um slot opcional `visualization`.
-- Usar exclusivamente tokens do `@arcsyn/tokens`.
-- Estilos em `@arcsyn/styles` e implementação React em `@arcsyn/react`.
+- Usar exclusivamente tokens do `@arcsyn-io/tokens`.
+- Estilos em `@arcsyn-io/styles` e implementação React em `@arcsyn-io/react`.
 
 ## Acessibilidade
 

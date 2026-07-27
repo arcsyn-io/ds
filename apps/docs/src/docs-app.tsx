@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
-import { createPresentationTheme, narrativePatterns, presentationLayouts } from "@arcsyn/presentations";
-import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, Tooltip, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
-import { ArrowRightIcon, CheckIcon, CircleIcon, EllipsisIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn/react/icons";
-import { ActivityFeed, BarChart, Chat, Command, DataState, DatePicker, LineChart, NotificationCenter, PageHeader, SearchInput, Slider, Sparkline, StatCard, StatusIndicator, Time, UserMenu } from "@arcsyn/react";
-import * as ArcSynIcons from "@arcsyn/react/icons";
+import { createPresentationTheme, narrativePatterns, presentationLayouts } from "@arcsyn-io/presentations";
+import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, Tooltip, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn-io/react";
+import { ArrowRightIcon, CheckIcon, CircleIcon, EllipsisIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn-io/react/icons";
+import { ActivityFeed, BarChart, Chat, Command, DataState, DatePicker, LineChart, NotificationCenter, PageHeader, SearchInput, Slider, Sparkline, StatCard, StatusIndicator, Time, UserMenu } from "@arcsyn-io/react";
+import * as ArcSynIcons from "@arcsyn-io/react/icons";
 
 type Property = {
   name: string;
@@ -673,7 +673,7 @@ const componentPages: ComponentPage[] = [
     id: "data-table",
     title: "Data Table",
     summary: "Organiza conjuntos de dados com formatação de células, ações, ordenação, filtros e controles de visualização.",
-    importCode: 'import { DataTable, type DataTableColumn } from "@arcsyn/react";',
+    importCode: 'import { DataTable, type DataTableColumn } from "@arcsyn-io/react";',
     status: "React estável · Web",
     anatomy: ["Toolbar com filtro e visibilidade", "Cabeçalho ordenável", "Linhas e células formatáveis", "Seleção por linha e página", "Ações por linha", "Status e paginação"],
     accessibility: "DataTable usa table, caption, thead, tbody e cabeçalhos de coluna nativos. Ordenação é comunicada por aria-sort; seleção e paginação têm nomes acessíveis, e a contagem usa aria-live. Forneça caption descritivo e aria-label em ações somente com ícone. Em telas estreitas, a tabela preserva sua estrutura semântica e permite rolagem horizontal, enquanto os controles mantêm alvos de 44px. Não há equivalente React Native: para grandes conjuntos de dados, use FlatList com filtros e ordenação fornecidos pela aplicação.",
@@ -731,7 +731,7 @@ const componentPages: ComponentPage[] = [
     id: "sidebar",
     title: "Sidebar",
     summary: "Estrutura navegação lateral responsiva, recolhível e composta para aplicações densas.",
-    importCode: 'import {\n  Sidebar, SidebarContent, SidebarGroup, SidebarInset,\n  SidebarMenu, SidebarMenuButton, SidebarMenuItem,\n  SidebarProvider, SidebarTrigger, useSidebar,\n} from "@arcsyn/react";',
+    importCode: 'import {\n  Sidebar, SidebarContent, SidebarGroup, SidebarInset,\n  SidebarMenu, SidebarMenuButton, SidebarMenuItem,\n  SidebarProvider, SidebarTrigger, useSidebar,\n} from "@arcsyn-io/react";',
     status: "React estável · Base UI · Web",
     anatomy: ["SidebarProvider e contexto", "Sidebar com Header, Content e Footer", "Group com Label, Action e Content", "Menu, Item, Button, Action e Badge", "Submenu", "Rail, Trigger e Inset", "Drawer móvel em portal"],
     accessibility: "Sidebar usa aside nomeado no desktop e um Dialog Base UI no mobile, com foco contido, portal, Escape e backdrop. SidebarTrigger comunica aria-expanded; itens ativos usam aria-current=page. Ícones decorativos devem usar aria-hidden, ações só com ícone precisam de aria-label e tooltip não substitui um nome acessível. Em telas móveis, controles e itens preservam alvo mínimo de 44px. Não há equivalente React Native: use o padrão de navegação fornecido pela aplicação nativa e documente essa divergência.",
@@ -758,7 +758,7 @@ const componentPages: ComponentPage[] = [
     id: "theme-switcher",
     title: "Theme Switcher",
     summary: "Alterna entre temas disponíveis com uma seleção compacta e acessível.",
-    importCode: 'import { ThemeSwitcher } from "@arcsyn/react";',
+    importCode: 'import { ThemeSwitcher } from "@arcsyn-io/react";',
     status: "React estável · Web",
     anatomy: ["Wrapper", "Select nativo", "Opções de tema", "Callback de mudança"],
     accessibility: "O componente usa um select nativo nomeado pelo label, preservando teclado, foco e anúncio da opção selecionada pelo navegador. Forneça um label que descreva o escopo afetado. Não há equivalente React Native: no mobile, controle a prop theme de ArcSynProvider com componentes nativos da aplicação.",
@@ -789,7 +789,7 @@ const componentPages: ComponentPage[] = [
     id: "icons",
     title: "Icons",
     summary: "Catálogo curado de ícones Lucide com os mesmos nomes nos adaptadores React e React Native.",
-    importCode: 'import { CheckIcon, PlusIcon } from "@arcsyn/react/icons";\nimport { CheckIcon, PlusIcon } from "@arcsyn/react-native/icons";',
+    importCode: 'import { CheckIcon, PlusIcon } from "@arcsyn-io/react/icons";\nimport { CheckIcon, PlusIcon } from "@arcsyn-io/react-native/icons";',
     status: "React estável · React Native",
     anatomy: ["SVG vetorial", "ViewBox 24 × 24", "Traço herdado da cor do contexto", "Tamanho explícito"],
     accessibility: "Ícones decorativos devem usar aria-hidden no web e accessible={false} no React Native. Quando um ícone for o único conteúdo interativo, forneça aria-label ou accessibilityLabel no controle; o desenho não substitui um nome acessível.",
@@ -804,7 +804,7 @@ const componentPages: ComponentPage[] = [
         title: "Catálogo curado",
         description: "Use os exports ArcSyn para manter os mesmos nomes nas duas plataformas.",
         preview: <IconCatalogDemo />,
-        code: 'import { CheckIcon, PlusIcon } from "@arcsyn/react/icons";\n\n<CheckIcon aria-hidden size={16} />\n<PlusIcon aria-hidden size={16} />',
+        code: 'import { CheckIcon, PlusIcon } from "@arcsyn-io/react/icons";\n\n<CheckIcon aria-hidden size={16} />\n<PlusIcon aria-hidden size={16} />',
       },
       {
         title: "Com Button",
@@ -815,7 +815,7 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
-    id: "menubar", title: "Menu Bar", summary: "Organiza comandos persistentes de aplicações desktop em menus coordenados.", importCode: 'import { Menubar } from "@arcsyn/react";', status: "React estável · Base UI · Web",
+    id: "menubar", title: "Menu Bar", summary: "Organiza comandos persistentes de aplicações desktop em menus coordenados.", importCode: 'import { Menubar } from "@arcsyn-io/react";', status: "React estável · Base UI · Web",
     anatomy: ["Root com role=menubar", "Menu lógico", "Trigger", "Content em portal", "Group e Label", "Item, CheckboxItem ou RadioItem"],
     accessibility: "Base UI fornece roving focus, Home, End, setas e Escape. Use Menu Bar para comandos de aplicação, não para navegação primária de sites. Label precisa estar dentro de Group ou RadioGroup. Não há equivalente React Native: em telas móveis, prefira ações visíveis, Dropdown Menu ou navegação nativa.",
     properties: [
@@ -834,7 +834,7 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
-    id: "native-select", title: "Native Select", summary: "Usa o controle select do navegador para escolhas simples e familiares.", importCode: 'import { NativeSelect, NativeSelectOption, NativeSelectOptGroup } from "@arcsyn/react";', status: "React estável · HTML nativo · Web",
+    id: "native-select", title: "Native Select", summary: "Usa o controle select do navegador para escolhas simples e familiares.", importCode: 'import { NativeSelect, NativeSelectOption, NativeSelectOptGroup } from "@arcsyn-io/react";', status: "React estável · HTML nativo · Web",
     anatomy: ["Wrapper visual", "Elemento select nativo", "Option ou OptGroup", "Indicador decorativo"],
     accessibility: "Associe sempre um label ao select e use a primeira option vazia como placeholder quando necessário. O menu de opções, teclado e leitores de tela são administrados pelo navegador. React Native não oferece select em seu núcleo; use Select, que abre uma seleção modal acessível.",
     properties: [
@@ -852,7 +852,7 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
-    id: "pagination", title: "Pagination", summary: "Permite navegar entre páginas discretas de uma coleção extensa.", importCode: 'import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@arcsyn/react";', status: "React estável · React Native",
+    id: "pagination", title: "Pagination", summary: "Permite navegar entre páginas discretas de uma coleção extensa.", importCode: 'import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@arcsyn-io/react";', status: "React estável · React Native",
     anatomy: ["Nav nomeado", "Content em lista", "Item", "Previous e Next", "Link de página", "Ellipsis opcional"],
     accessibility: "O componente usa nav e lista; marque a página atual com active para gerar aria-current=page. Links indisponíveis precisam de aria-disabled e não devem navegar. No React Native, page é controlado e cada botão recebe nome e estado selecionado.",
     properties: [
@@ -870,7 +870,7 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
-    id: "empty", title: "Empty", summary: "Explica a ausência de conteúdo e oferece uma próxima ação relevante.", importCode: 'import { Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle } from "@arcsyn/react";', status: "React estável · React Native",
+    id: "empty", title: "Empty", summary: "Explica a ausência de conteúdo e oferece uma próxima ação relevante.", importCode: 'import { Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle } from "@arcsyn-io/react";', status: "React estável · React Native",
     anatomy: ["Container", "Media opcional", "Header", "Title", "Description", "Content ou Footer com ações"],
     accessibility: "O título deve explicar o estado, e a descrição deve indicar por que ocorreu ou como resolvê-lo. Media é decorativa por padrão. Não use role=alert para estados vazios estáticos; preserve foco e anuncie mudanças dinâmicas na região que controla os resultados.",
     properties: [
@@ -887,7 +887,7 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
-    id: "skeleton", title: "Skeleton", summary: "Reserva a geometria do conteúdo enquanto os dados estão carregando.", importCode: 'import { Skeleton } from "@arcsyn/react";', status: "React estável · React Native",
+    id: "skeleton", title: "Skeleton", summary: "Reserva a geometria do conteúdo enquanto os dados estão carregando.", importCode: 'import { Skeleton } from "@arcsyn-io/react";', status: "React estável · React Native",
     anatomy: ["Bloco visual", "Forma", "Dimensões", "Animação opcional"],
     accessibility: "Skeleton é decorativo e fica oculto de tecnologias assistivas. Marque a região real como aria-busy enquanto carrega e forneça um nome de status quando a espera precisar ser anunciada. Animações são removidas com prefers-reduced-motion; no mobile use animated=false quando necessário.",
     properties: [
@@ -904,7 +904,7 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
-    id: "sonner", title: "Toaster / Sonner", summary: "Exibe notificações temporárias globais com estados, ações e feedback assíncrono.", importCode: 'import { Toaster, toast } from "@arcsyn/react";', status: "React estável · Sonner · Web",
+    id: "sonner", title: "Toaster / Sonner", summary: "Exibe notificações temporárias globais com estados, ações e feedback assíncrono.", importCode: 'import { Toaster, toast } from "@arcsyn-io/react";', status: "React estável · Sonner · Web",
     anatomy: ["Toaster global", "Toast imperativo", "Título e descrição", "Ícone de estado", "Action ou Cancel opcionais", "Close opcional"],
     accessibility: "Monte um único Toaster próximo à raiz da aplicação. Sonner administra a região de notificações e a ordem dos avisos; mantenha títulos curtos, não coloque informação essencial apenas no toast e ofereça ação persistente para erros que exigem correção. Use success, warning e error pelo significado, não como decoração. React Native não possui paridade nesta implementação.",
     properties: [
@@ -928,7 +928,7 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
-    id: "accordion", title: "Accordion", summary: "Organiza blocos relacionados de conteúdo em seções expansíveis.", importCode: 'import { Accordion } from "@arcsyn/react";', status: "React estável · Base UI · React Native",
+    id: "accordion", title: "Accordion", summary: "Organiza blocos relacionados de conteúdo em seções expansíveis.", importCode: 'import { Accordion } from "@arcsyn-io/react";', status: "React estável · Base UI · React Native",
     anatomy: ["Root", "Item identificado por value", "Header e Trigger", "Panel expansível"],
     accessibility: "Base UI associa cada trigger ao painel, comunica o estado expandido e mantém botões nativos no fluxo de foco. Os títulos devem descrever o conteúdo oculto; não coloque ações independentes dentro do Trigger.",
     properties: [
@@ -949,7 +949,7 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
-    id: "carousel", title: "Carousel", summary: "Apresenta uma sequência curta de conteúdos, um item por vez, com controles explícitos.", importCode: 'import { Carousel } from "@arcsyn/react";', status: "React estável · React Native",
+    id: "carousel", title: "Carousel", summary: "Apresenta uma sequência curta de conteúdos, um item por vez, com controles explícitos.", importCode: 'import { Carousel } from "@arcsyn-io/react";', status: "React estável · React Native",
     anatomy: ["Região nomeada", "Viewport", "Slide ativo", "Controles anterior e próximo", "Indicador de posição"],
     accessibility: "Informe label, mantenha os controles visíveis e não avance automaticamente. O componente anuncia a posição, aceita setas, Home e End no web e desabilita controles nos limites quando loop é false.",
     properties: [
@@ -968,7 +968,7 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
-    id: "collapsible", title: "Collapsible", summary: "Revela conteúdo complementar sob demanda sem criar um conjunto de seções.", importCode: 'import { Collapsible } from "@arcsyn/react";', status: "React estável · Base UI · React Native",
+    id: "collapsible", title: "Collapsible", summary: "Revela conteúdo complementar sob demanda sem criar um conjunto de seções.", importCode: 'import { Collapsible } from "@arcsyn-io/react";', status: "React estável · Base UI · React Native",
     anatomy: ["Root", "Trigger", "Panel"],
     accessibility: "O Trigger é um botão associado ao Panel e comunica aria-expanded. Use Collapsible para um único bloco; quando houver várias seções relacionadas, prefira Accordion.",
     properties: [
@@ -987,7 +987,7 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
-    id: "popover", title: "Popover", summary: "Exibe contexto ou controles leves ancorados a um trigger, sem interromper toda a página.", importCode: 'import { Popover } from "@arcsyn/react";', status: "React estável · Base UI · React Native",
+    id: "popover", title: "Popover", summary: "Exibe contexto ou controles leves ancorados a um trigger, sem interromper toda a página.", importCode: 'import { Popover } from "@arcsyn-io/react";', status: "React estável · Base UI · React Native",
     anatomy: ["Root e Trigger", "Portal e Positioner", "Content", "Title e Description", "Close e Footer opcionais"],
     accessibility: "Inclua Title e Description quando o conteúdo exigir contexto. Base UI gerencia foco, Escape e clique externo; em modo modal, inclua sempre Close. No React Native, o conteúdo abre em Modal centralizado.",
     properties: [
@@ -1008,7 +1008,7 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
-    id: "context-menu", title: "Context Menu", summary: "Disponibiliza ações diretamente relacionadas a uma área ou item por clique secundário ou toque prolongado.", importCode: 'import { ContextMenu } from "@arcsyn/react";', status: "React estável · Base UI · React Native",
+    id: "context-menu", title: "Context Menu", summary: "Disponibiliza ações diretamente relacionadas a uma área ou item por clique secundário ou toque prolongado.", importCode: 'import { ContextMenu } from "@arcsyn-io/react";', status: "React estável · Base UI · React Native",
     anatomy: ["Root", "Trigger de área", "Content posicionado", "Item, CheckboxItem ou RadioItem", "Label e Separator opcionais"],
     accessibility: "Base UI oferece teclado, foco e abertura por clique secundário ou toque prolongado. A página permanece visualmente disponível ao fundo; toda ação importante também deve existir por um caminho visível.",
     properties: [
@@ -1030,7 +1030,7 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
-    id: "kbd", title: "Kbd", summary: "Representa uma tecla ou sequência curta de entrada do teclado.", importCode: 'import { Kbd } from "@arcsyn/react";', status: "React estável · React Native",
+    id: "kbd", title: "Kbd", summary: "Representa uma tecla ou sequência curta de entrada do teclado.", importCode: 'import { Kbd } from "@arcsyn-io/react";', status: "React estável · React Native",
     anatomy: ["Elemento kbd", "Rótulo da tecla"],
     accessibility: "Use o nome que aparece no teclado da plataforma e escreva conectores como texto comum. Kbd comunica somente a tecla; não substitui instruções claras nem cria comportamento de atalho.",
     properties: [
@@ -1049,7 +1049,7 @@ const componentPages: ComponentPage[] = [
     id: "attachment",
     title: "Attachment",
     summary: "Exibe arquivos ou imagens com mídia, metadados, estado de upload e ações independentes.",
-    importCode: 'import { Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger } from "@arcsyn/react";',
+    importCode: 'import { Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger } from "@arcsyn-io/react";',
     status: "React estável",
     anatomy: ["Media", "Content: título e descrição", "Actions opcionais", "Trigger opcional", "Grupo rolável opcional"],
     accessibility: "Forneça aria-label para ações e triggers sem texto. Mantenha progresso e falhas na descrição. A versão React Native ainda não está disponível; use Card e Pressable no aplicativo nativo.",
@@ -1067,16 +1067,16 @@ const componentPages: ComponentPage[] = [
     ],
   },
   {
-    id: "breadcrumb", title: "Breadcrumb", summary: "Expõe a hierarquia de navegação até a página atual.", importCode: 'import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@arcsyn/react";', status: "React estável", anatomy: ["Nav", "Lista ordenada", "Links ancestrais", "Página atual"], accessibility: "Usa nav, lista ordenada e aria-current=page. No React Native não há equivalente: prefira um botão de voltar ou navegação de pilha.", properties: [{ name: "BreadcrumbLink", type: "AnchorHTMLAttributes<HTMLAnchorElement>", defaultValue: "—", description: "Link de uma página ancestral." }, { name: "BreadcrumbPage", type: "HTMLAttributes<HTMLSpanElement>", defaultValue: "—", description: "Página atual, marcada com aria-current=page." }], examples: [{ title: "Hierarquia de projeto", description: "Mostre o caminho apenas quando ele realmente ajudar a voltar a um nível conhecido.", preview: <Breadcrumb><BreadcrumbList><BreadcrumbItem><BreadcrumbLink href="#/">Início</BreadcrumbLink><BreadcrumbSeparator /></BreadcrumbItem><BreadcrumbItem><BreadcrumbLink href="#/components">Componentes</BreadcrumbLink><BreadcrumbSeparator /></BreadcrumbItem><BreadcrumbItem><BreadcrumbPage>Breadcrumb</BreadcrumbPage></BreadcrumbItem></BreadcrumbList></Breadcrumb>, code: '<Breadcrumb>\n  <BreadcrumbList>\n    <BreadcrumbItem><BreadcrumbLink href="/">Início</BreadcrumbLink><BreadcrumbSeparator /></BreadcrumbItem>\n    <BreadcrumbItem><BreadcrumbPage>Projetos</BreadcrumbPage></BreadcrumbItem>\n  </BreadcrumbList>\n</Breadcrumb>' }] },
+    id: "breadcrumb", title: "Breadcrumb", summary: "Expõe a hierarquia de navegação até a página atual.", importCode: 'import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@arcsyn-io/react";', status: "React estável", anatomy: ["Nav", "Lista ordenada", "Links ancestrais", "Página atual"], accessibility: "Usa nav, lista ordenada e aria-current=page. No React Native não há equivalente: prefira um botão de voltar ou navegação de pilha.", properties: [{ name: "BreadcrumbLink", type: "AnchorHTMLAttributes<HTMLAnchorElement>", defaultValue: "—", description: "Link de uma página ancestral." }, { name: "BreadcrumbPage", type: "HTMLAttributes<HTMLSpanElement>", defaultValue: "—", description: "Página atual, marcada com aria-current=page." }], examples: [{ title: "Hierarquia de projeto", description: "Mostre o caminho apenas quando ele realmente ajudar a voltar a um nível conhecido.", preview: <Breadcrumb><BreadcrumbList><BreadcrumbItem><BreadcrumbLink href="#/">Início</BreadcrumbLink><BreadcrumbSeparator /></BreadcrumbItem><BreadcrumbItem><BreadcrumbLink href="#/components">Componentes</BreadcrumbLink><BreadcrumbSeparator /></BreadcrumbItem><BreadcrumbItem><BreadcrumbPage>Breadcrumb</BreadcrumbPage></BreadcrumbItem></BreadcrumbList></Breadcrumb>, code: '<Breadcrumb>\n  <BreadcrumbList>\n    <BreadcrumbItem><BreadcrumbLink href="/">Início</BreadcrumbLink><BreadcrumbSeparator /></BreadcrumbItem>\n    <BreadcrumbItem><BreadcrumbPage>Projetos</BreadcrumbPage></BreadcrumbItem>\n  </BreadcrumbList>\n</Breadcrumb>' }] },
   {
-    id: "scroll-area", title: "Scroll Area", summary: "Exibe conteúdo rolável com barras discretas e preserva o espaço disponível do layout.", importCode: 'import { ScrollArea } from "@arcsyn/react";', status: "React estável · Base UI", anatomy: ["Root", "Viewport rolável", "Content", "Scrollbar opcional"], accessibility: "Mantenha conteúdo rolável acessível por teclado e não esconda informação essencial apenas na rolagem. No React Native, ScrollArea usa ScrollView nativo.", properties: [{ name: "ScrollArea.Scrollbar.orientation", type: '"vertical" | "horizontal"', defaultValue: '"vertical"', description: "Define o eixo controlado pela barra." }, { name: "ScrollArea.Root.style", type: "CSSProperties", defaultValue: "—", description: "Defina uma altura ou largura para criar uma região rolável." }], examples: [{ title: "Histórico de eventos", description: "Defina a altura do Root; o Viewport ocupa o espaço e permite a rolagem.", preview: <ScrollArea.Root className="docs-scroll-area"><ScrollArea.Viewport><ScrollArea.Content>{Array.from({ length: 9 }, (_, index) => <p className="docs-scroll-area-item" key={index}>Evento operacional #{String(index + 1).padStart(2, "0")}</p>)}</ScrollArea.Content></ScrollArea.Viewport><ScrollArea.Scrollbar /></ScrollArea.Root>, code: '<ScrollArea.Root style={{ height: "12rem" }}>\n  <ScrollArea.Viewport>\n    <ScrollArea.Content>…</ScrollArea.Content>\n  </ScrollArea.Viewport>\n  <ScrollArea.Scrollbar />\n</ScrollArea.Root>' }] },
+    id: "scroll-area", title: "Scroll Area", summary: "Exibe conteúdo rolável com barras discretas e preserva o espaço disponível do layout.", importCode: 'import { ScrollArea } from "@arcsyn-io/react";', status: "React estável · Base UI", anatomy: ["Root", "Viewport rolável", "Content", "Scrollbar opcional"], accessibility: "Mantenha conteúdo rolável acessível por teclado e não esconda informação essencial apenas na rolagem. No React Native, ScrollArea usa ScrollView nativo.", properties: [{ name: "ScrollArea.Scrollbar.orientation", type: '"vertical" | "horizontal"', defaultValue: '"vertical"', description: "Define o eixo controlado pela barra." }, { name: "ScrollArea.Root.style", type: "CSSProperties", defaultValue: "—", description: "Defina uma altura ou largura para criar uma região rolável." }], examples: [{ title: "Histórico de eventos", description: "Defina a altura do Root; o Viewport ocupa o espaço e permite a rolagem.", preview: <ScrollArea.Root className="docs-scroll-area"><ScrollArea.Viewport><ScrollArea.Content>{Array.from({ length: 9 }, (_, index) => <p className="docs-scroll-area-item" key={index}>Evento operacional #{String(index + 1).padStart(2, "0")}</p>)}</ScrollArea.Content></ScrollArea.Viewport><ScrollArea.Scrollbar /></ScrollArea.Root>, code: '<ScrollArea.Root style={{ height: "12rem" }}>\n  <ScrollArea.Viewport>\n    <ScrollArea.Content>…</ScrollArea.Content>\n  </ScrollArea.Viewport>\n  <ScrollArea.Scrollbar />\n</ScrollArea.Root>' }] },
   {
-    id: "separator", title: "Separator", summary: "Separa visualmente grupos relacionados sem criar uma superfície adicional.", importCode: 'import { Separator } from "@arcsyn/react";', status: "React estável · Base UI", anatomy: ["Linha horizontal ou vertical", "Semântica de separador"], accessibility: "O componente expõe role=separator. Use para agrupamentos visuais; não o use como substituto de títulos ou estrutura semântica.", properties: [{ name: "orientation", type: '"horizontal" | "vertical"', defaultValue: '"horizontal"', description: "Define a direção da linha." }], examples: [{ title: "Divisão de metadados", description: "Use uma linha sutil para separar blocos de informação próximos.", preview: <div className="docs-separator-example"><strong>Detalhes da integração</strong><Separator /><span>Última sincronização: há 4 minutos</span></div>, code: '<strong>Detalhes da integração</strong>\n<Separator />\n<span>Última sincronização: há 4 minutos</span>' }, { title: "Separador vertical", description: "Em linhas compactas, a orientação vertical divide ações ou metadados adjacentes.", preview: <div className="docs-separator-row"><span>Produção</span><Separator orientation="vertical" /><span>Operacional</span></div>, code: '<div style={{ display: "flex", height: "1rem" }}>\n  <span>Produção</span>\n  <Separator orientation="vertical" />\n  <span>Operacional</span>\n</div>' }] },
+    id: "separator", title: "Separator", summary: "Separa visualmente grupos relacionados sem criar uma superfície adicional.", importCode: 'import { Separator } from "@arcsyn-io/react";', status: "React estável · Base UI", anatomy: ["Linha horizontal ou vertical", "Semântica de separador"], accessibility: "O componente expõe role=separator. Use para agrupamentos visuais; não o use como substituto de títulos ou estrutura semântica.", properties: [{ name: "orientation", type: '"horizontal" | "vertical"', defaultValue: '"horizontal"', description: "Define a direção da linha." }], examples: [{ title: "Divisão de metadados", description: "Use uma linha sutil para separar blocos de informação próximos.", preview: <div className="docs-separator-example"><strong>Detalhes da integração</strong><Separator /><span>Última sincronização: há 4 minutos</span></div>, code: '<strong>Detalhes da integração</strong>\n<Separator />\n<span>Última sincronização: há 4 minutos</span>' }, { title: "Separador vertical", description: "Em linhas compactas, a orientação vertical divide ações ou metadados adjacentes.", preview: <div className="docs-separator-row"><span>Produção</span><Separator orientation="vertical" /><span>Operacional</span></div>, code: '<div style={{ display: "flex", height: "1rem" }}>\n  <span>Produção</span>\n  <Separator orientation="vertical" />\n  <span>Operacional</span>\n</div>' }] },
   {
     id: "aspect-ratio",
     title: "Aspect Ratio",
     summary: "Exibe conteúdo dentro de uma proporção desejada sem depender de uma altura fixa.",
-    importCode: 'import { AspectRatio } from "@arcsyn/react";',
+    importCode: 'import { AspectRatio } from "@arcsyn-io/react";',
     status: "React estável",
     anatomy: ["Container com largura fluida", "Proporção configurável", "Conteúdo interno preenchendo a área"],
     accessibility: "AspectRatio é apenas um container visual. Forneça texto alternativo para imagens e semântica apropriada para o conteúdo interno.",
@@ -1091,7 +1091,7 @@ const componentPages: ComponentPage[] = [
     id: "avatar",
     title: "Avatar",
     summary: "Representa uma pessoa ou entidade com imagem opcional e fallback determinístico de cor e iniciais.",
-    importCode: 'import { Avatar } from "@arcsyn/react";',
+    importCode: 'import { Avatar } from "@arcsyn-io/react";',
     status: "React estável",
     anatomy: ["Imagem opcional", "Fallback de cor derivado do id", "Iniciais derivadas do nome"],
     accessibility: "Quando não há imagem, o fallback recebe role=img e um nome acessível. Quando houver imagem, informe name para produzir um texto alternativo útil.",
@@ -1107,7 +1107,7 @@ const componentPages: ComponentPage[] = [
     id: "button",
     title: "Button",
     summary: "Dispara uma ação ou inicia um fluxo. Use uma única ação primária por contexto.",
-    importCode: 'import { Button } from "@arcsyn/react";',
+    importCode: 'import { Button } from "@arcsyn-io/react";',
     status: "React estável",
     anatomy: ["Elemento button", "Ícone inicial opcional", "Rótulo", "Ícone final opcional"],
     accessibility: "Renderiza um button nativo. Use type=\"submit\" apenas em formulários e informe um rótulo textual ou aria-label em botões somente com ícone.",
@@ -1139,7 +1139,7 @@ const componentPages: ComponentPage[] = [
     id: "input",
     title: "Input",
     summary: "Campo de texto para entrada de valores simples em formulários e filtros.",
-    importCode: 'import { Field, Input } from "@arcsyn/react";',
+    importCode: 'import { Field, Input } from "@arcsyn-io/react";',
     status: "React estável",
     anatomy: ["Field opcional: Label, Description e Error", "Elemento input", "Valor ou placeholder", "Estado inválido opcional"],
     accessibility: "Sempre associe o campo a um label visível. Quando o texto não estiver visível, use aria-label. O estado invalid também comunica aria-invalid.",
@@ -1162,7 +1162,7 @@ const componentPages: ComponentPage[] = [
     id: "input-group",
     title: "Input Group",
     summary: "Compõe um Input com prefixos ou sufixos sem perder o foco, validação e alinhamento visual.",
-    importCode: 'import { Input, InputGroup } from "@arcsyn/react";',
+    importCode: 'import { Input, InputGroup } from "@arcsyn-io/react";',
     status: "React estável",
     anatomy: ["Root", "Addon inicial opcional", "Input", "Addon final opcional"],
     accessibility: "Addons devem complementar o campo, não substituir o label. Para ícones decorativos, use aria-hidden. Mantenha o label associado ao Input real usando htmlFor.",
@@ -1192,7 +1192,7 @@ const componentPages: ComponentPage[] = [
     id: "radio-group",
     title: "Radio Group",
     summary: "Permite escolher uma única opção de um conjunto pequeno e mutuamente exclusivo.",
-    importCode: 'import { Field, RadioGroup } from "@arcsyn/react";',
+    importCode: 'import { Field, RadioGroup } from "@arcsyn-io/react";',
     status: "React estável · Base UI",
     anatomy: ["Root com role radiogroup", "Item selecionável", "Indicador de seleção", "Rótulo clicável"],
     accessibility: "Base UI implementa a semântica de radio group e a navegação por setas. Use Field.Label para nomear o grupo e mantenha os rótulos das opções claros.",
@@ -1216,7 +1216,7 @@ const componentPages: ComponentPage[] = [
     id: "select",
     title: "Select",
     summary: "Escolha uma opção em uma lista compacta, acessível por teclado e adequada para valores enumerados.",
-    importCode: 'import { Field, Select } from "@arcsyn/react";',
+    importCode: 'import { Field, Select } from "@arcsyn-io/react";',
     status: "React estável",
     anatomy: ["Root", "Trigger", "Value ou placeholder", "Content", "Item ou Group"],
     accessibility: "Base UI fornece foco, teclado e semântica de listbox. Use Field.Label associado ao id do Root; itens desabilitados não podem receber seleção.",
@@ -1233,7 +1233,7 @@ const componentPages: ComponentPage[] = [
     id: "select-search",
     title: "Select Search",
     summary: "Seleciona uma opção em listas extensas usando busca local, teclado e feedback de lista vazia.",
-    importCode: 'import { Field, SelectSearch } from "@arcsyn/react";',
+    importCode: 'import { Field, SelectSearch } from "@arcsyn-io/react";',
     status: "React estável · Base UI",
     anatomy: ["Campo de busca", "Botão para abrir a lista", "Lista filtrada", "Opção selecionável", "Mensagem de lista vazia"],
     accessibility: "O campo usa a semântica de combobox da Base UI e permite navegar pelas opções com teclado. Associe um Field.Label usando htmlFor e não use o placeholder como único rótulo.",
@@ -1250,7 +1250,7 @@ const componentPages: ComponentPage[] = [
     id: "textarea",
     title: "Textarea",
     summary: "Campo multilinha para observações, justificativas e mensagens que exigem mais contexto.",
-    importCode: 'import { Field, Textarea } from "@arcsyn/react";',
+    importCode: 'import { Field, Textarea } from "@arcsyn-io/react";',
     status: "React estável",
     anatomy: ["Field opcional", "Textarea", "Placeholder ou valor", "Feedback de validação"],
     accessibility: "Associe sempre um label. O estado invalid comunica aria-invalid e o erro deve ser referenciado com aria-describedby.",
@@ -1266,7 +1266,7 @@ const componentPages: ComponentPage[] = [
     id: "checkbox",
     title: "Checkbox",
     summary: "Controle uma escolha independente, confirmação ou aceite explícito.",
-    importCode: 'import { Checkbox, Field } from "@arcsyn/react";',
+    importCode: 'import { Checkbox, Field } from "@arcsyn-io/react";',
     status: "React estável",
     anatomy: ["Input checkbox nativo", "Indicador de seleção", "Label associado opcional"],
     accessibility: "É um checkbox nativo. Use um label associado por htmlFor; nunca dependa somente do símbolo de seleção.",
@@ -1281,7 +1281,7 @@ const componentPages: ComponentPage[] = [
     id: "switch",
     title: "Switch",
     summary: "Alterna imediatamente uma configuração entre ligada e desligada.",
-    importCode: 'import { Field, Switch } from "@arcsyn/react";',
+    importCode: 'import { Field, Switch } from "@arcsyn-io/react";',
     status: "React estável",
     anatomy: ["Input com role switch", "Indicador móvel", "Label associado opcional"],
     accessibility: "Use Switch apenas para mudanças instantâneas. Ele expõe role=switch; associe um label e deixe o estado claro no contexto.",
@@ -1296,7 +1296,7 @@ const componentPages: ComponentPage[] = [
     id: "date-picker",
     title: "Date Picker",
     summary: "Seleciona ou permite digitar uma data, com hora, minuto e segundo opcionais, navegação por mês e validação acessível.",
-    importCode: 'import { DatePicker } from "@arcsyn/react";',
+    importCode: 'import { DatePicker } from "@arcsyn-io/react";',
     status: "React estável · Base UI · React Native",
     anatomy: ["Label", "Campo para digitação", "Botão do calendário", "Select nativo para mês e controle incremental para ano", "Grade de dias", "Componente Time opcional", "Descrição e erro opcionais"],
     accessibility: "O campo é nomeado pelo label e referencia descrição e erro. No web, o calendário abre ao focar o input sem mover o cursor; Alt + seta para baixo transfere o foco para a grade. O mês usa select nativo, o ano oferece botões nomeados e o horário reutiliza os inputs acessíveis do Time. Na grade, setas percorrem dias, Home e End percorrem a semana, Page Up e Page Down mudam o mês e Shift muda o ano. No React Native, o modal reutiliza os controles incrementais do Time com alvos de 44px.",
@@ -1340,7 +1340,7 @@ const componentPages: ComponentPage[] = [
     id: "time",
     title: "Time",
     summary: "Seleciona hora, minuto e segundo em um valor local estável no formato HH:mm:ss.",
-    importCode: 'import { Time } from "@arcsyn/react";',
+    importCode: 'import { Time } from "@arcsyn-io/react";',
     status: "React estável · React Native",
     anatomy: ["Label", "Input de hora", "Input de minuto", "Input opcional de segundo", "Descrição e erro opcionais"],
     accessibility: "O grupo recebe o nome do label e associa descrição e erro. No web, cada segmento usa um input numérico nomeado; a digitação é normalizada no blur e as setas respeitam o step. No React Native, cada segmento oferece botões nomeados para aumentar e diminuir, com alvos de toque de 44px. O valor não aplica conversão de fuso horário.",
@@ -1374,7 +1374,7 @@ const componentPages: ComponentPage[] = [
     id: "slider",
     title: "Slider",
     summary: "Seleciona um valor ou intervalo dentro de limites conhecidos, com interação por ponteiro, toque e teclado.",
-    importCode: 'import { Slider } from "@arcsyn/react";',
+    importCode: 'import { Slider } from "@arcsyn-io/react";',
     status: "React estável · Base UI · React Native",
     anatomy: ["Root", "Label e Value", "Control", "Track e Indicator", "Thumb único ou múltiplos", "Marks opcionais"],
     accessibility: "Slider.Label nomeia automaticamente o controle. Cada Thumb expõe role=slider, limites e valor; em intervalos, forneça labels distintos. Setas alteram por step, Page Up/Down ou Shift+seta usam largeStep, e Home/End alcançam os limites. A versão React Native usa role=adjustable e alvos de toque de 44px.",
@@ -1419,7 +1419,7 @@ const componentPages: ComponentPage[] = [
     id: "card",
     title: "Card",
     summary: "Agrupa informações relacionadas em uma superfície elevada, com hierarquia definida por bordas e contraste.",
-    importCode: 'import { Card } from "@arcsyn/react";',
+    importCode: 'import { Card } from "@arcsyn-io/react";',
     status: "React estável",
     anatomy: ["Root", "Header e Heading", "Eyebrow, Title e Description", "Actions", "Content", "Footer"],
     accessibility: "Card é um container sem semântica própria. Card.Title aceita as para escolher o heading. Em cards interativos, forneça tabIndex, role e handlers de teclado adequados e não aninhe outros controles interativos.",
@@ -1443,7 +1443,7 @@ const componentPages: ComponentPage[] = [
     id: "badge",
     title: "Badge",
     summary: "Rótulo curto para status, classificação ou metadado. Não use como ação clicável.",
-    importCode: 'import { Badge } from "@arcsyn/react";',
+    importCode: 'import { Badge } from "@arcsyn-io/react";',
     status: "React estável",
     anatomy: ["Elemento span", "Rótulo curto"],
     accessibility: "O conteúdo deve fazer sentido sem depender apenas da cor. Prefira textos como Operacional, Atenção ou Bloqueado.",
@@ -1465,7 +1465,7 @@ const componentPages: ComponentPage[] = [
     id: "dialog",
     title: "Dialog",
     summary: "Foca uma tarefa ou decisão sem levar a pessoa para outra página.",
-    importCode: 'import { Dialog } from "@arcsyn/react";',
+    importCode: 'import { Dialog } from "@arcsyn-io/react";',
     status: "React estável · Base UI",
     anatomy: ["Root e Trigger", "Backdrop e camada de foco", "Content", "Header: Title e Description", "Footer e Close"],
     accessibility: "A primitive Base UI move e restringe o foco dentro do diálogo, bloqueia a página ao fundo e suporta fechamento por Escape. Sempre inclua Title, Description e uma ação de fechamento dentro do conteúdo.",
@@ -1498,7 +1498,7 @@ const componentPages: ComponentPage[] = [
     id: "drawer",
     title: "Drawer",
     summary: "Abre um painel modal a partir de uma borda para tarefas contextuais sem perder o contexto da página.",
-    importCode: 'import { Drawer } from "@arcsyn/react";',
+    importCode: 'import { Drawer } from "@arcsyn-io/react";',
     status: "React estável · Base UI · React Native",
     anatomy: ["Root e Trigger", "Portal, Backdrop e Viewport", "Content", "Header: Title e Description", "Body rolável", "Footer e Close", "Handle opcional para top e bottom"],
     accessibility: "No web, Base UI move e restringe o foco, bloqueia o scroll da página, fecha com Escape ou gesto e devolve o foco ao trigger. Inclua sempre Title, Description e uma ação Close visível. No React Native, Drawer usa Modal, fecha pelo botão voltar no Android e oferece Close explícito; os quatro lados são suportados, mas gestos de arrastar e snap points estão disponíveis apenas no web.",
@@ -1583,7 +1583,7 @@ const componentPages: ComponentPage[] = [
     id: "tabs",
     title: "Tabs",
     summary: "Alterna entre painéis relacionados dentro do mesmo contexto, preservando uma hierarquia compacta.",
-    importCode: 'import { Tabs } from "@arcsyn/react";',
+    importCode: 'import { Tabs } from "@arcsyn-io/react";',
     status: "React estável · Base UI · React Native",
     anatomy: ["Root", "List com semântica tablist", "Tab com value único", "Indicator visual no web", "Panels", "Panel associado pelo mesmo value"],
     accessibility: "Base UI associa tabs e painéis, aplica os papéis ARIA, gerencia roving focus e oferece navegação por setas, Home e End. Por padrão, foco e ativação são separados; use activateOnFocus apenas quando o conteúdo trocar sem custo perceptível. No React Native, List e Tab expõem papéis e estado selected, cada alvo tem no mínimo 44px e a tab ativa recebe o indicador diretamente; a peça Indicator separada é exclusiva do web.",
@@ -1654,7 +1654,7 @@ const componentPages: ComponentPage[] = [
     id: "tooltip",
     title: "Tooltip",
     summary: "Exibe uma dica curta e complementar quando um controle recebe hover, foco ou toque longo.",
-    importCode: 'import { Tooltip } from "@arcsyn/react";',
+    importCode: 'import { Tooltip } from "@arcsyn-io/react";',
     status: "React estável · Base UI · React Native",
     anatomy: ["Provider opcional para atrasos compartilhados", "Root", "Trigger", "Portal e Positioner internos", "Content", "Arrow opcional no web"],
     accessibility: "Tooltips complementam, mas não substituem, o nome acessível ou o rótulo visível do trigger. Mantenha o conteúdo curto, sem controles interativos e disponível por foco de teclado; Base UI abre por hover ou foco e fecha com Escape. No React Native, o trigger abre a dica por toque longo e o conteúdo aparece em uma camada dispensável por toque ou pelo botão voltar. Hover e Arrow são exclusivos do web.",
@@ -1732,7 +1732,7 @@ const componentPages: ComponentPage[] = [
     id: "dropdown-menu",
     title: "Dropdown Menu",
     summary: "Organiza ações contextuais e configurações compactas a partir de um botão.",
-    importCode: 'import { DropdownMenu } from "@arcsyn/react";',
+    importCode: 'import { DropdownMenu } from "@arcsyn-io/react";',
     status: "React estável · Base UI · React Native",
     anatomy: ["Root e Trigger", "Portal, Positioner e Content", "Label e Group opcionais", "Item, CheckboxItem ou RadioItem", "Sub, SubTrigger e SubContent", "Separator e Shortcut opcionais"],
     accessibility: "Base UI fornece semântica de menu, navegação por setas, busca por digitação, gerenciamento de foco e fechamento por Escape. O trigger precisa de nome acessível; não use o menu como navegação principal. No React Native, o equivalente abre um Modal nativo com alvos de toque de 44px; submenus e atalhos visuais não estão disponíveis.",
@@ -1772,7 +1772,7 @@ const componentPages: ComponentPage[] = [
     id: "spinner",
     title: "Spinner",
     summary: "Indicador visual de processamento para ações ou áreas que estão carregando.",
-    importCode: 'import { Spinner } from "@arcsyn/react";',
+    importCode: 'import { Spinner } from "@arcsyn-io/react";',
     status: "React estável",
     anatomy: ["Elemento span", "Anel animado", "Rótulo acessível opcional"],
     accessibility: "Por padrão, o Spinner é ocultado de tecnologias assistivas. Use label quando ele for a única indicação de carregamento; dentro do Button, o rótulo do próprio botão já comunica o contexto.",
@@ -1801,7 +1801,7 @@ const componentPages: ComponentPage[] = [
     id: "alert",
     title: "Alert",
     summary: "Comunica uma informação contextual, uma confirmação ou uma condição que precisa de atenção.",
-    importCode: 'import { Alert } from "@arcsyn/react";',
+    importCode: 'import { Alert } from "@arcsyn-io/react";',
     status: "React estável",
     anatomy: ["Container com role status", "Título obrigatório", "Descrição opcional", "Conteúdo adicional opcional"],
     accessibility: "O componente comunica atualizações com role=status. Para erros críticos que exigem atenção imediata, avalie um padrão específico com role=alert.",
@@ -1825,7 +1825,7 @@ const componentPages: ComponentPage[] = [
     id: "stat-card",
     title: "Stat Card",
     summary: "Exibe KPIs com valor, tendência, contexto e visualização opcional sem CSS da aplicação.",
-    importCode: 'import { StatCard } from "@arcsyn/react";',
+    importCode: 'import { StatCard } from "@arcsyn-io/react";',
     status: "React estável · React Native",
     anatomy: ["Root", "Header com Label e Icon", "Value", "Trend", "Description", "Visualization opcional"],
     accessibility: "Trend combina texto e ícone com a cor. Use valueAriaLabel quando a leitura visual do valor não for adequada para leitores de tela. A visualização é complementar e precisa de nome próprio quando carregar informação.",
@@ -1842,7 +1842,7 @@ const componentPages: ComponentPage[] = [
     id: "charts",
     title: "Charts",
     summary: "Visualizações declarativas, responsivas e acessíveis para séries temporais, comparações e tendências compactas.",
-    importCode: 'import { LineChart, BarChart, Sparkline, ChartLegend, ChartTooltip } from "@arcsyn/react";',
+    importCode: 'import { LineChart, BarChart, Sparkline, ChartLegend, ChartTooltip } from "@arcsyn-io/react";',
     status: "React estável · Web",
     anatomy: ["Container responsivo", "Legenda semântica", "Área SVG", "Pontos focáveis e tooltip", "Resumo tabular para leitores de tela"],
     accessibility: "Forneça aria-label descritivo. Cada ponto pode receber foco por teclado e expõe série, categoria e valor; padrões de linha diferenciam séries além da cor. Uma tabela invisível preserva os dados para tecnologias assistivas. Animações respeitam movimento reduzido. Não há equivalente React Native nesta versão; use uma visualização nativa com resumo textual equivalente.",
@@ -1860,7 +1860,7 @@ const componentPages: ComponentPage[] = [
     id: "page-header",
     title: "Page Header",
     summary: "Padroniza breadcrumb, título, descrição, metadados e ações no início de páginas.",
-    importCode: 'import { PageHeader } from "@arcsyn/react";',
+    importCode: 'import { PageHeader } from "@arcsyn-io/react";',
     status: "React estável · React Native",
     anatomy: ["Breadcrumb", "Content", "Eyebrow", "Title", "Description", "Metadata", "Actions"],
     accessibility: "Title renderiza h1 por padrão e aceita as para outros níveis. A ordem do DOM permanece breadcrumb, conteúdo e ações no mobile; nenhuma ação é ocultada por falta de espaço.",
@@ -1874,7 +1874,7 @@ const componentPages: ComponentPage[] = [
     id: "search-input",
     title: "Search Input",
     summary: "Combina busca, limpeza, carregamento e atalho opcional em um único controle.",
-    importCode: 'import { SearchInput } from "@arcsyn/react";',
+    importCode: 'import { SearchInput } from "@arcsyn-io/react";',
     status: "React estável · React Native",
     anatomy: ["Ícone de busca", "Input", "Spinner ou botão de limpar", "Atalho opcional"],
     accessibility: "aria-label é obrigatório na API web. O botão de limpar tem rótulo traduzível, Escape limpa o valor sem perder foco e o atalho global ignora inputs, textareas, selects e regiões editáveis.",
@@ -1889,7 +1889,7 @@ const componentPages: ComponentPage[] = [
     id: "command",
     title: "Command",
     summary: "Busca e executa ações rápidas em uma lista compacta, com navegação completa por teclado.",
-    importCode: 'import { Command } from "@arcsyn/react";',
+    importCode: 'import { Command } from "@arcsyn-io/react";',
     status: "React estável · React Native · Base UI",
     anatomy: ["Root ou Dialog", "Input de busca", "Lista e grupos", "Itens acionáveis", "Atalhos auxiliares", "Estados vazio e carregando"],
     accessibility: "Input e List implementam o padrão combobox/listbox. O foco permanece na busca; setas percorrem opções, Home e End saltam para os limites, Enter executa e Escape fecha o Dialog. Itens desabilitados são ignorados. Command.Dialog usa Base UI para foco, portal e teclado; no React Native, usa Modal nativo e alvos de toque de 44px.",
@@ -1909,7 +1909,7 @@ const componentPages: ComponentPage[] = [
     id: "status-indicator",
     title: "Status Indicator",
     summary: "Comunica presença, saúde operacional e sincronização sem reduzir o estado a uma cor.",
-    importCode: 'import { StatusIndicator } from "@arcsyn/react";',
+    importCode: 'import { StatusIndicator } from "@arcsyn-io/react";',
     status: "React estável · React Native",
     anatomy: ["Indicador visual", "Label visível ou nome acessível", "Formato inline ou pill"],
     accessibility: "O label é visível por padrão. No modo iconOnly, accessibleLabel fornece o nome; role=status e aria-live só devem ser ativados para mudanças assíncronas relevantes. Pulse é decorativo e respeita movimento reduzido.",
@@ -1923,7 +1923,7 @@ const componentPages: ComponentPage[] = [
     id: "activity-feed",
     title: "Activity Feed",
     summary: "Estrutura eventos cronológicos com ator, descrição, horário, status e ações.",
-    importCode: 'import { ActivityFeed } from "@arcsyn/react";',
+    importCode: 'import { ActivityFeed } from "@arcsyn-io/react";',
     status: "React estável · React Native",
     anatomy: ["Root ordenado", "Item", "Actor ou Icon", "Title e Description", "Timestamp", "Actions", "LoadMore"],
     accessibility: "Root usa lista ordenada e preserva a ordem cronológica no DOM. Timestamp aceita dateTime legível por máquina. A linha da timeline é puramente decorativa e ações precisam de nomes acessíveis.",
@@ -1937,7 +1937,7 @@ const componentPages: ComponentPage[] = [
     id: "user-menu",
     title: "User Menu",
     summary: "Representa o usuário atual e ações de conta em headers e sidebars.",
-    importCode: 'import { UserMenu } from "@arcsyn/react";',
+    importCode: 'import { UserMenu } from "@arcsyn-io/react";',
     status: "React estável · Base UI · Web",
     anatomy: ["Trigger com Avatar e identidade", "Dropdown", "Labels e separadores", "Ações comuns e destrutivas", "Tooltip no modo recolhido"],
     accessibility: "O trigger é um botão real, informa expansão e recebe o foco de volta ao fechar graças à Base UI. A ação destrutiva inclui texto semântico além da cor. No React Native, use Avatar com DropdownMenu; a API composta de UserMenu ainda não tem paridade.",
@@ -1952,7 +1952,7 @@ const componentPages: ComponentPage[] = [
     id: "data-state",
     title: "Data State",
     summary: "Padroniza carregamento, ausência, filtro sem resultados, erro e falta de permissão.",
-    importCode: 'import { DataState, DataTable } from "@arcsyn/react";',
+    importCode: 'import { DataState, DataTable } from "@arcsyn-io/react";',
     status: "React estável · React Native",
     anatomy: ["Ícone ou Skeletons", "Título", "Descrição", "Ação primária", "Ação secundária"],
     accessibility: "Loading usa status com rótulo acessível e error usa alert por padrão. Ícones são decorativos, ações não recebem foco automaticamente e os textos ficam sob controle do consumidor para internacionalização.",
@@ -1967,7 +1967,7 @@ const componentPages: ComponentPage[] = [
     id: "chat",
     title: "Chat",
     summary: "Estrutura conversas operacionais com histórico, autoria, estados de entrega, digitação e composer.",
-    importCode: 'import { Chat } from "@arcsyn/react";',
+    importCode: 'import { Chat } from "@arcsyn-io/react";',
     status: "React estável · React Native",
     anatomy: ["Root", "Header e Actions", "Messages com role log", "Message e metadados", "SystemMessage", "TypingIndicator", "Composer"],
     accessibility: "Messages usa role=log e anuncia apenas adições relevantes. Cada mensagem mantém autor, horário e estado no DOM; o composer possui rótulo acessível e envia com Enter, preservando Shift+Enter para quebra de linha. Não mova o foco automaticamente quando novas mensagens chegarem. Em React Native, Chat expõe mensagens como dados e usa accessibilityLiveRegion no indicador de digitação.",
@@ -1993,7 +1993,7 @@ const componentPages: ComponentPage[] = [
     id: "notification-center",
     title: "Notification Center",
     summary: "Reúne notificações recentes em um popover acionado por sino, com contador de não lidas e acesso ao histórico.",
-    importCode: 'import { NotificationCenter } from "@arcsyn/react";',
+    importCode: 'import { NotificationCenter } from "@arcsyn-io/react";',
     status: "React estável · Base UI · React Native",
     anatomy: ["Trigger com sino e contador", "Popover", "Header e resumo", "Lista com até cinco itens", "Estado lido ou não lido", "Ação Ver todas"],
     accessibility: "O trigger informa a quantidade de notificações não lidas no nome acessível e expõe o estado expandido. Cada item interativo usa link ou botão real; o ponto de não lida sempre acompanha informação textual no trigger e no conteúdo. O popover recebe foco e fecha com Escape graças à Base UI. No React Native, a lista abre em Modal nativo, oferece fechamento explícito e mantém alvos de toque de 44 px.",
@@ -2592,7 +2592,7 @@ function PresentationsPage() {
       <section className="docs-section" aria-labelledby="presentations-principles">
         <div className="docs-section-heading"><p className="docs-eyebrow">Princípios</p><h2 id="presentations-principles">A mesma identidade, adaptada ao meio</h2></div>
         <div className="docs-principles">
-          <Card><strong>Tokens como origem</strong><p>Cor, contraste e ritmo partem das APIs públicas de @arcsyn/tokens.</p></Card>
+          <Card><strong>Tokens como origem</strong><p>Cor, contraste e ritmo partem das APIs públicas de @arcsyn-io/tokens.</p></Card>
           <Card><strong>Densidade editorial</strong><p>Fontes maiores, menos elementos e uma ideia principal por slide.</p></Card>
           <Card><strong>Decisão explícita</strong><p>A narrativa termina em uma conclusão, recomendação ou próximo passo verificável.</p></Card>
         </div>
@@ -2628,12 +2628,12 @@ function PresentationsPage() {
       <section className="docs-section" aria-labelledby="presentations-ai">
         <div className="docs-section-heading"><p className="docs-eyebrow">Geração por IA</p><h2 id="presentations-ai">Passe um brief, não apenas um tema</h2></div>
         <p>Combine o schema, o prompt canônico e os templates editáveis publicados pelo pacote. O brief informa audiência, resultado esperado, tipo de proposta, evidências, restrições e decisão solicitada. Use PowerPoint para edição tradicional, HTML para apresentação no navegador ou a proposta técnica contínua para análises detalhadas e exportação em PDF.</p>
-        <pre className="docs-code"><code>{`import "@arcsyn/presentations/prompt";
-import schema from "@arcsyn/presentations/brief.schema.json";
+        <pre className="docs-code"><code>{`import "@arcsyn-io/presentations/prompt";
+import schema from "@arcsyn-io/presentations/brief.schema.json";
 
-// PowerPoint: @arcsyn/presentations/template.pptx
-// Slides no navegador: @arcsyn/presentations/template.html
-// Documento técnico/PDF: @arcsyn/presentations/technical-proposal.html`}</code></pre>
+// PowerPoint: @arcsyn-io/presentations/template.pptx
+// Slides no navegador: @arcsyn-io/presentations/template.html
+// Documento técnico/PDF: @arcsyn-io/presentations/technical-proposal.html`}</code></pre>
       </section>
     </article>
   );

@@ -1,5 +1,5 @@
 {
-  "name": "@arcsyn/docs",
+  "name": "@arcsyn-io/docs",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -8,10 +8,10 @@
     "build": "tsc -p tsconfig.json --noEmit && vite build"
   },
   "dependencies": {
-    "@arcsyn/presentations": "workspace:*",
-    "@arcsyn/react": "workspace:*",
-    "@arcsyn/styles": "workspace:*",
-    "@arcsyn/tokens": "workspace:*",
+    "@arcsyn-io/presentations": "workspace:*",
+    "@arcsyn-io/react": "workspace:*",
+    "@arcsyn-io/styles": "workspace:*",
+    "@arcsyn-io/tokens": "workspace:*",
     "react": "19.2.7",
     "react-dom": "19.2.7"
   }

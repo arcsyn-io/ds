@@ -1,4 +1,4 @@
-# @arcsyn/presentations
+# @arcsyn-io/presentations
 
 Sistema de comunicação do ArcSyn para propostas de arquitetura, produto e ideias. O pacote transforma os tokens públicos do design system em um contrato editorial que pode ser consumido por código ou por uma IA.
 
@@ -10,7 +10,7 @@ import {
   createPresentationTheme,
   narrativePatterns,
   presentationLayouts,
-} from "@arcsyn/presentations";
+} from "@arcsyn-io/presentations";
 
 const brief = createPresentationBrief({
   title: "Evolução da plataforma de integrações",
@@ -26,13 +26,13 @@ const sequence = narrativePatterns[brief.proposalType];
 
 Para geração por IA, forneça ao agente:
 
-1. o brief validado pelo export `@arcsyn/presentations/brief.schema.json`;
-2. o prompt em `@arcsyn/presentations/prompt`;
-3. o template editável em `@arcsyn/presentations/template.pptx`;
-4. o template navegável em `@arcsyn/presentations/template.html`, quando a saída for web ou PDF;
-5. o documento técnico contínuo em `@arcsyn/presentations/technical-proposal.html`, para análises detalhadas;
-6. o guia comparativo em `@arcsyn/presentations/architecture-decision.html`, quando a decisão ainda depende da comparação entre alternativas;
-7. a marca oficial em `@arcsyn/presentations/logo.png`;
+1. o brief validado pelo export `@arcsyn-io/presentations/brief.schema.json`;
+2. o prompt em `@arcsyn-io/presentations/prompt`;
+3. o template editável em `@arcsyn-io/presentations/template.pptx`;
+4. o template navegável em `@arcsyn-io/presentations/template.html`, quando a saída for web ou PDF;
+5. o documento técnico contínuo em `@arcsyn-io/presentations/technical-proposal.html`, para análises detalhadas;
+6. o guia comparativo em `@arcsyn-io/presentations/architecture-decision.html`, quando a decisão ainda depende da comparação entre alternativas;
+7. a marca oficial em `@arcsyn-io/presentations/logo.png`;
 8. as fontes e evidências que podem ser utilizadas.
 
 O template é uma biblioteca visual, não uma sequência obrigatória. A IA deve selecionar apenas os layouts que sustentam o raciocínio da proposta.

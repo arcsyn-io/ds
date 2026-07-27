@@ -1,8 +1,16 @@
 {
-  "name": "@arcsyn/presentations",
+  "name": "@arcsyn-io/presentations",
   "version": "0.1.0",
   "description": "ArcSyn communication system for AI-generated presentations and proposals.",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arcsyn-io/ds.git",
+    "directory": "packages/presentations"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "files": [
     "dist",
     "assets",
@@ -33,6 +41,6 @@
     "check": "tsc -p tsconfig.build.json --noEmit && node scripts/validate-html-template.mjs"
   },
   "dependencies": {
-    "@arcsyn/tokens": "workspace:*"
+    "@arcsyn-io/tokens": "workspace:^"
   }
 }

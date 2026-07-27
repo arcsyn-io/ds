@@ -1,8 +1,16 @@
 {
-  "name": "@arcsyn/react",
+  "name": "@arcsyn-io/react",
   "version": "0.1.0",
   "description": "React adapter for the ArcSyn Design System.",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arcsyn-io/ds.git",
+    "directory": "packages/react"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "files": [
     "dist",
     "styles.css",
@@ -92,8 +100,8 @@
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
-    "@arcsyn/styles": "workspace:*",
-    "@arcsyn/tokens": "workspace:*",
+    "@arcsyn-io/styles": "workspace:^",
+    "@arcsyn-io/tokens": "workspace:^",
     "@base-ui/react": "1.6.0",
     "lucide-react": "1.26.0",
     "sonner": "2.0.7"
