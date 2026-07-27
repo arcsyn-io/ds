@@ -1,4 +1,4 @@
-import { primitives, themes } from "@arcsyn/tokens";
+import { primitives, themes } from "@arcsyn-io/tokens";
 
 export type PresentationThemeName = "dark" | "light";
 

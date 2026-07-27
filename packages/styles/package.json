@@ -1,8 +1,16 @@
 {
-  "name": "@arcsyn/styles",
+  "name": "@arcsyn-io/styles",
   "version": "0.1.0",
   "description": "Framework-agnostic ArcSyn component styles.",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arcsyn-io/ds.git",
+    "directory": "packages/styles"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "files": [
     "src"
   ],
@@ -11,7 +19,7 @@
     "./reset.css": "./src/reset.css"
   },
   "dependencies": {
-    "@arcsyn/tokens": "workspace:*",
+    "@arcsyn-io/tokens": "workspace:^",
     "@fontsource/alexandria": "5.2.8",
     "@fontsource/geist-mono": "5.3.0",
     "@fontsource/ibm-plex-mono": "5.3.0",

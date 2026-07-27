@@ -4,9 +4,9 @@
 
 ## Referência visual
 
-A imagem funciona como catálogo esperado para `@arcsyn/react/icons`: grade, tamanho óptico e peso de traço uniformes, labels com os nomes semânticos de export e um estado selecionado herdando a cor primária. Os ícones permanecem monocromáticos e sem significado de cor embutido.
+A imagem funciona como catálogo esperado para `@arcsyn-io/react/icons`: grade, tamanho óptico e peso de traço uniformes, labels com os nomes semânticos de export e um estado selecionado herdando a cor primária. Os ícones permanecem monocromáticos e sem significado de cor embutido.
 
-Expanda os exports de ícones do `@arcsyn/react/icons` com um conjunto mínimo adequado para dashboards, ferramentas internas e aplicações operacionais.
+Expanda os exports de ícones do `@arcsyn-io/react/icons` com um conjunto mínimo adequado para dashboards, ferramentas internas e aplicações operacionais.
 
 ## Objetivo
 
@@ -45,7 +45,7 @@ Evitar símbolos Unicode, imports diretos de bibliotecas externas e inconsistên
 
 ## Entregáveis
 
-- Exports tipados em `@arcsyn/react/icons`.
+- Exports tipados em `@arcsyn-io/react/icons`.
 - Catálogo com nome, visualização e exemplo de import.
 - Teste garantindo que todos os exports resolvem individualmente.
 - Teste ou verificação de tree shaking.

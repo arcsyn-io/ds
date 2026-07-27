@@ -1,8 +1,16 @@
 {
-  "name": "@arcsyn/icons",
+  "name": "@arcsyn-io/icons",
   "version": "0.1.0",
   "description": "Framework-agnostic ArcSyn SVG icons.",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arcsyn-io/ds.git",
+    "directory": "packages/icons"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "files": ["src"],
   "exports": {
     "./check.svg": "./src/check.svg",

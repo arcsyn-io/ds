@@ -1,8 +1,16 @@
 {
-  "name": "@arcsyn/tokens",
+  "name": "@arcsyn-io/tokens",
   "version": "0.1.0",
   "description": "Platform-agnostic design tokens for ArcSyn.",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arcsyn-io/ds.git",
+    "directory": "packages/tokens"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "files": ["dist", "src"],
   "exports": {
     ".": {

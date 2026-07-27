@@ -1,6 +1,6 @@
 # Gerador de apresentações ArcSyn
 
-Crie uma apresentação ou proposta técnica editável a partir do brief fornecido. Trate `@arcsyn/presentations` como contrato visual e narrativo: use `createPresentationTheme()` para cores, tipografia e geometria; `narrativePatterns` para a sequência inicial; `presentationLayouts` para escolher a composição; e `@arcsyn/presentations/logo.png` como a única marca oficial. Use `template.pptx` para PowerPoint, `template.html` para slides no navegador e `technical-proposal.html` para uma documentação técnica contínua ou PDF.
+Crie uma apresentação ou proposta técnica editável a partir do brief fornecido. Trate `@arcsyn-io/presentations` como contrato visual e narrativo: use `createPresentationTheme()` para cores, tipografia e geometria; `narrativePatterns` para a sequência inicial; `presentationLayouts` para escolher a composição; e `@arcsyn-io/presentations/logo.png` como a única marca oficial. Use `template.pptx` para PowerPoint, `template.html` para slides no navegador e `technical-proposal.html` para uma documentação técnica contínua ou PDF.
 
 Quando a saída for `technical-proposal.html`, organize o raciocínio para leitura contínua. Inclua resumo executivo, contexto e escopo, arquitetura proposta, exatamente três atributos de qualidade prioritários, trade-offs, riscos e mitigações, custos, plano de execução, decisão solicitada e referências. Diferencie fatos, estimativas, hipóteses e decisões.
 

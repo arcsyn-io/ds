@@ -6,7 +6,7 @@
 - `packages/tokens` é a fonte de verdade das decisões visuais. Edite os JSONs em `src/`; nunca edite `dist/` manualmente.
 - `packages/styles` contém o contrato CSS agnóstico de framework. Componentes web usam classes `arcsyn-*` e estados em atributos `data-*`.
 - `packages/react` é o adaptador React web. Componentes simples devem continuar leves; componentes comportamentais complexos podem encapsular `@base-ui/react`.
-- `packages/react-native` é o adaptador nativo. Ele consome somente `@arcsyn/tokens/react-native`; não importa CSS, Tailwind ou `@fontsource`.
+- `packages/react-native` é o adaptador nativo. Ele consome somente `@arcsyn-io/tokens/react-native`; não importa CSS, Tailwind ou `@fontsource`.
 - `apps/docs` deve consumir apenas APIs públicas dos pacotes, nunca arquivos internos de `src/`.
 
 ## Tokens e temas

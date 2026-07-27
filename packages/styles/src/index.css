@@ -20,13 +20,13 @@
 @import "@fontsource/geist-mono/latin-400.css";
 @import "@fontsource/geist-mono/latin-500.css";
 
-@import "@arcsyn/tokens/css";
-@import "@arcsyn/tokens/themes/light.css";
-@import "@arcsyn/tokens/themes/dark.css";
-@import "@arcsyn/tokens/themes/deep-dark.css";
-@import "@arcsyn/tokens/themes/corporate-dark.css";
-@import "@arcsyn/tokens/themes/catppuccin-mocha.css";
-@import "@arcsyn/tokens/themes/catppuccin-latte.css";
+@import "@arcsyn-io/tokens/css";
+@import "@arcsyn-io/tokens/themes/light.css";
+@import "@arcsyn-io/tokens/themes/dark.css";
+@import "@arcsyn-io/tokens/themes/deep-dark.css";
+@import "@arcsyn-io/tokens/themes/corporate-dark.css";
+@import "@arcsyn-io/tokens/themes/catppuccin-mocha.css";
+@import "@arcsyn-io/tokens/themes/catppuccin-latte.css";
 @import "./reset.css";
 @import "./themes.css";
 @import "./components/button.css";

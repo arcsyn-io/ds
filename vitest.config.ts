@@ -8,7 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "react-native": "react-native-web",
-      "@arcsyn/tokens/react-native": path.resolve(root, "packages/tokens/dist/react-native/index.js"),
+      "@arcsyn-io/tokens/react-native": path.resolve(root, "packages/tokens/dist/react-native/index.js"),
     },
   },
   test: {
