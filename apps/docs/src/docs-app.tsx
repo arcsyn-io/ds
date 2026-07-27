@@ -1,35 +1,14 @@
-import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type CSSProperties } from "react";
 import { createPresentationTheme, narrativePatterns, presentationLayouts } from "@arcsyn-io/presentations";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, Tooltip, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn-io/react";
 import { ArrowRightIcon, CheckIcon, CircleIcon, EllipsisIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn-io/react/icons";
 import { ActivityFeed, BarChart, Chat, Command, DataState, DatePicker, LineChart, NotificationCenter, PageHeader, SearchInput, Slider, Sparkline, StatCard, StatusIndicator, Time, UserMenu } from "@arcsyn-io/react";
 import * as ArcSynIcons from "@arcsyn-io/react/icons";
-
-type Property = {
-  name: string;
-  type: string;
-  defaultValue: string;
-  description: string;
-};
-
-type Example = {
-  title: string;
-  description: string;
-  preview: ReactNode;
-  code: string;
-};
-
-type ComponentPage = {
-  id: string;
-  title: string;
-  summary: string;
-  importCode: string;
-  status: string;
-  anatomy: string[];
-  accessibility: string;
-  properties: Property[];
-  examples: Example[];
-};
+import { ComponentDocumentation as DocsComponentDocumentation } from "./docs-component-page";
+import { HomePage as DocsHomePage } from "./docs-home-page";
+import { DocsNavigation } from "./docs-navigation";
+import type { ComponentPage } from "./docs-types";
 
 function ControlledCarouselDemo() {
   const [index, setIndex] = useState(0);
@@ -577,20 +556,6 @@ function DocsPreferencesDialog() {
         </Dialog.Footer>
       </Dialog.Content>
     </Dialog.Root>
-  );
-}
-
-function DocsSidebarLink({ active, children, href, icon }: { active: boolean; children: ReactNode; href: string; icon?: ReactNode }) {
-  const { isMobile, setOpenMobile } = useSidebar();
-  return (
-    <SidebarMenuItem>
-      <SidebarMenuButton asChild isActive={active}>
-        <a href={href} onClick={() => { if (isMobile) setOpenMobile(false); }}>
-          {icon}
-          <span>{children}</span>
-        </a>
-      </SidebarMenuButton>
-    </SidebarMenuItem>
   );
 }
 
@@ -2523,6 +2488,7 @@ function TypographyPage() {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function ComponentDocumentation({ page }: { page: ComponentPage }) {
   return (
     <article className="docs-page">
@@ -2559,6 +2525,7 @@ function ComponentDocumentation({ page }: { page: ComponentPage }) {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function HomePage() {
   return (
     <article className="docs-page">
@@ -2689,49 +2656,18 @@ export function DocsApp() {
   return (
     <DocsThemeContext.Provider value={{ theme, setTheme, font, setFont, monoFont, setMonoFont }}>
       <>
-        <SidebarProvider className="docs-shell" style={{ "--arcsyn-sidebar-width": "16rem", "--arcsyn-sidebar-width-mobile": "18rem" }}>
-          <Sidebar className="docs-app-sidebar" collapsible="offcanvas">
-            <SidebarHeader>
-            <a className="docs-brand" href="#/" aria-label="ArcSyn Design System">
-              <img src="/arcsyn-logo.svg" alt="" />
-            </a>
-            </SidebarHeader>
-            <SidebarContent>
-              <SidebarGroup>
-                <SidebarGroupLabel>Fundação</SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    <DocsSidebarLink active={route === "/"} href="#/" icon={<CircleIcon aria-hidden size={15} />}>Visão geral</DocsSidebarLink>
-                    <DocsSidebarLink active={isTheming} href="#/theming" icon={<CheckIcon aria-hidden size={15} />}>Theming</DocsSidebarLink>
-                    <DocsSidebarLink active={isTypography} href="#/typography">Tipografia</DocsSidebarLink>
-                    <DocsSidebarLink active={isPresentations} href="#/presentations">Apresentações</DocsSidebarLink>
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
-              <SidebarGroup>
-                <SidebarGroupLabel>Componentes</SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {componentPages.map((item) => <DocsSidebarLink active={page?.id === item.id} href={`#/components/${item.id}`} key={item.id}>{item.title}</DocsSidebarLink>)}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
-            </SidebarContent>
-            <SidebarFooter>
-              <DocsPreferencesDialog />
-              <div className="docs-sidebar-footer"><span>v0.1.0</span><span>React</span></div>
-            </SidebarFooter>
-            <SidebarRail />
-          </Sidebar>
-          <SidebarInset className="docs-app-inset">
-            <header className="docs-topbar">
-              <SidebarTrigger />
-              <span className="docs-topbar-title">{currentPageTitle}</span>
-              <Kbd className="docs-sidebar-shortcut">Ctrl B</Kbd>
-            </header>
-            <div className="docs-main">{themePage ? <ThemeDetailPage theme={themePage} /> : isTheming ? <ThemingPage /> : isTypography ? <TypographyPage /> : isPresentations ? <PresentationsPage /> : page ? <ComponentDocumentation page={page} /> : <HomePage />}</div>
-          </SidebarInset>
-        </SidebarProvider>
+        <DocsNavigation
+          route={route}
+          currentPageTitle={currentPageTitle}
+          componentPages={componentPages}
+          pageId={page?.id}
+          isTheming={isTheming}
+          isTypography={isTypography}
+          isPresentations={isPresentations}
+          footer={<DocsPreferencesDialog />}
+        >
+          {themePage ? <ThemeDetailPage theme={themePage} /> : isTheming ? <ThemingPage /> : isTypography ? <TypographyPage /> : isPresentations ? <PresentationsPage /> : page ? <DocsComponentDocumentation page={page} /> : <DocsHomePage componentPages={componentPages} />}
+        </DocsNavigation>
         <Toaster />
       </>
     </DocsThemeContext.Provider>

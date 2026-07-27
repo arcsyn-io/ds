@@ -12,7 +12,16 @@ const globals = toolingRequire("globals");
 
 export default [
   {
-    ignores: ["**/dist/**", "**/node_modules/**", "**/coverage/**", "**/playwright-report/**", "**/test-results/**", "**/.vite/**", "**/.codex-tmp/**"],
+    ignores: [
+      "**/dist/**",
+      "**/storybook-static/**",
+      "**/node_modules/**",
+      "**/coverage/**",
+      "**/playwright-report/**",
+      "**/test-results/**",
+      "**/.vite/**",
+      "**/.codex-tmp/**",
+    ],
   },
   {
     files: ["**/*.{js,mjs,cjs}"],
