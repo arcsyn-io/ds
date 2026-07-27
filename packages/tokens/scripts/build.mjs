@@ -141,9 +141,9 @@ const reactNativePayload = {
   fontSize: tokensWithPrefix(primitives, "fontSize."),
   duration: tokensWithPrefix(primitives, "duration."),
   fontFamily: {
-    sans: "Alexandria-Regular",
-    sansMedium: "Alexandria-Medium",
-    sansSemibold: "Alexandria-SemiBold",
+    sans: "IBMPlexSans-Regular",
+    sansMedium: "IBMPlexSans-Medium",
+    sansSemibold: "IBMPlexSans-SemiBold",
     mono: "IBMPlexMono-Regular",
     monoMedium: "IBMPlexMono-Medium",
   },
