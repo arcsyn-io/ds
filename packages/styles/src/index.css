@@ -39,6 +39,8 @@
 @import "./components/checkbox.css";
 @import "./components/switch.css";
 @import "./components/slider.css";
+@import "./components/date-picker.css";
+@import "./components/time.css";
 @import "./components/tabs.css";
 @import "./components/tooltip.css";
 @import "./components/theme-switcher.css";

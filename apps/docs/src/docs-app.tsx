@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type CSSProperties, typ
 import { createPresentationTheme, narrativePatterns, presentationLayouts } from "@arcsyn/presentations";
 import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, Tooltip, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn/react";
 import { ArrowRightIcon, CheckIcon, CircleIcon, EllipsisIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn/react/icons";
-import { ActivityFeed, BarChart, Chat, Command, DataState, LineChart, NotificationCenter, PageHeader, SearchInput, Slider, Sparkline, StatCard, StatusIndicator, UserMenu } from "@arcsyn/react";
+import { ActivityFeed, BarChart, Chat, Command, DataState, DatePicker, LineChart, NotificationCenter, PageHeader, SearchInput, Slider, Sparkline, StatCard, StatusIndicator, Time, UserMenu } from "@arcsyn/react";
 import * as ArcSynIcons from "@arcsyn/react/icons";
 
 type Property = {
@@ -130,6 +130,69 @@ function SliderDemo() {
           <Slider.Thumb index={1} label="Máximo de utilização" />
         </Slider.Control>
       </Slider.Root>
+    </div>
+  );
+}
+
+function DatePickerDemo() {
+  const [date, setDate] = useState<string | null>("2026-08-14");
+  return (
+    <div className="docs-demo-stack">
+      <DatePicker
+        label="Data de implantação"
+        description="Escolha uma data dentro da janela aprovada."
+        value={date}
+        onValueChange={setDate}
+        min="2026-08-10"
+        max="2026-09-30"
+        isDateUnavailable={(value) => {
+          const day = new Date(`${value}T12:00:00`).getDay();
+          return day === 0 || day === 6;
+        }}
+      />
+      <span className="docs-muted-copy" role="status">
+        Valor ISO: {date ?? "nenhuma data selecionada"}
+      </span>
+    </div>
+  );
+}
+
+function DateTimePickerDemo() {
+  const [dateTime, setDateTime] = useState<string | null>("2026-08-14T09:30:00");
+  return (
+    <div className="docs-demo-stack">
+      <DatePicker
+        label="Início da implantação"
+        description="Defina a data e o horário local da execução."
+        value={dateTime}
+        onValueChange={setDateTime}
+        includeTime
+        minuteStep={5}
+        secondStep={15}
+      />
+      <span className="docs-muted-copy" role="status">
+        Valor local: {dateTime ?? "nenhuma data selecionada"}
+      </span>
+    </div>
+  );
+}
+
+function TimeDemo() {
+  const [time, setTime] = useState("09:30:00");
+  return (
+    <div className="docs-demo-stack">
+      <Time
+        label="Horário da execução"
+        description="Use o horário local acordado para a rotina."
+        value={time}
+        onValueChange={setTime}
+        minuteStep={5}
+        secondStep={15}
+        name="execution-time"
+      />
+      <span className="docs-muted-copy" role="status">
+        Valor: {time}
+      </span>
     </div>
   );
 }
@@ -1228,6 +1291,84 @@ const componentPages: ComponentPage[] = [
       { name: "...inputProps", type: "InputHTMLAttributes<HTMLInputElement>", defaultValue: "—", description: "Inclui onChange, name e atributos nativos." },
     ],
     examples: [{ title: "Preferência imediata", description: "A mudança é aplicada assim que o controle é alternado.", preview: <div className="docs-demo-row"><Switch id="notifications" defaultChecked /><Field.Label htmlFor="notifications">Receber alertas operacionais</Field.Label><Switch id="locked-switch" disabled /><Field.Label htmlFor="locked-switch">Bloqueado</Field.Label></div>, code: '<Switch id="notifications" defaultChecked />\n<Field.Label htmlFor="notifications">Receber alertas operacionais</Field.Label>' }],
+  },
+  {
+    id: "date-picker",
+    title: "Date Picker",
+    summary: "Seleciona ou permite digitar uma data, com hora, minuto e segundo opcionais, navegação por mês e validação acessível.",
+    importCode: 'import { DatePicker } from "@arcsyn/react";',
+    status: "React estável · Base UI · React Native",
+    anatomy: ["Label", "Campo para digitação", "Botão do calendário", "Select nativo para mês e controle incremental para ano", "Grade de dias", "Componente Time opcional", "Descrição e erro opcionais"],
+    accessibility: "O campo é nomeado pelo label e referencia descrição e erro. No web, o calendário abre ao focar o input sem mover o cursor; Alt + seta para baixo transfere o foco para a grade. O mês usa select nativo, o ano oferece botões nomeados e o horário reutiliza os inputs acessíveis do Time. Na grade, setas percorrem dias, Home e End percorrem a semana, Page Up e Page Down mudam o mês e Shift muda o ano. No React Native, o modal reutiliza os controles incrementais do Time com alvos de 44px.",
+    properties: [
+      { name: "value / defaultValue", type: "string | null", defaultValue: "null", description: "Data local em YYYY-MM-DD ou, com includeTime, YYYY-MM-DDTHH:mm:ss." },
+      { name: "onValueChange", type: "(value: string | null) => void", defaultValue: "—", description: "Recebe a data ou data/hora local selecionada, sem conversão de fuso." },
+      { name: "label", type: "ReactNode", defaultValue: "—", description: "Nome acessível e visível do campo." },
+      { name: "min / max", type: "string", defaultValue: "—", description: "Limites inclusivos no formato ISO." },
+      { name: "isDateUnavailable", type: "(value: string) => boolean", defaultValue: "—", description: "Desabilita datas por regra de negócio, como fins de semana ou bloqueios." },
+      { name: "locale", type: "string", defaultValue: '"pt-BR"', description: "Controla nomes de mês, semana e apresentação do valor." },
+      { name: "includeTime", type: "boolean", defaultValue: "false", description: "Adiciona o componente Time com hora, minuto e segundo." },
+      { name: "minuteStep / secondStep", type: "number", defaultValue: "1", description: "Define os incrementos de minutos e segundos entre 1 e 60." },
+      { name: "formatValue / parseInput", type: "function", defaultValue: "formato local", description: "Personaliza a apresentação e interpretação. O padrão também aceita DD/MM/AAAA HH:mm:ss e ISO local." },
+      { name: "invalidInputMessage", type: "ReactNode", defaultValue: '"Informe uma data válida."', description: "Feedback anunciado quando a digitação não representa uma data ou horário permitido." },
+      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Ajusta o tamanho do trigger sem reduzir alvos de toque no mobile." },
+      { name: "disabled / readOnly / invalid", type: "boolean", defaultValue: "false", description: "Representa indisponibilidade, valor somente leitura ou erro de validação." },
+      { name: "description / error", type: "ReactNode", defaultValue: "—", description: "Texto de apoio e mensagem de erro ligados ao campo." },
+    ],
+    examples: [
+      {
+        title: "Janela de implantação",
+        description: "Foque e digite DD/MM/AAAA sem perder o cursor, ou escolha mês, ano e dia. Limites e regras de indisponibilidade também validam a entrada manual.",
+        preview: <DatePickerDemo />,
+        code: 'const [date, setDate] = useState("2026-08-14");\n\n<DatePicker\n  label="Data de implantação"\n  description="Escolha uma data dentro da janela aprovada."\n  value={date}\n  onValueChange={setDate}\n  min="2026-08-10"\n  max="2026-09-30"\n  isDateUnavailable={(value) => {\n    const day = new Date(`${value}T12:00:00`).getDay();\n    return day === 0 || day === 6;\n  }}\n/>',
+      },
+      {
+        title: "Data e horário",
+        description: "Hora, minuto e segundo são opcionais e mantêm um valor local estável, sem aplicar fuso horário.",
+        preview: <DateTimePickerDemo />,
+        code: 'const [dateTime, setDateTime] = useState("2026-08-14T09:30:00");\n\n<DatePicker\n  label="Início da implantação"\n  value={dateTime}\n  onValueChange={setDateTime}\n  includeTime\n  minuteStep={5}\n  secondStep={15}\n/>',
+      },
+      {
+        title: "Estados e validação",
+        description: "Erro, somente leitura e desabilitado mantêm significado consistente entre os adaptadores.",
+        preview: <div className="docs-demo-stack"><DatePicker label="Início da vigência" error="A data precisa ser informada." invalid /><DatePicker label="Auditoria anterior" defaultValue="2026-07-10" readOnly /><DatePicker label="Encerramento automático" defaultValue="2026-12-31" disabled /></div>,
+        code: '<DatePicker label="Início da vigência" error="A data precisa ser informada." invalid />\n<DatePicker label="Auditoria anterior" defaultValue="2026-07-10" readOnly />\n<DatePicker label="Encerramento automático" defaultValue="2026-12-31" disabled />',
+      },
+    ],
+  },
+  {
+    id: "time",
+    title: "Time",
+    summary: "Seleciona hora, minuto e segundo em um valor local estável no formato HH:mm:ss.",
+    importCode: 'import { Time } from "@arcsyn/react";',
+    status: "React estável · React Native",
+    anatomy: ["Label", "Input de hora", "Input de minuto", "Input opcional de segundo", "Descrição e erro opcionais"],
+    accessibility: "O grupo recebe o nome do label e associa descrição e erro. No web, cada segmento usa um input numérico nomeado; a digitação é normalizada no blur e as setas respeitam o step. No React Native, cada segmento oferece botões nomeados para aumentar e diminuir, com alvos de toque de 44px. O valor não aplica conversão de fuso horário.",
+    properties: [
+      { name: "value / defaultValue", type: "string | null", defaultValue: "null", description: "Horário controlado ou inicial no formato HH:mm:ss." },
+      { name: "onValueChange", type: "(value: string) => void", defaultValue: "—", description: "Recebe o horário local completo após cada alteração." },
+      { name: "label", type: "ReactNode", defaultValue: "—", description: "Nome visível e acessível do grupo." },
+      { name: "includeSeconds", type: "boolean", defaultValue: "true", description: "Exibe o segmento de segundos; o valor emitido permanece HH:mm:ss." },
+      { name: "minuteStep / secondStep", type: "number", defaultValue: "1", description: "Define o incremento das setas para minutos e segundos entre 1 e 60." },
+      { name: "name", type: "string", defaultValue: "—", description: "Nome do campo oculto enviado por formulários web; não se aplica ao React Native." },
+      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Ajusta o tamanho visual sem reduzir alvos de toque no mobile." },
+      { name: "disabled / readOnly / invalid", type: "boolean", defaultValue: "false", description: "Representa indisponibilidade, somente leitura ou erro." },
+      { name: "description / error", type: "ReactNode", defaultValue: "—", description: "Texto de apoio e mensagem de erro associados ao grupo." },
+    ],
+    examples: [
+      {
+        title: "Horário de execução",
+        description: "Digite cada segmento diretamente ou use as setas; o contrato permanece HH:mm:ss.",
+        preview: <TimeDemo />,
+        code: 'const [time, setTime] = useState("09:30:00");\n\n<Time\n  label="Horário da execução"\n  value={time}\n  onValueChange={setTime}\n  minuteStep={5}\n  secondStep={15}\n  name="execution-time"\n/>',
+      },
+      {
+        title: "Estados",
+        description: "Somente leitura, desabilitado e erro preservam a mesma semântica dos demais campos.",
+        preview: <div className="docs-demo-stack"><Time label="Janela congelada" defaultValue="22:00:00" readOnly /><Time label="Horário indisponível" defaultValue="00:00:00" disabled /><Time label="Horário limite" defaultValue="23:59:59" error="Revise o horário informado." invalid /></div>,
+        code: '<Time label="Janela congelada" defaultValue="22:00:00" readOnly />\n<Time label="Horário indisponível" defaultValue="00:00:00" disabled />\n<Time label="Horário limite" defaultValue="23:59:59" error="Revise o horário informado." invalid />',
+      },
+    ],
   },
   {
     id: "slider",
