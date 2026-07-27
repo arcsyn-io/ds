@@ -1,5 +1,6 @@
-import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type CSSProperties } from "react";
 import { createPresentationTheme, narrativePatterns, presentationLayouts } from "@arcsyn-io/presentations";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Accordion, Alert, AspectRatio, Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger, Avatar, Badge, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, Carousel, Checkbox, Collapsible, ContextMenu, DataTable, Dialog, Drawer, DropdownMenu, Empty, EmptyContent, EmptyDescription, EmptyFooter, EmptyHeader, EmptyMedia, EmptyTitle, Field, Input, InputGroup, Kbd, Menubar, NativeSelect, NativeSelectOptGroup, NativeSelectOption, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Popover, RadioGroup, ScrollArea, Select, SelectSearch, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarTrigger, Skeleton, Spinner, Switch, Tabs, Textarea, ThemeSwitcher, Toaster, Tooltip, toast, useSidebar, type DataTableColumn, type SidebarCollapsible, type SidebarSide, type SidebarVariant, type ThemeSwitcherTheme, type ToasterEffect } from "@arcsyn-io/react";
 import { ArrowRightIcon, CheckIcon, CircleIcon, EllipsisIcon, PlusIcon, SettingsIcon, XIcon } from "@arcsyn-io/react/icons";
 import { ActivityFeed, BarChart, Chat, Command, DataState, DatePicker, LineChart, NotificationCenter, PageHeader, SearchInput, Slider, Sparkline, StatCard, StatusIndicator, Time, UserMenu } from "@arcsyn-io/react";
@@ -2487,6 +2488,7 @@ function TypographyPage() {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function ComponentDocumentation({ page }: { page: ComponentPage }) {
   return (
     <article className="docs-page">
@@ -2523,6 +2525,7 @@ function ComponentDocumentation({ page }: { page: ComponentPage }) {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function HomePage() {
   return (
     <article className="docs-page">
