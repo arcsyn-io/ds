@@ -1,0 +1,35 @@
+{
+  "name": "@arcsyn-io/login-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "vinext dev",
+    "build": "vinext build",
+    "start": "vinext start"
+  },
+  "dependencies": {
+    "@arcsyn-io/react": "workspace:*",
+    "@arcsyn-io/styles": "workspace:*",
+    "@arcsyn-io/tokens": "workspace:*",
+    "next": "16.2.6",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "1.37.1",
+    "@types/node": "22.19.19",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.3",
+    "@vitejs/plugin-rsc": "0.5.26",
+    "react-server-dom-webpack": "19.2.7",
+    "typescript": "7.0.2",
+    "vinext": "0.0.50",
+    "vite": "8.1.5",
+    "wrangler": "4.92.0"
+  }
+}
