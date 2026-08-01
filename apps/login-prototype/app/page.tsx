@@ -31,18 +31,6 @@ export default function LoginPage() {
           <p className="hero-summary">Centralize serviços, automações e sinais operacionais com rastreabilidade de ponta a ponta.</p>
         </div>
 
-        <div className="system-map" aria-hidden="true">
-          <div className="system-map__rail system-map__rail--x" />
-          <div className="system-map__rail system-map__rail--y" />
-          <span className="system-node system-node--center" />
-          <span className="system-node system-node--one" />
-          <span className="system-node system-node--two" />
-          <span className="system-node system-node--three" />
-          <span className="system-label system-label--one">AUTH</span>
-          <span className="system-label system-label--two">POLICY</span>
-          <span className="system-label system-label--three">AUDIT</span>
-        </div>
-
         <div className="hero-footer">
           <div><span className="status-dot" aria-hidden="true" /><span>Serviços operacionais</span></div>
           <span className="hero-footer__meta">SLA 99,99% · SAO-1</span>

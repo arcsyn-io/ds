@@ -16,14 +16,15 @@
   a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
 
   .login-shell {
+    background: linear-gradient(118deg, var(--arcsyn-color-surface-sunken) 0%, var(--arcsyn-color-background) 58%, color-mix(in srgb, var(--arcsyn-color-surface), var(--arcsyn-color-background) 62%) 100%);
     display: grid;
     grid-template-columns: minmax(0, 1.08fr) minmax(28rem, 0.92fr);
     min-height: 100vh;
   }
 
   .login-hero {
-    background: var(--arcsyn-color-surface-sunken);
-    border-inline-end: 1px solid var(--arcsyn-color-border);
+    background: transparent;
+    border-inline-end: 1px solid color-mix(in srgb, var(--arcsyn-color-border), transparent 58%);
     display: flex;
     flex-direction: column;
     isolation: isolate;
@@ -97,37 +98,13 @@
     max-width: 39rem;
   }
 
-  .system-map {
-    border: 1px solid var(--arcsyn-color-border);
-    bottom: 8rem;
-    height: 12rem;
-    opacity: 0.7;
-    position: absolute;
-    right: -3.5rem;
-    width: 19rem;
-    z-index: -1;
-  }
-
-  .system-map__rail { background: var(--arcsyn-color-border-strong); position: absolute; }
-  .system-map__rail--x { height: 1px; left: 1.5rem; right: 1.5rem; top: 50%; }
-  .system-map__rail--y { bottom: 1.5rem; left: 50%; top: 1.5rem; width: 1px; }
-  .system-node { background: var(--arcsyn-color-primary); height: 0.45rem; position: absolute; width: 0.45rem; }
-  .system-node--center { left: calc(50% - 0.225rem); top: calc(50% - 0.225rem); box-shadow: 0 0 0 8px color-mix(in srgb, var(--arcsyn-color-primary), transparent 80%); }
-  .system-node--one { left: 2.5rem; top: calc(50% - 0.225rem); }
-  .system-node--two { left: calc(50% - 0.225rem); top: 2.25rem; }
-  .system-node--three { bottom: 2.25rem; left: calc(50% - 0.225rem); }
-  .system-label { color: var(--arcsyn-color-muted-foreground); font-family: var(--arcsyn-font-mono); font-size: 0.58rem; letter-spacing: 0.12em; position: absolute; }
-  .system-label--one { left: 1.5rem; top: 7rem; }
-  .system-label--two { left: 10.5rem; top: 1rem; }
-  .system-label--three { bottom: 0.7rem; left: 10.5rem; }
-
   .hero-footer { align-items: center; color: var(--arcsyn-color-muted-foreground); display: flex; font-family: var(--arcsyn-font-mono); font-size: 0.68rem; justify-content: space-between; letter-spacing: 0.05em; }
   .hero-footer > div { align-items: center; display: flex; }
   .status-dot { background: var(--arcsyn-color-success); border-radius: 50%; box-shadow: 0 0 0 4px color-mix(in srgb, var(--arcsyn-color-success), transparent 84%); height: 0.4rem; margin-inline-end: 0.6rem; width: 0.4rem; }
 
   .login-panel {
     align-items: center;
-    background: var(--arcsyn-color-background);
+    background: transparent;
     display: flex;
     justify-content: center;
     min-height: 100vh;
@@ -166,7 +143,6 @@
     .login-hero { min-height: 42vh; padding: 1.75rem; }
     .hero-copy { padding-block: 4rem 3rem; }
     .hero-copy h1 { font-size: clamp(2.5rem, 10vw, 4rem); }
-    .system-map { bottom: -2rem; right: -7rem; }
     .login-panel { min-height: auto; padding: 3rem 1.25rem; }
     .login-form .arcsyn-input, .login-submit, .password-toggle { min-height: 2.75rem; }
   }
