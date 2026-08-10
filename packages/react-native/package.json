@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@arcsyn-io/tokens": "workspace:^",
-    "lucide-react-native": "1.26.0"
+    "lucide-react-native": "1.30.0"
   },
   "devDependencies": {
     "react-native": "0.86.0",
