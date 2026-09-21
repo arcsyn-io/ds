@@ -14,8 +14,8 @@
     "@arcsyn-io/react": "workspace:*",
     "@arcsyn-io/styles": "workspace:*",
     "@arcsyn-io/tokens": "workspace:*",
-    "react": "19.2.7",
-    "react-dom": "19.2.7"
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
   },
   "devDependencies": {
     "@storybook/react-vite": "10.5.4",
