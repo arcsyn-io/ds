@@ -1,0 +1,6 @@
+/.next/
+/.vinext/
+/dist/
+/.wrangler/
+/.env*
+/.codex-dev*.log

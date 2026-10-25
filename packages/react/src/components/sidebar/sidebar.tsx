@@ -85,6 +85,7 @@ export const SidebarProvider = forwardRef<HTMLDivElement, SidebarProviderProps>(
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const [openMobile, setOpenMobile] = useState(defaultOpenMobile);
   const [isMobile, setIsMobile] = useState(false);
+  const [mobileViewportResolved, setMobileViewportResolved] = useState(false);
   const open = controlledOpen ?? uncontrolledOpen;
 
   const setOpen = useCallback<Dispatch<SetStateAction<boolean>>>(
@@ -103,7 +104,10 @@ export const SidebarProvider = forwardRef<HTMLDivElement, SidebarProviderProps>(
 
   useEffect(() => {
     const media = window.matchMedia(`(max-width: ${mobileBreakpoint - 0.02}px)`);
-    const update = () => setIsMobile(media.matches);
+    const update = () => {
+      setIsMobile(media.matches);
+      setMobileViewportResolved(true);
+    };
     update();
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
@@ -150,6 +154,7 @@ export const SidebarProvider = forwardRef<HTMLDivElement, SidebarProviderProps>(
         className={cx("arcsyn-sidebar-provider", className)}
         data-state={context.state}
         data-mobile={isMobile || undefined}
+        data-mobile-ready={mobileViewportResolved || undefined}
         style={style}
         {...props}
       >
