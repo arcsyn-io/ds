@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState, type FormEvent } from "react";
 import { Button, Card, Checkbox, Field, Input } from "@arcsyn-io/react";
 
 export default function LoginPage() {

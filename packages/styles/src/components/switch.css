@@ -16,4 +16,33 @@
   .arcsyn-switch:checked::after { background: var(--arcsyn-color-primary-foreground); transform: translateX(1rem); }
   .arcsyn-switch:focus-visible { box-shadow: 0 0 0 3px color-mix(in srgb, var(--arcsyn-color-focus-ring), transparent 78%); outline: none; }
   .arcsyn-switch:disabled { cursor: not-allowed; opacity: 0.5; }
+
+  @media (pointer: coarse) {
+    .arcsyn-switch {
+      background: transparent;
+      border: 0;
+      height: var(--arcsyn-control-height-touch);
+      padding: 0;
+      position: relative;
+      width: var(--arcsyn-control-height-touch);
+    }
+    .arcsyn-switch::before {
+      background: var(--arcsyn-color-surface-sunken);
+      border: 1px solid var(--arcsyn-color-border-strong);
+      border-radius: var(--arcsyn-radius-full);
+      content: "";
+      height: 1.25rem;
+      inset-block-start: 0.75rem;
+      inset-inline-start: 0.25rem;
+      position: absolute;
+      width: 2.25rem;
+    }
+    .arcsyn-switch::after {
+      inset-block-start: 0.9375rem;
+      inset-inline-start: 0.4375rem;
+      position: absolute;
+    }
+    .arcsyn-switch:checked { background: transparent; }
+    .arcsyn-switch:checked::before { background: var(--arcsyn-color-primary); border-color: var(--arcsyn-color-primary); }
+  }
 }

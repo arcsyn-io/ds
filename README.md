@@ -187,3 +187,16 @@ Para usar IBM Plex no app nativo, adicione os arquivos de fonte ao projeto e
 registre os nomes esperados pelo token: `IBMPlexSans-Regular`,
 `IBMPlexSans-Medium`, `IBMPlexSans-SemiBold`, `IBMPlexMono-Regular` e
 `IBMPlexMono-Medium`.
+
+## Responsividade e toque
+
+O contrato web preserva controles compactos em dispositivos com ponteiro preciso.
+Em dispositivos que expõem `pointer: coarse`, controles interativos usam alvo mínimo
+de `2.75rem` (44px) por meio de `--arcsyn-control-height-touch`. Campos de formulário
+também usam texto de 16px nesse contexto para evitar zoom automático durante o foco
+em navegadores móveis. Breakpoints continuam responsáveis apenas por mudanças de
+layout, como a sidebar em drawer e o empilhamento de cabeçalhos.
+
+Tabelas mantêm a estrutura tabular e rolagem horizontal em viewports estreitas. Caso
+o produto precise de uma leitura em cartões, essa transformação deve ser implementada
+pelo aplicativo consumidor porque altera a semântica e a prioridade dos dados.

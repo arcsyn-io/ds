@@ -10,3 +10,25 @@ test("documentação não possui violações WCAG A/AA sérias ou críticas", as
 
   expect(blockingViolations).toEqual([]);
 });
+
+test("controles preservam alvos touch e campos evitam zoom no mobile", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile-chromium", "Contrato exclusivo de ponteiro coarse.");
+
+  await page.goto("/#/components/input");
+  const sidebarTrigger = page.locator(".arcsyn-sidebar__trigger");
+  const input = page.locator(".docs-preview .arcsyn-input").first();
+
+  await expect(sidebarTrigger).toBeVisible();
+  await expect(input).toBeVisible();
+  await expect.poll(() => sidebarTrigger.evaluate((element) => element.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
+  await expect.poll(() => input.evaluate((element) => element.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
+  await expect.poll(() => input.evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize))).toBeGreaterThanOrEqual(16);
+
+  await page.goto("/#/components/checkbox");
+  const checkbox = page.locator(".docs-preview .arcsyn-checkbox").first();
+  await expect.poll(() => checkbox.evaluate((element) => element.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
+
+  await page.goto("/#/components/switch");
+  const switchControl = page.locator(".docs-preview .arcsyn-switch").first();
+  await expect.poll(() => switchControl.evaluate((element) => element.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
+});

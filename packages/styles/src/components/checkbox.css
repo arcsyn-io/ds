@@ -20,4 +20,27 @@
   .arcsyn-checkbox:focus-visible { box-shadow: 0 0 0 3px color-mix(in srgb, var(--arcsyn-color-focus-ring), transparent 78%); outline: none; }
   .arcsyn-checkbox[data-invalid="true"] { border-color: var(--arcsyn-color-danger); }
   .arcsyn-checkbox:disabled { cursor: not-allowed; opacity: 0.5; }
+
+  @media (pointer: coarse) {
+    .arcsyn-checkbox {
+      background: transparent;
+      border: 0;
+      height: var(--arcsyn-control-height-touch);
+      position: relative;
+      width: var(--arcsyn-control-height-touch);
+    }
+    .arcsyn-checkbox::before {
+      background: var(--arcsyn-color-surface);
+      border: 1px solid var(--arcsyn-color-border-strong);
+      border-radius: var(--arcsyn-radius-sm);
+      content: "";
+      grid-area: 1 / 1;
+      height: 1rem;
+      width: 1rem;
+    }
+    .arcsyn-checkbox::after { grid-area: 1 / 1; }
+    .arcsyn-checkbox:checked, .arcsyn-checkbox:indeterminate { background: transparent; }
+    .arcsyn-checkbox:checked::before, .arcsyn-checkbox:indeterminate::before { background: var(--arcsyn-color-primary); border-color: var(--arcsyn-color-primary); }
+    .arcsyn-checkbox[data-invalid="true"]::before { border-color: var(--arcsyn-color-danger); }
+  }
 }

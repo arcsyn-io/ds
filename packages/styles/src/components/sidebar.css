@@ -421,6 +421,7 @@
   .arcsyn-sidebar__backdrop[data-ending-style] { opacity: 0; }
 
   @media (max-width: 767.98px) {
+    .arcsyn-sidebar-provider:not([data-mobile-ready]) > .arcsyn-sidebar { display: none; }
     .arcsyn-sidebar__menu-button { min-block-size: 2.75rem; }
     .arcsyn-sidebar__menu-action { block-size: 2.5rem; inline-size: 2.5rem; inset-block-start: 0.125rem; }
     .arcsyn-sidebar__menu-badge { inset-block-start: 0.75rem; }

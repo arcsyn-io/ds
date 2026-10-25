@@ -1,0 +1,105 @@
+@layer components {
+  @media (pointer: coarse) {
+    :is(
+      .arcsyn-button,
+      .arcsyn-input,
+      .arcsyn-input-group .arcsyn-input,
+      .arcsyn-input-group[data-size] .arcsyn-input,
+      .arcsyn-input-group__addon,
+      .arcsyn-native-select__control,
+      .arcsyn-native-select[data-size] .arcsyn-native-select__control,
+      .arcsyn-select__trigger,
+      .arcsyn-select__item,
+      .arcsyn-select-search,
+      .arcsyn-select-search__clear,
+      .arcsyn-select-search__trigger,
+      .arcsyn-select-search__item,
+      .arcsyn-search-input,
+      .arcsyn-date-picker__input,
+      .arcsyn-date-picker[data-size] .arcsyn-date-picker__input,
+      .arcsyn-date-picker__trigger,
+      .arcsyn-date-picker__clear,
+      .arcsyn-date-picker__nav,
+      .arcsyn-date-picker__today,
+      .arcsyn-date-picker__close,
+      .arcsyn-time__control,
+      .arcsyn-time__control input,
+      .arcsyn-time[data-size] .arcsyn-time__control input,
+      .arcsyn-textarea,
+      .arcsyn-theme-switcher,
+      .arcsyn-pagination__link,
+      .arcsyn-popover__close,
+      .arcsyn-menubar__trigger,
+      .arcsyn-menubar__item,
+      .arcsyn-tabs__tab,
+      .arcsyn-command__item,
+      .arcsyn-context-menu__item,
+      .arcsyn-dropdown-menu__item,
+      .arcsyn-notification-center__trigger,
+      .arcsyn-notification-center__see-all,
+      .arcsyn-user-menu__trigger,
+      .arcsyn-attachment__action,
+      .arcsyn-toast__action,
+      .arcsyn-toast__cancel,
+      .arcsyn-sidebar__trigger,
+      .arcsyn-sidebar__group-action,
+      .arcsyn-sidebar__menu-button,
+      .arcsyn-sidebar__menu-action,
+      .arcsyn-sidebar__menu-sub-button,
+      .arcsyn-sidebar__input,
+      .arcsyn-data-table__filter input,
+      .arcsyn-data-table__page-size select,
+      .arcsyn-data-table__pagination button
+    ) {
+      min-block-size: var(--arcsyn-control-height-touch);
+    }
+
+    :is(
+      .arcsyn-date-picker__trigger,
+      .arcsyn-date-picker__clear,
+      .arcsyn-date-picker__nav,
+      .arcsyn-date-picker__today,
+      .arcsyn-date-picker__close,
+      .arcsyn-select-search__clear,
+      .arcsyn-select-search__trigger,
+      .arcsyn-pagination__link,
+      .arcsyn-attachment__action,
+      .arcsyn-sidebar__trigger,
+      .arcsyn-sidebar__group-action,
+      .arcsyn-sidebar__menu-action,
+      .arcsyn-data-table__pagination button
+    ) {
+      min-inline-size: var(--arcsyn-control-height-touch);
+    }
+
+    :is(
+      .arcsyn-input,
+      .arcsyn-native-select__control,
+      .arcsyn-native-select[data-size] .arcsyn-native-select__control,
+      .arcsyn-search-input input,
+      .arcsyn-select-search input,
+      .arcsyn-date-picker__input,
+      .arcsyn-date-picker[data-size] .arcsyn-date-picker__input,
+      .arcsyn-time__control input,
+      .arcsyn-time[data-size] .arcsyn-time__control input,
+      .arcsyn-textarea,
+      .arcsyn-data-table__filter input,
+      .arcsyn-data-table__page-size select,
+      .arcsyn-sidebar__input
+    ) {
+      font-size: 1rem;
+    }
+
+    .arcsyn-radio-group__item { min-block-size: var(--arcsyn-control-height-touch); }
+
+    .arcsyn-select-search__clear { margin-block: 0; }
+
+    .arcsyn-toast__action, .arcsyn-toast__cancel { min-block-size: var(--arcsyn-control-height-touch) !important; }
+
+    .arcsyn-date-picker__popup {
+      max-block-size: calc(100dvh - var(--arcsyn-spacing-4));
+      max-inline-size: calc(100vw - var(--arcsyn-spacing-4));
+      overflow-y: auto;
+    }
+  }
+}
